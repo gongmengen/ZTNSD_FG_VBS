@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="spider_bean" />
+        <module name="spider_common" />
+        <module name="spider_interceptor" />
+        <module name="spider_mapper" />
+        <module name="spider_service" />
+        <module name="spider_timer" />
+        <module name="spider_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="spider_bean" target="1.7" />
+      <module name="spider_common" target="1.8" />
+      <module name="spider_interceptor" target="1.8" />
+      <module name="spider_mapper" target="1.7" />
+      <module name="spider_service" target="1.7" />
+      <module name="spider_timer" target="1.7" />
+      <module name="spider_VBS" target="1.7" />
+      <module name="spider_web" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

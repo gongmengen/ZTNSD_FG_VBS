@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+	<!-- 指定注解位置 -->
+	<context:component-scan base-package="com.spider.controller"/>
+	<!--配置视图解析器-->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 在实际开发中通常都需配置 mvc:annotation-driven标签,这个标签是开启注解 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+
+	<!-- 注解驱动 -->
+	<mvc:annotation-driven>
+
+		<!-- 指定http返回编码格式，不然返回ajax请求json会出现中文乱码 -->
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+						<value>*/*;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- <mvc:resources location="/easyui/" mapping="/easyui/**"></mvc:resources> -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!--要拦截的请求-->
+			<mvc:mapping path="/**"/>
+
+			<!--不做拦截的请求-->
+			<mvc:exclude-mapping path="/login"/><!-- 登陆请求 -->
+			<mvc:exclude-mapping path="/goLogin"/><!-- 登陆请求 -->
+			<mvc:exclude-mapping path="/goRegister"/><!-- 注册请求 -->
+			<mvc:exclude-mapping path="/register"/><!-- 注册请求 -->
+			<mvc:exclude-mapping path="/basicTimer"/><!-- 定时器任务 -->
+			<mvc:exclude-mapping path="/basicTimerForCHL"/><!-- 定时器任务 -->
+			<mvc:exclude-mapping path="/basicTimerForTMP"/><!-- 定时器任务 -->
+			<!--拦截后对请求处理的类-->
+			<bean class="com.spider.interceptor.LoginInterceptor">
+<!--				<property name="startTime" value="10"/>
+				<property name="endTime" value="17"/>-->
+			</bean>
+		</mvc:interceptor>
+		<!--<mvc:interceptor>-->
+			<!--&lt;!&ndash;要拦截的请求&ndash;&gt;-->
+			<!--<mvc:mapping path="/basicTimer"/>-->
+			<!--&lt;!&ndash;拦截后对请求处理的类&ndash;&gt;-->
+			<!--<bean class="com.spider.interceptor.BasicTimerInterceptor">-->
+				<!--&lt;!&ndash;				<property name="startTime" value="10"/>-->
+                                <!--<property name="endTime" value="17"/>&ndash;&gt;-->
+			<!--</bean>-->
+		<!--</mvc:interceptor>-->
+	</mvc:interceptors>
+	<!--     文件上传功能
+ value表示文件的大小  0代表关闭 -1代表不限大小-->
+	    <bean id="multipartResolver"
+              class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <property name="maxUploadSize" value="-1"/>
+        </bean>
+    <!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
+    <mvc:resources location="/img/" mapping="/**" />
+    <mvc:resources location="/plugins/" mapping="/**" />
+    <mvc:resources location="/css/" mapping="/**" />
+    <mvc:resources location="/fonts/" mapping="/**" />
+    <mvc:resources location="/font-awesome/" mapping="/**" />
+
+    <mvc:resources location="/tools/" mapping="/**" />
+	<mvc:resources location="/js/" mapping="/**" />
+</beans>

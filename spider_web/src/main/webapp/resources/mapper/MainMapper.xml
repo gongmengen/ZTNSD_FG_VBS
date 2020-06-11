@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.MainMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.Main" >
+    <id column="number" property="number" jdbcType="BIGINT" />
+    <result column="RJS0" property="rjs0" jdbcType="VARCHAR" />
+    <result column="RJS1" property="rjs1" jdbcType="VARCHAR" />
+    <result column="RJS4" property="rjs4" jdbcType="VARCHAR" />
+    <result column="RJS5" property="rjs5" jdbcType="VARCHAR" />
+    <result column="RJS6" property="rjs6" jdbcType="VARCHAR" />
+    <result column="RJS7" property="rjs7" jdbcType="VARCHAR" />
+    <result column="RJS8" property="rjs8" jdbcType="VARCHAR" />
+    <result column="RJS9" property="rjs9" jdbcType="SMALLINT" />
+    <result column="RJS10" property="rjs10" jdbcType="VARCHAR" />
+    <result column="RJS11" property="rjs11" jdbcType="VARCHAR" />
+    <result column="RJS12" property="rjs12" jdbcType="VARCHAR" />
+    <result column="kword" property="kword" jdbcType="VARCHAR" />
+    <result column="appuser" property="appuser" jdbcType="VARCHAR" />
+    <result column="appdate" property="appdate" jdbcType="TIMESTAMP" />
+    <result column="truetag" property="truetag" jdbcType="INTEGER" />
+    <result column="lawlevel" property="lawlevel" jdbcType="INTEGER" />
+    <result column="Marked" property="marked" jdbcType="INTEGER" />
+    <result column="anyou" property="anyou" jdbcType="VARCHAR" />
+    <result column="rid" property="rid" jdbcType="DECIMAL" />
+    <result column="RJS13" property="rjs13" jdbcType="INTEGER" />
+    <result column="UpdateTime" property="updatetime" jdbcType="INTEGER" />
+    <result column="truetag_1" property="truetag1" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.MainWithBLOBs" extends="BaseResultMap" >
+    <result column="LinkSource" property="linksource" jdbcType="LONGVARCHAR" />
+    <result column="fjian" property="fjian" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, 
+    appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1
+  </sql>
+  <sql id="Blob_Column_List" >
+    LinkSource, fjian
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.MainExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from main
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.MainExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from main
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from main
+    where number = #{number,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from main
+    where number = #{number,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.MainExample" >
+    delete from main
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.MainWithBLOBs" >
+    insert into main (number, RJS0, RJS1, 
+      RJS4, RJS5, RJS6, RJS7, 
+      RJS8, RJS9, RJS10, 
+      RJS11, RJS12, kword, 
+      appuser, appdate, truetag, 
+      lawlevel, Marked, anyou, 
+      rid, RJS13, UpdateTime, 
+      truetag_1, LinkSource, fjian, pre_distinct
+      )
+    values (#{number,jdbcType=BIGINT}, #{rjs0,jdbcType=VARCHAR}, #{rjs1,jdbcType=VARCHAR}, 
+      #{rjs4,jdbcType=VARCHAR}, #{rjs5,jdbcType=VARCHAR}, #{rjs6,jdbcType=VARCHAR}, #{rjs7,jdbcType=VARCHAR}, 
+      #{rjs8,jdbcType=VARCHAR}, #{rjs9,jdbcType=SMALLINT}, #{rjs10,jdbcType=VARCHAR}, 
+      #{rjs11,jdbcType=VARCHAR}, #{rjs12,jdbcType=VARCHAR}, #{kword,jdbcType=VARCHAR}, 
+      #{appuser,jdbcType=VARCHAR}, #{appdate,jdbcType=TIMESTAMP}, #{truetag,jdbcType=INTEGER}, 
+      #{lawlevel,jdbcType=INTEGER}, #{marked,jdbcType=INTEGER}, #{anyou,jdbcType=VARCHAR}, 
+      #{rid,jdbcType=DECIMAL}, #{rjs13,jdbcType=INTEGER}, #{updatetime,jdbcType=INTEGER}, 
+      #{truetag1,jdbcType=INTEGER}, #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR}, #{pre_distinct,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.MainWithBLOBs" >
+    insert into main
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="rjs0 != null" >
+        RJS0,
+      </if>
+      <if test="rjs1 != null" >
+        RJS1,
+      </if>
+      <if test="rjs4 != null" >
+        RJS4,
+      </if>
+      <if test="rjs5 != null" >
+        RJS5,
+      </if>
+      <if test="rjs6 != null" >
+        RJS6,
+      </if>
+      <if test="rjs7 != null" >
+        RJS7,
+      </if>
+      <if test="rjs8 != null" >
+        RJS8,
+      </if>
+      <if test="rjs9 != null" >
+        RJS9,
+      </if>
+      <if test="rjs10 != null" >
+        RJS10,
+      </if>
+      <if test="rjs11 != null" >
+        RJS11,
+      </if>
+      <if test="rjs12 != null" >
+        RJS12,
+      </if>
+      <if test="kword != null" >
+        kword,
+      </if>
+      <if test="appuser != null" >
+        appuser,
+      </if>
+      <if test="appdate != null" >
+        appdate,
+      </if>
+      <if test="truetag != null" >
+        truetag,
+      </if>
+      <if test="lawlevel != null" >
+        lawlevel,
+      </if>
+      <if test="marked != null" >
+        Marked,
+      </if>
+      <if test="anyou != null" >
+        anyou,
+      </if>
+      <if test="rid != null" >
+        rid,
+      </if>
+      <if test="rjs13 != null" >
+        RJS13,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+      <if test="truetag1 != null" >
+        truetag_1,
+      </if>
+      <if test="linksource != null" >
+        LinkSource,
+      </if>
+      <if test="fjian != null" >
+        fjian,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="number != null" >
+        #{number,jdbcType=BIGINT},
+      </if>
+      <if test="rjs0 != null" >
+        #{rjs0,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs1 != null" >
+        #{rjs1,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs4 != null" >
+        #{rjs4,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs5 != null" >
+        #{rjs5,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs6 != null" >
+        #{rjs6,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs7 != null" >
+        #{rjs7,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs8 != null" >
+        #{rjs8,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs9 != null" >
+        #{rjs9,jdbcType=SMALLINT},
+      </if>
+      <if test="rjs10 != null" >
+        #{rjs10,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs11 != null" >
+        #{rjs11,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs12 != null" >
+        #{rjs12,jdbcType=VARCHAR},
+      </if>
+      <if test="kword != null" >
+        #{kword,jdbcType=VARCHAR},
+      </if>
+      <if test="appuser != null" >
+        #{appuser,jdbcType=VARCHAR},
+      </if>
+      <if test="appdate != null" >
+        #{appdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="truetag != null" >
+        #{truetag,jdbcType=INTEGER},
+      </if>
+      <if test="lawlevel != null" >
+        #{lawlevel,jdbcType=INTEGER},
+      </if>
+      <if test="marked != null" >
+        #{marked,jdbcType=INTEGER},
+      </if>
+      <if test="anyou != null" >
+        #{anyou,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        #{rid,jdbcType=DECIMAL},
+      </if>
+      <if test="rjs13 != null" >
+        #{rjs13,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=INTEGER},
+      </if>
+      <if test="truetag1 != null" >
+        #{truetag1,jdbcType=INTEGER},
+      </if>
+      <if test="linksource != null" >
+        #{linksource,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fjian != null" >
+        #{fjian,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.MainExample" resultType="java.lang.Integer" >
+    select count(*) from main
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update main
+    <set >
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=BIGINT},
+      </if>
+      <if test="record.rjs0 != null" >
+        RJS0 = #{record.rjs0,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs1 != null" >
+        RJS1 = #{record.rjs1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs4 != null" >
+        RJS4 = #{record.rjs4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs5 != null" >
+        RJS5 = #{record.rjs5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs6 != null" >
+        RJS6 = #{record.rjs6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs7 != null" >
+        RJS7 = #{record.rjs7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs8 != null" >
+        RJS8 = #{record.rjs8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs9 != null" >
+        RJS9 = #{record.rjs9,jdbcType=SMALLINT},
+      </if>
+      <if test="record.rjs10 != null" >
+        RJS10 = #{record.rjs10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs11 != null" >
+        RJS11 = #{record.rjs11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs12 != null" >
+        RJS12 = #{record.rjs12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kword != null" >
+        kword = #{record.kword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appuser != null" >
+        appuser = #{record.appuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appdate != null" >
+        appdate = #{record.appdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.truetag != null" >
+        truetag = #{record.truetag,jdbcType=INTEGER},
+      </if>
+      <if test="record.lawlevel != null" >
+        lawlevel = #{record.lawlevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.marked != null" >
+        Marked = #{record.marked,jdbcType=INTEGER},
+      </if>
+      <if test="record.anyou != null" >
+        anyou = #{record.anyou,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rid != null" >
+        rid = #{record.rid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rjs13 != null" >
+        RJS13 = #{record.rjs13,jdbcType=INTEGER},
+      </if>
+      <if test="record.updatetime != null" >
+        UpdateTime = #{record.updatetime,jdbcType=INTEGER},
+      </if>
+      <if test="record.truetag1 != null" >
+        truetag_1 = #{record.truetag1,jdbcType=INTEGER},
+      </if>
+      <if test="record.linksource != null" >
+        LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fjian != null" >
+        fjian = #{record.fjian,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update main
+    set number = #{record.number,jdbcType=BIGINT},
+      RJS0 = #{record.rjs0,jdbcType=VARCHAR},
+      RJS1 = #{record.rjs1,jdbcType=VARCHAR},
+      RJS4 = #{record.rjs4,jdbcType=VARCHAR},
+      RJS5 = #{record.rjs5,jdbcType=VARCHAR},
+      RJS6 = #{record.rjs6,jdbcType=VARCHAR},
+      RJS7 = #{record.rjs7,jdbcType=VARCHAR},
+      RJS8 = #{record.rjs8,jdbcType=VARCHAR},
+      RJS9 = #{record.rjs9,jdbcType=SMALLINT},
+      RJS10 = #{record.rjs10,jdbcType=VARCHAR},
+      RJS11 = #{record.rjs11,jdbcType=VARCHAR},
+      RJS12 = #{record.rjs12,jdbcType=VARCHAR},
+      kword = #{record.kword,jdbcType=VARCHAR},
+      appuser = #{record.appuser,jdbcType=VARCHAR},
+      appdate = #{record.appdate,jdbcType=TIMESTAMP},
+      truetag = #{record.truetag,jdbcType=INTEGER},
+      lawlevel = #{record.lawlevel,jdbcType=INTEGER},
+      Marked = #{record.marked,jdbcType=INTEGER},
+      anyou = #{record.anyou,jdbcType=VARCHAR},
+      rid = #{record.rid,jdbcType=DECIMAL},
+      RJS13 = #{record.rjs13,jdbcType=INTEGER},
+      UpdateTime = #{record.updatetime,jdbcType=INTEGER},
+      truetag_1 = #{record.truetag1,jdbcType=INTEGER},
+      LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
+      fjian = #{record.fjian,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update main
+    set number = #{record.number,jdbcType=BIGINT},
+      RJS0 = #{record.rjs0,jdbcType=VARCHAR},
+      RJS1 = #{record.rjs1,jdbcType=VARCHAR},
+      RJS4 = #{record.rjs4,jdbcType=VARCHAR},
+      RJS5 = #{record.rjs5,jdbcType=VARCHAR},
+      RJS6 = #{record.rjs6,jdbcType=VARCHAR},
+      RJS7 = #{record.rjs7,jdbcType=VARCHAR},
+      RJS8 = #{record.rjs8,jdbcType=VARCHAR},
+      RJS9 = #{record.rjs9,jdbcType=SMALLINT},
+      RJS10 = #{record.rjs10,jdbcType=VARCHAR},
+      RJS11 = #{record.rjs11,jdbcType=VARCHAR},
+      RJS12 = #{record.rjs12,jdbcType=VARCHAR},
+      kword = #{record.kword,jdbcType=VARCHAR},
+      appuser = #{record.appuser,jdbcType=VARCHAR},
+      appdate = #{record.appdate,jdbcType=TIMESTAMP},
+      truetag = #{record.truetag,jdbcType=INTEGER},
+      lawlevel = #{record.lawlevel,jdbcType=INTEGER},
+      Marked = #{record.marked,jdbcType=INTEGER},
+      anyou = #{record.anyou,jdbcType=VARCHAR},
+      rid = #{record.rid,jdbcType=DECIMAL},
+      RJS13 = #{record.rjs13,jdbcType=INTEGER},
+      UpdateTime = #{record.updatetime,jdbcType=INTEGER},
+      truetag_1 = #{record.truetag1,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.MainWithBLOBs" >
+    update main
+    <set >
+      <if test="rjs0 != null" >
+        RJS0 = #{rjs0,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs1 != null" >
+        RJS1 = #{rjs1,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs4 != null" >
+        RJS4 = #{rjs4,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs5 != null" >
+        RJS5 = #{rjs5,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs6 != null" >
+        RJS6 = #{rjs6,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs7 != null" >
+        RJS7 = #{rjs7,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs8 != null" >
+        RJS8 = #{rjs8,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs9 != null" >
+        RJS9 = #{rjs9,jdbcType=SMALLINT},
+      </if>
+      <if test="rjs10 != null" >
+        RJS10 = #{rjs10,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs11 != null" >
+        RJS11 = #{rjs11,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs12 != null" >
+        RJS12 = #{rjs12,jdbcType=VARCHAR},
+      </if>
+      <if test="kword != null" >
+        kword = #{kword,jdbcType=VARCHAR},
+      </if>
+      <if test="appuser != null" >
+        appuser = #{appuser,jdbcType=VARCHAR},
+      </if>
+      <if test="appdate != null" >
+        appdate = #{appdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="truetag != null" >
+        truetag = #{truetag,jdbcType=INTEGER},
+      </if>
+      <if test="lawlevel != null" >
+        lawlevel = #{lawlevel,jdbcType=INTEGER},
+      </if>
+      <if test="marked != null" >
+        Marked = #{marked,jdbcType=INTEGER},
+      </if>
+      <if test="anyou != null" >
+        anyou = #{anyou,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=DECIMAL},
+      </if>
+      <if test="rjs13 != null" >
+        RJS13 = #{rjs13,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=INTEGER},
+      </if>
+      <if test="truetag1 != null" >
+        truetag_1 = #{truetag1,jdbcType=INTEGER},
+      </if>
+      <if test="linksource != null" >
+        LinkSource = #{linksource,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fjian != null" >
+        fjian = #{fjian,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where number = #{number,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.MainWithBLOBs" >
+    update main
+    set RJS0 = #{rjs0,jdbcType=VARCHAR},
+      RJS1 = #{rjs1,jdbcType=VARCHAR},
+      RJS4 = #{rjs4,jdbcType=VARCHAR},
+      RJS5 = #{rjs5,jdbcType=VARCHAR},
+      RJS6 = #{rjs6,jdbcType=VARCHAR},
+      RJS7 = #{rjs7,jdbcType=VARCHAR},
+      RJS8 = #{rjs8,jdbcType=VARCHAR},
+      RJS9 = #{rjs9,jdbcType=SMALLINT},
+      RJS10 = #{rjs10,jdbcType=VARCHAR},
+      RJS11 = #{rjs11,jdbcType=VARCHAR},
+      RJS12 = #{rjs12,jdbcType=VARCHAR},
+      kword = #{kword,jdbcType=VARCHAR},
+      appuser = #{appuser,jdbcType=VARCHAR},
+      appdate = #{appdate,jdbcType=TIMESTAMP},
+      truetag = #{truetag,jdbcType=INTEGER},
+      lawlevel = #{lawlevel,jdbcType=INTEGER},
+      Marked = #{marked,jdbcType=INTEGER},
+      anyou = #{anyou,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=DECIMAL},
+      RJS13 = #{rjs13,jdbcType=INTEGER},
+      UpdateTime = #{updatetime,jdbcType=INTEGER},
+      truetag_1 = #{truetag1,jdbcType=INTEGER},
+      LinkSource = #{linksource,jdbcType=LONGVARCHAR},
+      fjian = #{fjian,jdbcType=LONGVARCHAR}
+    where number = #{number,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.Main" >
+    update main
+    set RJS0 = #{rjs0,jdbcType=VARCHAR},
+      RJS1 = #{rjs1,jdbcType=VARCHAR},
+      RJS4 = #{rjs4,jdbcType=VARCHAR},
+      RJS5 = #{rjs5,jdbcType=VARCHAR},
+      RJS6 = #{rjs6,jdbcType=VARCHAR},
+      RJS7 = #{rjs7,jdbcType=VARCHAR},
+      RJS8 = #{rjs8,jdbcType=VARCHAR},
+      RJS9 = #{rjs9,jdbcType=SMALLINT},
+      RJS10 = #{rjs10,jdbcType=VARCHAR},
+      RJS11 = #{rjs11,jdbcType=VARCHAR},
+      RJS12 = #{rjs12,jdbcType=VARCHAR},
+      kword = #{kword,jdbcType=VARCHAR},
+      appuser = #{appuser,jdbcType=VARCHAR},
+      appdate = #{appdate,jdbcType=TIMESTAMP},
+      truetag = #{truetag,jdbcType=INTEGER},
+      lawlevel = #{lawlevel,jdbcType=INTEGER},
+      Marked = #{marked,jdbcType=INTEGER},
+      anyou = #{anyou,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=DECIMAL},
+      RJS13 = #{rjs13,jdbcType=INTEGER},
+      UpdateTime = #{updatetime,jdbcType=INTEGER},
+      truetag_1 = #{truetag1,jdbcType=INTEGER}
+    where number = #{number,jdbcType=BIGINT}
+  </update>
+  <select id="findMaxRjs8" resultType="String" parameterType="String">
+    select max(RJS8) from MAIN where RJS8 like '%${username}%'
+  </select>
+</mapper>

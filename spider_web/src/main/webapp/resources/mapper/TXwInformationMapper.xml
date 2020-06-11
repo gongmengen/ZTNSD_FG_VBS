@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.TXwInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.TXwInformation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="newsTitle" property="newstitle" jdbcType="VARCHAR" />
+    <result column="websiteid" property="websiteid" jdbcType="INTEGER" />
+    <result column="releaseTime" property="releasetime" jdbcType="VARCHAR" />
+    <result column="releaseSource" property="releasesource" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="pictureNum" property="picturenum" jdbcType="INTEGER" />
+    <result column="readState" property="readstate" jdbcType="INTEGER" />
+    <result column="includedState" property="includedstate" jdbcType="INTEGER" />
+    <result column="xwColumn" property="xwcolumn" jdbcType="INTEGER" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="updateName" property="updatename" jdbcType="VARCHAR" />
+    <result column="updateId" property="updateid" jdbcType="INTEGER" />
+    <result column="pic_one" property="picOne" jdbcType="VARCHAR" />
+    <result column="pic_two" property="picTwo" jdbcType="VARCHAR" />
+    <result column="pic_three" property="picThree" jdbcType="VARCHAR" />
+    <result column="pic_four" property="picFour" jdbcType="VARCHAR" />
+    <result column="pic_five" property="picFive" jdbcType="VARCHAR" />
+    <result column="pic_one_show" property="picOneShow" jdbcType="VARCHAR" />
+    <result column="pic_two_show" property="picTwoShow" jdbcType="VARCHAR" />
+    <result column="pic_three_show" property="picThreeShow" jdbcType="VARCHAR" />
+    <result column="pic_four_show" property="picFourShow" jdbcType="VARCHAR" />
+    <result column="istatus" property="istatus" jdbcType="INTEGER" />
+    <result column="pic_sign" property="picSign" jdbcType="VARCHAR" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="gsColumn" property="gscolumn" jdbcType="INTEGER" />
+    <result column="titleId" property="titleid" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.TXwInformationWithBLOBs" extends="BaseResultMap" >
+    <result column="newsContent" property="newscontent" jdbcType="LONGVARCHAR" />
+    <result column="newsContentNotUpdate" property="newscontentnotupdate" jdbcType="LONGVARCHAR" />
+    <result column="abstractNewsContent" property="abstractnewscontent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, newsTitle, websiteid, releaseTime, releaseSource, source, pictureNum, readState, 
+    includedState, xwColumn, createTime, updateTime, updateName, updateId, pic_one, pic_two, 
+    pic_three, pic_four, pic_five, pic_one_show, pic_two_show, pic_three_show, pic_four_show, 
+    istatus, pic_sign, pics, gsColumn, titleId
+  </sql>
+  <sql id="Blob_Column_List" >
+    newsContent, newsContentNotUpdate, abstractNewsContent
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.TXwInformationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_xw_information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.TXwInformationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xw_information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_xw_information
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_xw_information
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.TXwInformationExample" >
+    delete from t_xw_information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.TXwInformationWithBLOBs" >
+    insert into t_xw_information (id, newsTitle, websiteid, 
+      releaseTime, releaseSource, source, 
+      pictureNum, readState, includedState, 
+      xwColumn, createTime, updateTime, 
+      updateName, updateId, pic_one, 
+      pic_two, pic_three, pic_four, 
+      pic_five, pic_one_show, pic_two_show, 
+      pic_three_show, pic_four_show, istatus, 
+      pic_sign, pics, gsColumn, 
+      titleId, newsContent, newsContentNotUpdate, 
+      abstractNewsContent)
+    values (#{id,jdbcType=INTEGER}, #{newstitle,jdbcType=VARCHAR}, #{websiteid,jdbcType=INTEGER}, 
+      #{releasetime,jdbcType=VARCHAR}, #{releasesource,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{picturenum,jdbcType=INTEGER}, #{readstate,jdbcType=INTEGER}, #{includedstate,jdbcType=INTEGER}, 
+      #{xwcolumn,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{updateid,jdbcType=INTEGER}, #{picOne,jdbcType=VARCHAR}, 
+      #{picTwo,jdbcType=VARCHAR}, #{picThree,jdbcType=VARCHAR}, #{picFour,jdbcType=VARCHAR}, 
+      #{picFive,jdbcType=VARCHAR}, #{picOneShow,jdbcType=VARCHAR}, #{picTwoShow,jdbcType=VARCHAR}, 
+      #{picThreeShow,jdbcType=VARCHAR}, #{picFourShow,jdbcType=VARCHAR}, #{istatus,jdbcType=INTEGER}, 
+      #{picSign,jdbcType=VARCHAR}, #{pics,jdbcType=VARCHAR}, #{gscolumn,jdbcType=INTEGER}, 
+      #{titleid,jdbcType=INTEGER}, #{newscontent,jdbcType=LONGVARCHAR}, #{newscontentnotupdate,jdbcType=LONGVARCHAR}, 
+      #{abstractnewscontent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.TXwInformationWithBLOBs" >
+    insert into t_xw_information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="newstitle != null" >
+        newsTitle,
+      </if>
+      <if test="websiteid != null" >
+        websiteid,
+      </if>
+      <if test="releasetime != null" >
+        releaseTime,
+      </if>
+      <if test="releasesource != null" >
+        releaseSource,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="picturenum != null" >
+        pictureNum,
+      </if>
+      <if test="readstate != null" >
+        readState,
+      </if>
+      <if test="includedstate != null" >
+        includedState,
+      </if>
+      <if test="xwcolumn != null" >
+        xwColumn,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="updatetime != null" >
+        updateTime,
+      </if>
+      <if test="updatename != null" >
+        updateName,
+      </if>
+      <if test="updateid != null" >
+        updateId,
+      </if>
+      <if test="picOne != null" >
+        pic_one,
+      </if>
+      <if test="picTwo != null" >
+        pic_two,
+      </if>
+      <if test="picThree != null" >
+        pic_three,
+      </if>
+      <if test="picFour != null" >
+        pic_four,
+      </if>
+      <if test="picFive != null" >
+        pic_five,
+      </if>
+      <if test="picOneShow != null" >
+        pic_one_show,
+      </if>
+      <if test="picTwoShow != null" >
+        pic_two_show,
+      </if>
+      <if test="picThreeShow != null" >
+        pic_three_show,
+      </if>
+      <if test="picFourShow != null" >
+        pic_four_show,
+      </if>
+      <if test="istatus != null" >
+        istatus,
+      </if>
+      <if test="picSign != null" >
+        pic_sign,
+      </if>
+      <if test="pics != null" >
+        pics,
+      </if>
+      <if test="gscolumn != null" >
+        gsColumn,
+      </if>
+      <if test="titleid != null" >
+        titleId,
+      </if>
+      <if test="newscontent != null" >
+        newsContent,
+      </if>
+      <if test="newscontentnotupdate != null" >
+        newsContentNotUpdate,
+      </if>
+      <if test="abstractnewscontent != null" >
+        abstractNewsContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="newstitle != null" >
+        #{newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="websiteid != null" >
+        #{websiteid,jdbcType=INTEGER},
+      </if>
+      <if test="releasetime != null" >
+        #{releasetime,jdbcType=VARCHAR},
+      </if>
+      <if test="releasesource != null" >
+        #{releasesource,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="picturenum != null" >
+        #{picturenum,jdbcType=INTEGER},
+      </if>
+      <if test="readstate != null" >
+        #{readstate,jdbcType=INTEGER},
+      </if>
+      <if test="includedstate != null" >
+        #{includedstate,jdbcType=INTEGER},
+      </if>
+      <if test="xwcolumn != null" >
+        #{xwcolumn,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null" >
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updateid != null" >
+        #{updateid,jdbcType=INTEGER},
+      </if>
+      <if test="picOne != null" >
+        #{picOne,jdbcType=VARCHAR},
+      </if>
+      <if test="picTwo != null" >
+        #{picTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="picThree != null" >
+        #{picThree,jdbcType=VARCHAR},
+      </if>
+      <if test="picFour != null" >
+        #{picFour,jdbcType=VARCHAR},
+      </if>
+      <if test="picFive != null" >
+        #{picFive,jdbcType=VARCHAR},
+      </if>
+      <if test="picOneShow != null" >
+        #{picOneShow,jdbcType=VARCHAR},
+      </if>
+      <if test="picTwoShow != null" >
+        #{picTwoShow,jdbcType=VARCHAR},
+      </if>
+      <if test="picThreeShow != null" >
+        #{picThreeShow,jdbcType=VARCHAR},
+      </if>
+      <if test="picFourShow != null" >
+        #{picFourShow,jdbcType=VARCHAR},
+      </if>
+      <if test="istatus != null" >
+        #{istatus,jdbcType=INTEGER},
+      </if>
+      <if test="picSign != null" >
+        #{picSign,jdbcType=VARCHAR},
+      </if>
+      <if test="pics != null" >
+        #{pics,jdbcType=VARCHAR},
+      </if>
+      <if test="gscolumn != null" >
+        #{gscolumn,jdbcType=INTEGER},
+      </if>
+      <if test="titleid != null" >
+        #{titleid,jdbcType=INTEGER},
+      </if>
+      <if test="newscontent != null" >
+        #{newscontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newscontentnotupdate != null" >
+        #{newscontentnotupdate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="abstractnewscontent != null" >
+        #{abstractnewscontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.TXwInformationExample" resultType="java.lang.Integer" >
+    select count(*) from t_xw_information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xw_information
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.newstitle != null" >
+        newsTitle = #{record.newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.websiteid != null" >
+        websiteid = #{record.websiteid,jdbcType=INTEGER},
+      </if>
+      <if test="record.releasetime != null" >
+        releaseTime = #{record.releasetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releasesource != null" >
+        releaseSource = #{record.releasesource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picturenum != null" >
+        pictureNum = #{record.picturenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.readstate != null" >
+        readState = #{record.readstate,jdbcType=INTEGER},
+      </if>
+      <if test="record.includedstate != null" >
+        includedState = #{record.includedstate,jdbcType=INTEGER},
+      </if>
+      <if test="record.xwcolumn != null" >
+        xwColumn = #{record.xwcolumn,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatename != null" >
+        updateName = #{record.updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateid != null" >
+        updateId = #{record.updateid,jdbcType=INTEGER},
+      </if>
+      <if test="record.picOne != null" >
+        pic_one = #{record.picOne,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picTwo != null" >
+        pic_two = #{record.picTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picThree != null" >
+        pic_three = #{record.picThree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picFour != null" >
+        pic_four = #{record.picFour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picFive != null" >
+        pic_five = #{record.picFive,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picOneShow != null" >
+        pic_one_show = #{record.picOneShow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picTwoShow != null" >
+        pic_two_show = #{record.picTwoShow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picThreeShow != null" >
+        pic_three_show = #{record.picThreeShow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picFourShow != null" >
+        pic_four_show = #{record.picFourShow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.istatus != null" >
+        istatus = #{record.istatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.picSign != null" >
+        pic_sign = #{record.picSign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pics != null" >
+        pics = #{record.pics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gscolumn != null" >
+        gsColumn = #{record.gscolumn,jdbcType=INTEGER},
+      </if>
+      <if test="record.titleid != null" >
+        titleId = #{record.titleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.newscontent != null" >
+        newsContent = #{record.newscontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.newscontentnotupdate != null" >
+        newsContentNotUpdate = #{record.newscontentnotupdate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.abstractnewscontent != null" >
+        abstractNewsContent = #{record.abstractnewscontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_xw_information
+    set id = #{record.id,jdbcType=INTEGER},
+      newsTitle = #{record.newstitle,jdbcType=VARCHAR},
+      websiteid = #{record.websiteid,jdbcType=INTEGER},
+      releaseTime = #{record.releasetime,jdbcType=VARCHAR},
+      releaseSource = #{record.releasesource,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      pictureNum = #{record.picturenum,jdbcType=INTEGER},
+      readState = #{record.readstate,jdbcType=INTEGER},
+      includedState = #{record.includedstate,jdbcType=INTEGER},
+      xwColumn = #{record.xwcolumn,jdbcType=INTEGER},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      updateName = #{record.updatename,jdbcType=VARCHAR},
+      updateId = #{record.updateid,jdbcType=INTEGER},
+      pic_one = #{record.picOne,jdbcType=VARCHAR},
+      pic_two = #{record.picTwo,jdbcType=VARCHAR},
+      pic_three = #{record.picThree,jdbcType=VARCHAR},
+      pic_four = #{record.picFour,jdbcType=VARCHAR},
+      pic_five = #{record.picFive,jdbcType=VARCHAR},
+      pic_one_show = #{record.picOneShow,jdbcType=VARCHAR},
+      pic_two_show = #{record.picTwoShow,jdbcType=VARCHAR},
+      pic_three_show = #{record.picThreeShow,jdbcType=VARCHAR},
+      pic_four_show = #{record.picFourShow,jdbcType=VARCHAR},
+      istatus = #{record.istatus,jdbcType=INTEGER},
+      pic_sign = #{record.picSign,jdbcType=VARCHAR},
+      pics = #{record.pics,jdbcType=VARCHAR},
+      gsColumn = #{record.gscolumn,jdbcType=INTEGER},
+      titleId = #{record.titleid,jdbcType=INTEGER},
+      newsContent = #{record.newscontent,jdbcType=LONGVARCHAR},
+      newsContentNotUpdate = #{record.newscontentnotupdate,jdbcType=LONGVARCHAR},
+      abstractNewsContent = #{record.abstractnewscontent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xw_information
+    set id = #{record.id,jdbcType=INTEGER},
+      newsTitle = #{record.newstitle,jdbcType=VARCHAR},
+      websiteid = #{record.websiteid,jdbcType=INTEGER},
+      releaseTime = #{record.releasetime,jdbcType=VARCHAR},
+      releaseSource = #{record.releasesource,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      pictureNum = #{record.picturenum,jdbcType=INTEGER},
+      readState = #{record.readstate,jdbcType=INTEGER},
+      includedState = #{record.includedstate,jdbcType=INTEGER},
+      xwColumn = #{record.xwcolumn,jdbcType=INTEGER},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      updateName = #{record.updatename,jdbcType=VARCHAR},
+      updateId = #{record.updateid,jdbcType=INTEGER},
+      pic_one = #{record.picOne,jdbcType=VARCHAR},
+      pic_two = #{record.picTwo,jdbcType=VARCHAR},
+      pic_three = #{record.picThree,jdbcType=VARCHAR},
+      pic_four = #{record.picFour,jdbcType=VARCHAR},
+      pic_five = #{record.picFive,jdbcType=VARCHAR},
+      pic_one_show = #{record.picOneShow,jdbcType=VARCHAR},
+      pic_two_show = #{record.picTwoShow,jdbcType=VARCHAR},
+      pic_three_show = #{record.picThreeShow,jdbcType=VARCHAR},
+      pic_four_show = #{record.picFourShow,jdbcType=VARCHAR},
+      istatus = #{record.istatus,jdbcType=INTEGER},
+      pic_sign = #{record.picSign,jdbcType=VARCHAR},
+      pics = #{record.pics,jdbcType=VARCHAR},
+      gsColumn = #{record.gscolumn,jdbcType=INTEGER},
+      titleId = #{record.titleid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.TXwInformationWithBLOBs" >
+    update t_xw_information
+    <set >
+      <if test="newstitle != null" >
+        newsTitle = #{newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="websiteid != null" >
+        websiteid = #{websiteid,jdbcType=INTEGER},
+      </if>
+      <if test="releasetime != null" >
+        releaseTime = #{releasetime,jdbcType=VARCHAR},
+      </if>
+      <if test="releasesource != null" >
+        releaseSource = #{releasesource,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="picturenum != null" >
+        pictureNum = #{picturenum,jdbcType=INTEGER},
+      </if>
+      <if test="readstate != null" >
+        readState = #{readstate,jdbcType=INTEGER},
+      </if>
+      <if test="includedstate != null" >
+        includedState = #{includedstate,jdbcType=INTEGER},
+      </if>
+      <if test="xwcolumn != null" >
+        xwColumn = #{xwcolumn,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null" >
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updateid != null" >
+        updateId = #{updateid,jdbcType=INTEGER},
+      </if>
+      <if test="picOne != null" >
+        pic_one = #{picOne,jdbcType=VARCHAR},
+      </if>
+      <if test="picTwo != null" >
+        pic_two = #{picTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="picThree != null" >
+        pic_three = #{picThree,jdbcType=VARCHAR},
+      </if>
+      <if test="picFour != null" >
+        pic_four = #{picFour,jdbcType=VARCHAR},
+      </if>
+      <if test="picFive != null" >
+        pic_five = #{picFive,jdbcType=VARCHAR},
+      </if>
+      <if test="picOneShow != null" >
+        pic_one_show = #{picOneShow,jdbcType=VARCHAR},
+      </if>
+      <if test="picTwoShow != null" >
+        pic_two_show = #{picTwoShow,jdbcType=VARCHAR},
+      </if>
+      <if test="picThreeShow != null" >
+        pic_three_show = #{picThreeShow,jdbcType=VARCHAR},
+      </if>
+      <if test="picFourShow != null" >
+        pic_four_show = #{picFourShow,jdbcType=VARCHAR},
+      </if>
+      <if test="istatus != null" >
+        istatus = #{istatus,jdbcType=INTEGER},
+      </if>
+      <if test="picSign != null" >
+        pic_sign = #{picSign,jdbcType=VARCHAR},
+      </if>
+      <if test="pics != null" >
+        pics = #{pics,jdbcType=VARCHAR},
+      </if>
+      <if test="gscolumn != null" >
+        gsColumn = #{gscolumn,jdbcType=INTEGER},
+      </if>
+      <if test="titleid != null" >
+        titleId = #{titleid,jdbcType=INTEGER},
+      </if>
+      <if test="newscontent != null" >
+        newsContent = #{newscontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newscontentnotupdate != null" >
+        newsContentNotUpdate = #{newscontentnotupdate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="abstractnewscontent != null" >
+        abstractNewsContent = #{abstractnewscontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.TXwInformationWithBLOBs" >
+    update t_xw_information
+    set newsTitle = #{newstitle,jdbcType=VARCHAR},
+      websiteid = #{websiteid,jdbcType=INTEGER},
+      releaseTime = #{releasetime,jdbcType=VARCHAR},
+      releaseSource = #{releasesource,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      pictureNum = #{picturenum,jdbcType=INTEGER},
+      readState = #{readstate,jdbcType=INTEGER},
+      includedState = #{includedstate,jdbcType=INTEGER},
+      xwColumn = #{xwcolumn,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR},
+      updateId = #{updateid,jdbcType=INTEGER},
+      pic_one = #{picOne,jdbcType=VARCHAR},
+      pic_two = #{picTwo,jdbcType=VARCHAR},
+      pic_three = #{picThree,jdbcType=VARCHAR},
+      pic_four = #{picFour,jdbcType=VARCHAR},
+      pic_five = #{picFive,jdbcType=VARCHAR},
+      pic_one_show = #{picOneShow,jdbcType=VARCHAR},
+      pic_two_show = #{picTwoShow,jdbcType=VARCHAR},
+      pic_three_show = #{picThreeShow,jdbcType=VARCHAR},
+      pic_four_show = #{picFourShow,jdbcType=VARCHAR},
+      istatus = #{istatus,jdbcType=INTEGER},
+      pic_sign = #{picSign,jdbcType=VARCHAR},
+      pics = #{pics,jdbcType=VARCHAR},
+      gsColumn = #{gscolumn,jdbcType=INTEGER},
+      titleId = #{titleid,jdbcType=INTEGER},
+      newsContent = #{newscontent,jdbcType=LONGVARCHAR},
+      newsContentNotUpdate = #{newscontentnotupdate,jdbcType=LONGVARCHAR},
+      abstractNewsContent = #{abstractnewscontent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.TXwInformation" >
+    update t_xw_information
+    set newsTitle = #{newstitle,jdbcType=VARCHAR},
+      websiteid = #{websiteid,jdbcType=INTEGER},
+      releaseTime = #{releasetime,jdbcType=VARCHAR},
+      releaseSource = #{releasesource,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      pictureNum = #{picturenum,jdbcType=INTEGER},
+      readState = #{readstate,jdbcType=INTEGER},
+      includedState = #{includedstate,jdbcType=INTEGER},
+      xwColumn = #{xwcolumn,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR},
+      updateId = #{updateid,jdbcType=INTEGER},
+      pic_one = #{picOne,jdbcType=VARCHAR},
+      pic_two = #{picTwo,jdbcType=VARCHAR},
+      pic_three = #{picThree,jdbcType=VARCHAR},
+      pic_four = #{picFour,jdbcType=VARCHAR},
+      pic_five = #{picFive,jdbcType=VARCHAR},
+      pic_one_show = #{picOneShow,jdbcType=VARCHAR},
+      pic_two_show = #{picTwoShow,jdbcType=VARCHAR},
+      pic_three_show = #{picThreeShow,jdbcType=VARCHAR},
+      pic_four_show = #{picFourShow,jdbcType=VARCHAR},
+      istatus = #{istatus,jdbcType=INTEGER},
+      pic_sign = #{picSign,jdbcType=VARCHAR},
+      pics = #{pics,jdbcType=VARCHAR},
+      gsColumn = #{gscolumn,jdbcType=INTEGER},
+      titleId = #{titleid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getLastUpdateTimeList" resultType="com.spider.bean.TXwWebsite">
+    select websiteid as id,MAX(updateTime) as lasttime from t_xw_information  group by websiteid
+  </select>
+  <!-- 获取该网站当前日期抓取的新闻列表  -->
+  <select id="getInformationListWithWebsiteIdAndUpdateTime" parameterType="hashmap" resultType="com.spider.bean.TXwInformation">
+    select id,newsTitle,source,createTime from t_xw_information   where websiteid=#{id}
+    <if test="start != null" >
+      and createTime &gt; #{start}
+    </if>
+    <if test="end != null" >
+      and createTime &lt; #{end}
+    </if>
+
+
+  </select>
+  <!-- 获取每个网站抓取新闻的数量  -->
+  <select id="getSpiderCountByWebsiteid" parameterType="string" resultType="com.spider.bean.TXwWebsite">
+    select websiteid as id,count(*) as spidercount,MAX(updateTime) as lasttime from t_xw_information   where 1=1
+    <if test="start != null" >
+      and createTime &gt; #{start}
+    </if>
+    <if test="end != null" >
+      and createTime &lt; #{end}
+    </if>
+    group by websiteid
+
+
+  </select>
+  <select id="findInformationList" parameterType="int" resultType="com.spider.bean.TXwInformation">
+    select id,newsTitle,source,createTime from t_xw_information where websiteid = #{id} order by createTime desc
+  </select>
+  <select id="getWebsiteidList" resultType="com.spider.bean.TXwInformation">
+    select distinct websiteid from t_xw_information
+  </select>
+  <!-- 获取10篇新闻 -->
+  <select id="getTenInformationList" resultType="com.spider.bean.TXwInformationWithBLOBs" parameterType="int">
+    select id,newscontentNotUpdate,source from t_xw_information where websiteid = #{websiteid} order by createTime desc limit 0,10
+  </select>
+  <!-- 获取十篇最新的新闻 -->
+  <select id="getTenTXwInformationNewest" resultType="com.spider.bean.TXwInformation">
+    select id,newsTitle,source,createTime from t_xw_information  order by createTime desc limit 0,50
+  </select>
+  <!-- 获取十篇pipeline 为0的新闻 -->
+  <select id="getTenTXwInformationPipelineIsZero" resultType="com.spider.bean.TXwInformationWithBLOBs">
+    SELECT source,xwColumn,id,newsContentNotUpdate,websiteid FROM t_xw_information WHERE id in(35665)
+  </select>
+  <!-- 获取十篇pipeline 为0的新闻 refmain = 2 -->
+  <select id="getTenTXwInformationPipelineWithRefMan" resultType="com.spider.bean.TXwInformationWithBLOBs">
+    select source,xwColumn,id,newsContentNotUpdate,websiteid from t_xw_information where websiteid in(select a.id from (select * from t_xw_website where refMain = 2)as a) and pipeline_status = 0 order by createTime desc limit 0,10
+  </select>
+  <!-- 继续验证十篇新闻 -->
+  <select id="getNextTenInformationList" resultType="com.spider.bean.TXwInformationWithBLOBs">
+    select id,newscontentNotUpdate,source from t_xw_information where websiteid = #{1} and id &lt; #{0} order by createTime desc limit 0,10
+  </select>
+
+ <!-- 修改pipeline_status状态为1 -->
+  <update id="updatePipelineStatusForOne" parameterType="int">
+    update t_xw_information set pipeline_status = 1  where id = #{id}
+  </update>
+  <!-- 修改pipeline_status状态为0 -->
+  <update id="updatePipelineStatusForZero" parameterType="int">
+    update t_xw_information set pipeline_status = 0  where id = #{id}
+  </update>
+  <!-- 修改所有该网站下的pipeline_status状态为1 -->
+  <update id="updatePipelineStatusWithRefmainToOne" parameterType="int">
+    update t_xw_information set  pipeline_status=1 where websiteid = #{websiteid} and id in(select t.id from (select id from t_xw_information where websiteid = #{websiteid})t);
+  </update>
+  <!-- 修改所有该网站下的pipeline_status状态为0 -->
+  <update id="updatePipelineStatusWithRefmainToZeroAll" parameterType="int">
+    update t_xw_information set  pipeline_status=0 where websiteid = #{websiteid} and id in(select t.id from (select id from t_xw_information where websiteid = #{websiteid})t);
+  </update>
+  <!-- 修改20条该网站下的pipeline_status状态为0 -->
+  <update id="updatePipelineStatusWithRefmainToZeroTwenty" parameterType="int">
+    update t_xw_information set  pipeline_status=0 where websiteid = #{websiteid} and id in(select t.id from (select id from t_xw_information where websiteid = #{websiteid} order by createTime desc limit 0,20)t);
+  </update>
+
+</mapper>

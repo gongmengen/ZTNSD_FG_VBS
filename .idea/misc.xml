@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/spider_web" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="36007331-1979-4d13-b81c-65a73e552f9b" />
+      <option name="name" value="36007331-1979-4d13-b81c-65a73e552f9b" />
+      <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="5962eae9-71e1-47cb-bfaf-48e6c7bee574" />
+      <option name="name" value="5962eae9-71e1-47cb-bfaf-48e6c7bee574" />
+      <option name="url" value="http://maven.net.cn/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="792e4987-004e-4d61-9aff-c606d56de755" />
+      <option name="name" value="792e4987-004e-4d61-9aff-c606d56de755" />
+      <option name="url" value="http://repository.jboss.org/nexus/content/groups/public" />
+    </remote-repository>
+  </component>
+</project>

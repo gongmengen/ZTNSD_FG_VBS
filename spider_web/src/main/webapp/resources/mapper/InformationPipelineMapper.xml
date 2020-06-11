@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.InformationPipelineMapper" >
+<resultMap id="BaseResultMap" type="com.spider.bean.InformationPipeline" >
+  <id column="id" property="id" jdbcType="INTEGER" />
+  <result column="source" property="source" jdbcType="VARCHAR" />
+  <result column="newsTitle" property="newstitle" jdbcType="VARCHAR" />
+  <result column="releaseTime" property="releasetime" jdbcType="VARCHAR" />
+  <result column="impTime" property="imptime" jdbcType="VARCHAR" />
+  <result column="filenum" property="filenum" jdbcType="VARCHAR" />
+  <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+  <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+  <result column="istatus" property="istatus" jdbcType="INTEGER" />
+  <result column="information_id" property="informationId" jdbcType="INTEGER" />
+  <result column="deptcode" property="deptcode" jdbcType="VARCHAR" />
+  <result column="deptname" property="deptname" jdbcType="VARCHAR" />
+  <result column="pre_distinct" property="preDistinct" jdbcType="INTEGER" />
+  <result column="xwColumn" property="xwcolumn" jdbcType="VARCHAR" />
+  <result column="filename" property="filename" jdbcType="VARCHAR" />
+  <result column="websitesource" property="websitesource" jdbcType="VARCHAR" />
+  <result column="error_status" property="errorStatus" jdbcType="INTEGER" />
+  <result column="fjcount" property="fjcount" jdbcType="INTEGER" />
+  <result column="personincharge" property="personincharge" jdbcType="VARCHAR" />
+  <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+  <result column="rjs1" property="rjs1" jdbcType="VARCHAR" />
+  <result column="extend1" property="extend1" jdbcType="VARCHAR" />
+  <result column="extend2" property="extend2" jdbcType="VARCHAR" />
+  <result column="extend3" property="extend3" jdbcType="VARCHAR" />
+</resultMap>
+<resultMap id="ResultMapWithBLOBs" type="com.spider.bean.InformationPipelineWithBLOBs" extends="BaseResultMap" >
+<result column="newsContent" property="newscontent" jdbcType="LONGVARCHAR" />
+<result column="attachment" property="attachment" jdbcType="LONGVARCHAR" />
+<result column="fjian" property="fjian" jdbcType="LONGVARCHAR" />
+</resultMap>
+<sql id="Example_Where_Clause" >
+<where >
+  <foreach collection="oredCriteria" item="criteria" separator="or" >
+    <if test="criteria.valid" >
+      <trim prefix="(" suffix=")" prefixOverrides="and" >
+        <foreach collection="criteria.criteria" item="criterion" >
+          <choose >
+            <when test="criterion.noValue" >
+              and ${criterion.condition}
+            </when>
+            <when test="criterion.singleValue" >
+              and ${criterion.condition} #{criterion.value}
+            </when>
+            <when test="criterion.betweenValue" >
+              and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+            </when>
+            <when test="criterion.listValue" >
+              and ${criterion.condition}
+              <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                #{listItem}
+              </foreach>
+            </when>
+          </choose>
+        </foreach>
+      </trim>
+    </if>
+  </foreach>
+</where>
+</sql>
+<sql id="Update_By_Example_Where_Clause" >
+<where >
+  <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+    <if test="criteria.valid" >
+      <trim prefix="(" suffix=")" prefixOverrides="and" >
+        <foreach collection="criteria.criteria" item="criterion" >
+          <choose >
+            <when test="criterion.noValue" >
+              and ${criterion.condition}
+            </when>
+            <when test="criterion.singleValue" >
+              and ${criterion.condition} #{criterion.value}
+            </when>
+            <when test="criterion.betweenValue" >
+              and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+            </when>
+            <when test="criterion.listValue" >
+              and ${criterion.condition}
+              <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                #{listItem}
+              </foreach>
+            </when>
+          </choose>
+        </foreach>
+      </trim>
+    </if>
+  </foreach>
+</where>
+</sql>
+<sql id="Base_Column_List" >
+id, source, newsTitle, releaseTime, impTime, filenum, createTime, updateTime, istatus,
+information_id, deptcode, deptname, pre_distinct, xwColumn, filename, websitesource,
+error_status, fjcount, personincharge, keyword, rjs1, extend1, extend2, extend3
+</sql>
+<sql id="Blob_Column_List" >
+newsContent, attachment, fjian
+</sql>
+<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.InformationPipelineExample" >
+select
+<if test="distinct" >
+  distinct
+</if>
+<include refid="Base_Column_List" />
+,
+<include refid="Blob_Column_List" />
+from information_pipeline
+<if test="_parameter != null" >
+  <include refid="Example_Where_Clause" />
+</if>
+<if test="orderByClause != null" >
+  order by ${orderByClause}
+</if>
+</select>
+<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.InformationPipelineExample" >
+select
+<if test="distinct" >
+  distinct
+</if>
+<include refid="Base_Column_List" />
+from information_pipeline
+<if test="_parameter != null" >
+  <include refid="Example_Where_Clause" />
+</if>
+<if test="orderByClause != null" >
+  order by ${orderByClause}
+</if>
+</select>
+<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+select
+<include refid="Base_Column_List" />
+,
+<include refid="Blob_Column_List" />
+from information_pipeline
+where id = #{id,jdbcType=INTEGER}
+</select>
+<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+delete from information_pipeline
+where id = #{id,jdbcType=INTEGER}
+</delete>
+<delete id="deleteByExample" parameterType="com.spider.bean.InformationPipelineExample" >
+delete from information_pipeline
+<if test="_parameter != null" >
+  <include refid="Example_Where_Clause" />
+</if>
+</delete>
+<insert id="insert" parameterType="com.spider.bean.InformationPipelineWithBLOBs" >
+insert into information_pipeline (id, source, newsTitle,
+releaseTime, impTime, filenum,
+createTime, updateTime, istatus,
+information_id, deptcode, deptname,
+pre_distinct, xwColumn, filename,
+websitesource, error_status, fjcount,
+personincharge, keyword, rjs1,
+extend1, extend2, extend3,
+newsContent, attachment, fjian
+)
+values (#{id,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR}, #{newstitle,jdbcType=VARCHAR},
+#{releasetime,jdbcType=VARCHAR}, #{imptime,jdbcType=VARCHAR}, #{filenum,jdbcType=VARCHAR},
+#{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{istatus,jdbcType=INTEGER},
+#{informationId,jdbcType=INTEGER}, #{deptcode,jdbcType=VARCHAR}, #{deptname,jdbcType=VARCHAR},
+#{preDistinct,jdbcType=INTEGER}, #{xwcolumn,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR},
+#{websitesource,jdbcType=VARCHAR}, #{errorStatus,jdbcType=INTEGER}, #{fjcount,jdbcType=INTEGER},
+#{personincharge,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, #{rjs1,jdbcType=VARCHAR},
+#{extend1,jdbcType=VARCHAR}, #{extend2,jdbcType=VARCHAR}, #{extend3,jdbcType=VARCHAR},
+#{newscontent,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR}
+)
+</insert>
+<insert id="insertSelective" parameterType="com.spider.bean.InformationPipelineWithBLOBs" >
+insert into information_pipeline
+<trim prefix="(" suffix=")" suffixOverrides="," >
+  <if test="id != null" >
+    id,
+  </if>
+  <if test="source != null" >
+    source,
+  </if>
+  <if test="newstitle != null" >
+    newsTitle,
+  </if>
+  <if test="releasetime != null" >
+    releaseTime,
+  </if>
+  <if test="imptime != null" >
+    impTime,
+  </if>
+  <if test="filenum != null" >
+    filenum,
+  </if>
+  <if test="createtime != null" >
+    createTime,
+  </if>
+  <if test="updatetime != null" >
+    updateTime,
+  </if>
+  <if test="istatus != null" >
+    istatus,
+  </if>
+  <if test="informationId != null" >
+    information_id,
+  </if>
+  <if test="deptcode != null" >
+    deptcode,
+  </if>
+  <if test="deptname != null" >
+    deptname,
+  </if>
+  <if test="preDistinct != null" >
+    pre_distinct,
+  </if>
+  <if test="xwcolumn != null" >
+    xwColumn,
+  </if>
+  <if test="filename != null" >
+    filename,
+  </if>
+  <if test="websitesource != null" >
+    websitesource,
+  </if>
+  <if test="errorStatus != null" >
+    error_status,
+  </if>
+  <if test="fjcount != null" >
+    fjcount,
+  </if>
+  <if test="personincharge != null" >
+    personincharge,
+  </if>
+  <if test="keyword != null" >
+    keyword,
+  </if>
+  <if test="rjs1 != null" >
+    rjs1,
+  </if>
+  <if test="extend1 != null" >
+    extend1,
+  </if>
+  <if test="extend2 != null" >
+    extend2,
+  </if>
+  <if test="extend3 != null" >
+    extend3,
+  </if>
+  <if test="newscontent != null" >
+    newsContent,
+  </if>
+  <if test="attachment != null" >
+    attachment,
+  </if>
+  <if test="fjian != null" >
+    fjian,
+  </if>
+</trim>
+<trim prefix="values (" suffix=")" suffixOverrides="," >
+  <if test="id != null" >
+    #{id,jdbcType=INTEGER},
+  </if>
+  <if test="source != null" >
+    #{source,jdbcType=VARCHAR},
+  </if>
+  <if test="newstitle != null" >
+    #{newstitle,jdbcType=VARCHAR},
+  </if>
+  <if test="releasetime != null" >
+    #{releasetime,jdbcType=VARCHAR},
+  </if>
+  <if test="imptime != null" >
+    #{imptime,jdbcType=VARCHAR},
+  </if>
+  <if test="filenum != null" >
+    #{filenum,jdbcType=VARCHAR},
+  </if>
+  <if test="createtime != null" >
+    #{createtime,jdbcType=VARCHAR},
+  </if>
+  <if test="updatetime != null" >
+    #{updatetime,jdbcType=TIMESTAMP},
+  </if>
+  <if test="istatus != null" >
+    #{istatus,jdbcType=INTEGER},
+  </if>
+  <if test="informationId != null" >
+    #{informationId,jdbcType=INTEGER},
+  </if>
+  <if test="deptcode != null" >
+    #{deptcode,jdbcType=VARCHAR},
+  </if>
+  <if test="deptname != null" >
+    #{deptname,jdbcType=VARCHAR},
+  </if>
+  <if test="preDistinct != null" >
+    #{preDistinct,jdbcType=INTEGER},
+  </if>
+  <if test="xwcolumn != null" >
+    #{xwcolumn,jdbcType=VARCHAR},
+  </if>
+  <if test="filename != null" >
+    #{filename,jdbcType=VARCHAR},
+  </if>
+  <if test="websitesource != null" >
+    #{websitesource,jdbcType=VARCHAR},
+  </if>
+  <if test="errorStatus != null" >
+    #{errorStatus,jdbcType=INTEGER},
+  </if>
+  <if test="fjcount != null" >
+    #{fjcount,jdbcType=INTEGER},
+  </if>
+  <if test="personincharge != null" >
+    #{personincharge,jdbcType=VARCHAR},
+  </if>
+  <if test="keyword != null" >
+    #{keyword,jdbcType=VARCHAR},
+  </if>
+  <if test="rjs1 != null" >
+    #{rjs1,jdbcType=VARCHAR},
+  </if>
+  <if test="extend1 != null" >
+    #{extend1,jdbcType=VARCHAR},
+  </if>
+  <if test="extend2 != null" >
+    #{extend2,jdbcType=VARCHAR},
+  </if>
+  <if test="extend3 != null" >
+    #{extend3,jdbcType=VARCHAR},
+  </if>
+  <if test="newscontent != null" >
+    #{newscontent,jdbcType=LONGVARCHAR},
+  </if>
+  <if test="attachment != null" >
+    #{attachment,jdbcType=LONGVARCHAR},
+  </if>
+  <if test="fjian != null" >
+    #{fjian,jdbcType=LONGVARCHAR},
+  </if>
+</trim>
+</insert>
+<select id="countByExample" parameterType="com.spider.bean.InformationPipelineExample" resultType="java.lang.Integer" >
+select count(*) from information_pipeline
+<if test="_parameter != null" >
+  <include refid="Example_Where_Clause" />
+</if>
+</select>
+<update id="updateByExampleSelective" parameterType="map" >
+update information_pipeline
+<set >
+  <if test="record.id != null" >
+    id = #{record.id,jdbcType=INTEGER},
+  </if>
+  <if test="record.source != null" >
+    source = #{record.source,jdbcType=VARCHAR},
+  </if>
+  <if test="record.newstitle != null" >
+    newsTitle = #{record.newstitle,jdbcType=VARCHAR},
+  </if>
+  <if test="record.releasetime != null" >
+    releaseTime = #{record.releasetime,jdbcType=VARCHAR},
+  </if>
+  <if test="record.imptime != null" >
+    impTime = #{record.imptime,jdbcType=VARCHAR},
+  </if>
+  <if test="record.filenum != null" >
+    filenum = #{record.filenum,jdbcType=VARCHAR},
+  </if>
+  <if test="record.createtime != null" >
+    createTime = #{record.createtime,jdbcType=VARCHAR},
+  </if>
+  <if test="record.updatetime != null" >
+    updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+  </if>
+  <if test="record.istatus != null" >
+    istatus = #{record.istatus,jdbcType=INTEGER},
+  </if>
+  <if test="record.informationId != null" >
+    information_id = #{record.informationId,jdbcType=INTEGER},
+  </if>
+  <if test="record.deptcode != null" >
+    deptcode = #{record.deptcode,jdbcType=VARCHAR},
+  </if>
+  <if test="record.deptname != null" >
+    deptname = #{record.deptname,jdbcType=VARCHAR},
+  </if>
+  <if test="record.preDistinct != null" >
+    pre_distinct = #{record.preDistinct,jdbcType=INTEGER},
+  </if>
+  <if test="record.xwcolumn != null" >
+    xwColumn = #{record.xwcolumn,jdbcType=VARCHAR},
+  </if>
+  <if test="record.filename != null" >
+    filename = #{record.filename,jdbcType=VARCHAR},
+  </if>
+  <if test="record.websitesource != null" >
+    websitesource = #{record.websitesource,jdbcType=VARCHAR},
+  </if>
+  <if test="record.errorStatus != null" >
+    error_status = #{record.errorStatus,jdbcType=INTEGER},
+  </if>
+  <if test="record.fjcount != null" >
+    fjcount = #{record.fjcount,jdbcType=INTEGER},
+  </if>
+  <if test="record.personincharge != null" >
+    personincharge = #{record.personincharge,jdbcType=VARCHAR},
+  </if>
+  <if test="record.keyword != null" >
+    keyword = #{record.keyword,jdbcType=VARCHAR},
+  </if>
+  <if test="record.rjs1 != null" >
+    rjs1 = #{record.rjs1,jdbcType=VARCHAR},
+  </if>
+  <if test="record.extend1 != null" >
+    extend1 = #{record.extend1,jdbcType=VARCHAR},
+  </if>
+  <if test="record.extend2 != null" >
+    extend2 = #{record.extend2,jdbcType=VARCHAR},
+  </if>
+  <if test="record.extend3 != null" >
+    extend3 = #{record.extend3,jdbcType=VARCHAR},
+  </if>
+  <if test="record.newscontent != null" >
+    newsContent = #{record.newscontent,jdbcType=LONGVARCHAR},
+  </if>
+  <if test="record.attachment != null" >
+    attachment = #{record.attachment,jdbcType=LONGVARCHAR},
+  </if>
+  <if test="record.fjian != null" >
+    fjian = #{record.fjian,jdbcType=LONGVARCHAR},
+  </if>
+</set>
+<if test="_parameter != null" >
+  <include refid="Update_By_Example_Where_Clause" />
+</if>
+</update>
+<update id="updateByExampleWithBLOBs" parameterType="map" >
+update information_pipeline
+set id = #{record.id,jdbcType=INTEGER},
+source = #{record.source,jdbcType=VARCHAR},
+newsTitle = #{record.newstitle,jdbcType=VARCHAR},
+releaseTime = #{record.releasetime,jdbcType=VARCHAR},
+impTime = #{record.imptime,jdbcType=VARCHAR},
+filenum = #{record.filenum,jdbcType=VARCHAR},
+createTime = #{record.createtime,jdbcType=VARCHAR},
+updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+istatus = #{record.istatus,jdbcType=INTEGER},
+information_id = #{record.informationId,jdbcType=INTEGER},
+deptcode = #{record.deptcode,jdbcType=VARCHAR},
+deptname = #{record.deptname,jdbcType=VARCHAR},
+pre_distinct = #{record.preDistinct,jdbcType=INTEGER},
+xwColumn = #{record.xwcolumn,jdbcType=VARCHAR},
+filename = #{record.filename,jdbcType=VARCHAR},
+websitesource = #{record.websitesource,jdbcType=VARCHAR},
+error_status = #{record.errorStatus,jdbcType=INTEGER},
+fjcount = #{record.fjcount,jdbcType=INTEGER},
+personincharge = #{record.personincharge,jdbcType=VARCHAR},
+keyword = #{record.keyword,jdbcType=VARCHAR},
+rjs1 = #{record.rjs1,jdbcType=VARCHAR},
+extend1 = #{record.extend1,jdbcType=VARCHAR},
+extend2 = #{record.extend2,jdbcType=VARCHAR},
+extend3 = #{record.extend3,jdbcType=VARCHAR},
+newsContent = #{record.newscontent,jdbcType=LONGVARCHAR},
+attachment = #{record.attachment,jdbcType=LONGVARCHAR},
+fjian = #{record.fjian,jdbcType=LONGVARCHAR}
+<if test="_parameter != null" >
+  <include refid="Update_By_Example_Where_Clause" />
+</if>
+</update>
+<update id="updateByExample" parameterType="map" >
+update information_pipeline
+set id = #{record.id,jdbcType=INTEGER},
+source = #{record.source,jdbcType=VARCHAR},
+newsTitle = #{record.newstitle,jdbcType=VARCHAR},
+releaseTime = #{record.releasetime,jdbcType=VARCHAR},
+impTime = #{record.imptime,jdbcType=VARCHAR},
+filenum = #{record.filenum,jdbcType=VARCHAR},
+createTime = #{record.createtime,jdbcType=VARCHAR},
+updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+istatus = #{record.istatus,jdbcType=INTEGER},
+information_id = #{record.informationId,jdbcType=INTEGER},
+deptcode = #{record.deptcode,jdbcType=VARCHAR},
+deptname = #{record.deptname,jdbcType=VARCHAR},
+pre_distinct = #{record.preDistinct,jdbcType=INTEGER},
+xwColumn = #{record.xwcolumn,jdbcType=VARCHAR},
+filename = #{record.filename,jdbcType=VARCHAR},
+websitesource = #{record.websitesource,jdbcType=VARCHAR},
+error_status = #{record.errorStatus,jdbcType=INTEGER},
+fjcount = #{record.fjcount,jdbcType=INTEGER},
+personincharge = #{record.personincharge,jdbcType=VARCHAR},
+keyword = #{record.keyword,jdbcType=VARCHAR},
+rjs1 = #{record.rjs1,jdbcType=VARCHAR},
+extend1 = #{record.extend1,jdbcType=VARCHAR},
+extend2 = #{record.extend2,jdbcType=VARCHAR},
+extend3 = #{record.extend3,jdbcType=VARCHAR}
+<if test="_parameter != null" >
+  <include refid="Update_By_Example_Where_Clause" />
+</if>
+</update>
+<update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.InformationPipelineWithBLOBs" >
+update information_pipeline
+<set >
+  <if test="source != null" >
+    source = #{source,jdbcType=VARCHAR},
+  </if>
+  <if test="newstitle != null" >
+    newsTitle = #{newstitle,jdbcType=VARCHAR},
+  </if>
+  <if test="releasetime != null" >
+    releaseTime = #{releasetime,jdbcType=VARCHAR},
+  </if>
+  <if test="imptime != null" >
+    impTime = #{imptime,jdbcType=VARCHAR},
+  </if>
+  <if test="filenum != null" >
+    filenum = #{filenum,jdbcType=VARCHAR},
+  </if>
+  <if test="createtime != null" >
+    createTime = #{createtime,jdbcType=VARCHAR},
+  </if>
+  <if test="updatetime != null" >
+    updateTime = #{updatetime,jdbcType=TIMESTAMP},
+  </if>
+  <if test="istatus != null" >
+    istatus = #{istatus,jdbcType=INTEGER},
+  </if>
+  <if test="informationId != null" >
+    information_id = #{informationId,jdbcType=INTEGER},
+  </if>
+  <if test="deptcode != null" >
+    deptcode = #{deptcode,jdbcType=VARCHAR},
+  </if>
+  <if test="deptname != null" >
+    deptname = #{deptname,jdbcType=VARCHAR},
+  </if>
+  <if test="preDistinct != null" >
+    pre_distinct = #{preDistinct,jdbcType=INTEGER},
+  </if>
+  <if test="xwcolumn != null" >
+    xwColumn = #{xwcolumn,jdbcType=VARCHAR},
+  </if>
+  <if test="filename != null" >
+    filename = #{filename,jdbcType=VARCHAR},
+  </if>
+  <if test="websitesource != null" >
+    websitesource = #{websitesource,jdbcType=VARCHAR},
+  </if>
+  <if test="errorStatus != null" >
+    error_status = #{errorStatus,jdbcType=INTEGER},
+  </if>
+  <if test="fjcount != null" >
+    fjcount = #{fjcount,jdbcType=INTEGER},
+  </if>
+  <if test="personincharge != null" >
+    personincharge = #{personincharge,jdbcType=VARCHAR},
+  </if>
+  <if test="keyword != null" >
+    keyword = #{keyword,jdbcType=VARCHAR},
+  </if>
+  <if test="rjs1 != null" >
+    rjs1 = #{rjs1,jdbcType=VARCHAR},
+  </if>
+  <if test="extend1 != null" >
+    extend1 = #{extend1,jdbcType=VARCHAR},
+  </if>
+  <if test="extend2 != null" >
+    extend2 = #{extend2,jdbcType=VARCHAR},
+  </if>
+  <if test="extend3 != null" >
+    extend3 = #{extend3,jdbcType=VARCHAR},
+  </if>
+  <if test="newscontent != null" >
+    newsContent = #{newscontent,jdbcType=LONGVARCHAR},
+  </if>
+  <if test="attachment != null" >
+    attachment = #{attachment,jdbcType=LONGVARCHAR},
+  </if>
+  <if test="fjian != null" >
+    fjian = #{fjian,jdbcType=LONGVARCHAR},
+  </if>
+</set>
+where id = #{id,jdbcType=INTEGER}
+</update>
+<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.InformationPipelineWithBLOBs" >
+update information_pipeline
+set source = #{source,jdbcType=VARCHAR},
+newsTitle = #{newstitle,jdbcType=VARCHAR},
+releaseTime = #{releasetime,jdbcType=VARCHAR},
+impTime = #{imptime,jdbcType=VARCHAR},
+filenum = #{filenum,jdbcType=VARCHAR},
+createTime = #{createtime,jdbcType=VARCHAR},
+updateTime = #{updatetime,jdbcType=TIMESTAMP},
+istatus = #{istatus,jdbcType=INTEGER},
+information_id = #{informationId,jdbcType=INTEGER},
+deptcode = #{deptcode,jdbcType=VARCHAR},
+deptname = #{deptname,jdbcType=VARCHAR},
+pre_distinct = #{preDistinct,jdbcType=INTEGER},
+xwColumn = #{xwcolumn,jdbcType=VARCHAR},
+filename = #{filename,jdbcType=VARCHAR},
+websitesource = #{websitesource,jdbcType=VARCHAR},
+error_status = #{errorStatus,jdbcType=INTEGER},
+fjcount = #{fjcount,jdbcType=INTEGER},
+personincharge = #{personincharge,jdbcType=VARCHAR},
+keyword = #{keyword,jdbcType=VARCHAR},
+rjs1 = #{rjs1,jdbcType=VARCHAR},
+extend1 = #{extend1,jdbcType=VARCHAR},
+extend2 = #{extend2,jdbcType=VARCHAR},
+extend3 = #{extend3,jdbcType=VARCHAR},
+newsContent = #{newscontent,jdbcType=LONGVARCHAR},
+attachment = #{attachment,jdbcType=LONGVARCHAR},
+fjian = #{fjian,jdbcType=LONGVARCHAR}
+where id = #{id,jdbcType=INTEGER}
+</update>
+<update id="updateByPrimaryKey" parameterType="com.spider.bean.InformationPipeline" >
+update information_pipeline
+set source = #{source,jdbcType=VARCHAR},
+newsTitle = #{newstitle,jdbcType=VARCHAR},
+releaseTime = #{releasetime,jdbcType=VARCHAR},
+impTime = #{imptime,jdbcType=VARCHAR},
+filenum = #{filenum,jdbcType=VARCHAR},
+createTime = #{createtime,jdbcType=VARCHAR},
+updateTime = #{updatetime,jdbcType=TIMESTAMP},
+istatus = #{istatus,jdbcType=INTEGER},
+information_id = #{informationId,jdbcType=INTEGER},
+deptcode = #{deptcode,jdbcType=VARCHAR},
+deptname = #{deptname,jdbcType=VARCHAR},
+pre_distinct = #{preDistinct,jdbcType=INTEGER},
+xwColumn = #{xwcolumn,jdbcType=VARCHAR},
+filename = #{filename,jdbcType=VARCHAR},
+websitesource = #{websitesource,jdbcType=VARCHAR},
+error_status = #{errorStatus,jdbcType=INTEGER},
+fjcount = #{fjcount,jdbcType=INTEGER},
+personincharge = #{personincharge,jdbcType=VARCHAR},
+keyword = #{keyword,jdbcType=VARCHAR},
+rjs1 = #{rjs1,jdbcType=VARCHAR},
+extend1 = #{extend1,jdbcType=VARCHAR},
+extend2 = #{extend2,jdbcType=VARCHAR},
+extend3 = #{extend3,jdbcType=VARCHAR}
+where id = #{id,jdbcType=INTEGER}
+</update>
+  <!-- 自定义 mapper -->
+  <select id="getInformationPipelineListWithRefmain2" parameterType="String" resultType="com.spider.bean.InformationPipelineWithBLOBs">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount,filename,keyword,rjs1,extend1
+    from information_pipeline where istatus = 0 and impTime in(${websiteids}) and error_status = 0  order by updateTime desc
+  </select>
+  <select id="getInformationPipelineListWithRefmain3" parameterType="String" resultType="com.spider.bean.InformationPipelineWithBLOBs">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount,filename,keyword,rjs1,extend1
+    from information_pipeline where istatus = 0 and impTime in(${websiteids}) and error_status = 0  order by updateTime desc
+  </select>
+  <select id="getFiftyInformationlar" resultType="com.spider.bean.InformationPipeline">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount
+    from information_pipeline where istatus = 0 and xwColumn = 100003 order by updateTime desc
+  </select>
+
+  <select id="getFiftyInformation" resultType="com.spider.bean.InformationPipeline">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount
+    from information_pipeline where istatus = 0 and xwColumn = 100002 order by updateTime desc
+  </select>
+
+  <select id="findMaxRjs8" resultType="String" parameterType="String">
+    select max(filename) from information_pipeline where filename like '${username}%'
+  </select>
+
+  <select id="getInformationBySource" resultType="com.spider.bean.InformationPipeline" parameterType="String">
+    select * from information_pipeline where source = #{source}
+  </select>
+
+
+  <select id="getNextInformationId" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &gt; #{0} and xwColumn = #{1} order by id asc limit 0,1
+  </select>
+
+
+  <select id="getLastInformationId" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &lt; #{0} and xwColumn = #{1} order by id desc limit 0,1
+  </select>
+
+  <select id="getLastInformationIdWithWebsiteid" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &lt; #{0} and xwColumn = #{1} and impTime in (${websiteids}) AND istatus = 0 order by id desc limit 0,1
+  </select>
+
+  <select id="getNextInformationIdWithWebsiteid" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &gt; #{0} and xwColumn = #{1} and impTime in (${websiteids}) AND istatus = 0 order by id asc limit 0,1
+  </select>
+
+
+  <!-- 用户权限 -->
+  <select id="getFiftyInformationByUserTask" parameterType="string" resultType="com.spider.bean.InformationPipeline">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount
+    from information_pipeline where istatus = 0 and xwColumn = 100002 and impTime in (${websiteid}) order by updateTime desc
+  </select>
+  <select id="getFiftyInformationlarByUserTask" parameterType="string" resultType="com.spider.bean.InformationPipeline">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount
+    from information_pipeline where istatus = 0 and xwColumn = 100003 and impTime in (${websiteid}) order by updateTime desc
+  </select>
+
+
+  <select id="getOutPutOverByUser" resultType="com.spider.bean.InformationPipeline">
+    select id,source,newsTitle,newsContent,releaseTime,impTime,filenum,attachment,createTime,updateTime,istatus,information_id as informationId,deptcode,deptname,pre_distinct as preDistinct,xwColumn,fjian,websitesource,error_status as errorStatus,fjcount
+    from information_pipeline where istatus = 1 and xwColumn = #{0} and impTime in (${websiteids}) order by updateTime desc
+  </select>
+
+
+
+
+  <select id="getOutOverNextInformationId" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &gt; #{0}  and xwColumn = #{1} AND istatus = 1 order by id asc limit 0,1
+  </select>
+
+
+  <select id="getOutOverLastInformationId" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &lt; #{0}  and xwColumn = #{1} AND istatus = 1 order by id desc limit 0,1
+  </select>
+
+  <select id="getOutOverLastInformationIdWithWebsiteid" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &lt; #{0}  and xwColumn = #{1} AND istatus = 1 and impTime in (${websiteids}) order by id desc limit 0,1
+  </select>
+
+  <select id="getOutOverNextInformationIdWithWebsiteid" resultType="com.spider.bean.InformationPipeline">
+    select id from information_pipeline where id &gt; #{0}  and xwColumn = #{1} AND istatus = 1 and impTime in (${websiteids}) order by id asc limit 0,1
+  </select>
+</mapper>

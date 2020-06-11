@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.TblErrorMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.TblError" >
+    <id column="errorId" property="errorid" jdbcType="INTEGER" />
+    <result column="errorCode" property="errorcode" jdbcType="INTEGER" />
+    <result column="errorDesc" property="errordesc" jdbcType="VARCHAR" />
+    <result column="errorStatus" property="errorstatus" jdbcType="INTEGER" />
+    <result column="creatId" property="creatid" jdbcType="INTEGER" />
+    <result column="creatTime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="stopTime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="levels" property="levels" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    errorId, errorCode, errorDesc, errorStatus, creatId, creatTime, stopTime, levels
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.TblErrorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_error
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_error
+    where errorId = #{errorid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_error
+    where errorId = #{errorid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.TblErrorExample" >
+    delete from tbl_error
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.TblError" >
+    insert into tbl_error (errorId, errorCode, errorDesc, 
+      errorStatus, creatId, creatTime, 
+      stopTime, levels)
+    values (#{errorid,jdbcType=INTEGER}, #{errorcode,jdbcType=INTEGER}, #{errordesc,jdbcType=VARCHAR}, 
+      #{errorstatus,jdbcType=INTEGER}, #{creatid,jdbcType=INTEGER}, #{creattime,jdbcType=TIMESTAMP}, 
+      #{stoptime,jdbcType=TIMESTAMP}, #{levels,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.TblError" >
+    insert into tbl_error
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="errorid != null" >
+        errorId,
+      </if>
+      <if test="errorcode != null" >
+        errorCode,
+      </if>
+      <if test="errordesc != null" >
+        errorDesc,
+      </if>
+      <if test="errorstatus != null" >
+        errorStatus,
+      </if>
+      <if test="creatid != null" >
+        creatId,
+      </if>
+      <if test="creattime != null" >
+        creatTime,
+      </if>
+      <if test="stoptime != null" >
+        stopTime,
+      </if>
+      <if test="levels != null" >
+        levels,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="errorid != null" >
+        #{errorid,jdbcType=INTEGER},
+      </if>
+      <if test="errorcode != null" >
+        #{errorcode,jdbcType=INTEGER},
+      </if>
+      <if test="errordesc != null" >
+        #{errordesc,jdbcType=VARCHAR},
+      </if>
+      <if test="errorstatus != null" >
+        #{errorstatus,jdbcType=INTEGER},
+      </if>
+      <if test="creatid != null" >
+        #{creatid,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="levels != null" >
+        #{levels,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.TblErrorExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_error
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbl_error
+    <set >
+      <if test="record.errorid != null" >
+        errorId = #{record.errorid,jdbcType=INTEGER},
+      </if>
+      <if test="record.errorcode != null" >
+        errorCode = #{record.errorcode,jdbcType=INTEGER},
+      </if>
+      <if test="record.errordesc != null" >
+        errorDesc = #{record.errordesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorstatus != null" >
+        errorStatus = #{record.errorstatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.creatid != null" >
+        creatId = #{record.creatid,jdbcType=INTEGER},
+      </if>
+      <if test="record.creattime != null" >
+        creatTime = #{record.creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stoptime != null" >
+        stopTime = #{record.stoptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.levels != null" >
+        levels = #{record.levels,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbl_error
+    set errorId = #{record.errorid,jdbcType=INTEGER},
+      errorCode = #{record.errorcode,jdbcType=INTEGER},
+      errorDesc = #{record.errordesc,jdbcType=VARCHAR},
+      errorStatus = #{record.errorstatus,jdbcType=INTEGER},
+      creatId = #{record.creatid,jdbcType=INTEGER},
+      creatTime = #{record.creattime,jdbcType=TIMESTAMP},
+      stopTime = #{record.stoptime,jdbcType=TIMESTAMP},
+      levels = #{record.levels,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.TblError" >
+    update tbl_error
+    <set >
+      <if test="errorcode != null" >
+        errorCode = #{errorcode,jdbcType=INTEGER},
+      </if>
+      <if test="errordesc != null" >
+        errorDesc = #{errordesc,jdbcType=VARCHAR},
+      </if>
+      <if test="errorstatus != null" >
+        errorStatus = #{errorstatus,jdbcType=INTEGER},
+      </if>
+      <if test="creatid != null" >
+        creatId = #{creatid,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        creatTime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stoptime != null" >
+        stopTime = #{stoptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="levels != null" >
+        levels = #{levels,jdbcType=TINYINT},
+      </if>
+    </set>
+    where errorId = #{errorid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.TblError" >
+    update tbl_error
+    set errorCode = #{errorcode,jdbcType=INTEGER},
+      errorDesc = #{errordesc,jdbcType=VARCHAR},
+      errorStatus = #{errorstatus,jdbcType=INTEGER},
+      creatId = #{creatid,jdbcType=INTEGER},
+      creatTime = #{creattime,jdbcType=TIMESTAMP},
+      stopTime = #{stoptime,jdbcType=TIMESTAMP},
+      levels = #{levels,jdbcType=TINYINT}
+    where errorId = #{errorid,jdbcType=INTEGER}
+  </update>
+</mapper>

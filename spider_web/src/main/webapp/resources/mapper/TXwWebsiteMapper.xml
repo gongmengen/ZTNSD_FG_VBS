@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.TXwWebsiteMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.TXwWebsite" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="websiteName" property="websitename" jdbcType="VARCHAR" />
+    <result column="websiteAddress" property="websiteaddress" jdbcType="VARCHAR" />
+    <result column="websiteCron" property="websitecron" jdbcType="VARCHAR" />
+    <result column="columnId" property="columnid" jdbcType="INTEGER" />
+    <result column="updateCycle" property="updatecycle" jdbcType="INTEGER" />
+    <result column="webCharset" property="webcharset" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="lastTime" property="lasttime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="istatus" property="istatus" jdbcType="INTEGER" />
+    <result column="GrabList" property="grablist" jdbcType="VARCHAR" />
+    <result column="Grabsonwebsite" property="grabsonwebsite" jdbcType="VARCHAR" />
+    <result column="GrabContent" property="grabcontent" jdbcType="VARCHAR" />
+    <result column="GrabPic" property="grabpic" jdbcType="VARCHAR" />
+    <result column="GrabTitle" property="grabtitle" jdbcType="VARCHAR" />
+    <result column="GrabTime" property="grabtime" jdbcType="VARCHAR" />
+    <result column="GrabSource" property="grabsource" jdbcType="VARCHAR" />
+    <result column="dynamicQuery" property="dynamicquery" jdbcType="VARCHAR" />
+    <result column="removeString" property="removestring" jdbcType="VARCHAR" />
+    <result column="removeSection" property="removesection" jdbcType="VARCHAR" />
+    <result column="dycolumn" property="dycolumn" jdbcType="VARCHAR" />
+    <result column="refMain" property="refmain" jdbcType="INTEGER" />
+    <result column="belongDepartment" property="belongdepartment" jdbcType="INTEGER" />
+    <result column="department_DB_Name" property="departmentDbName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="isSuccess" property="issuccess" jdbcType="INTEGER" />
+    <result column="pageAddress" property="pageaddress" jdbcType="VARCHAR" />
+    <result column="isPage" property="ispage" jdbcType="INTEGER" />
+    <result column="currPage" property="currpage" jdbcType="INTEGER" />
+    <result column="endGeccoTime" property="endgeccotime" jdbcType="TIMESTAMP" />
+    <result column="nodeCode" property="nodecode" jdbcType="VARCHAR" />
+    <result column="userTask" property="usertask" jdbcType="VARCHAR" />
+    <result column="titleStatus" property="titlestatus" jdbcType="INTEGER" />
+    <result column="newsnumStatus" property="newsnumstatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, websiteName, websiteAddress, websiteCron, columnId, updateCycle, webCharset,
+    userid, username, lastTime, createTime, istatus, GrabList, Grabsonwebsite, GrabContent,
+    GrabPic, GrabTitle, GrabTime, GrabSource, dynamicQuery, removeString, removeSection,
+    dycolumn, refMain, belongDepartment, department_DB_Name, type, isSuccess, pageAddress,
+    isPage, currPage, endGeccoTime, nodeCode, userTask, titleStatus, newsnumStatus
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.TXwWebsiteExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xw_website
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_xw_website
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_xw_website
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.TXwWebsiteExample" >
+    delete from t_xw_website
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.TXwWebsite" >
+    insert into t_xw_website (id, websiteName, websiteAddress,
+    websiteCron, columnId, updateCycle,
+    webCharset, userid, username,
+    lastTime, createTime, istatus,
+    GrabList, Grabsonwebsite, GrabContent,
+    GrabPic, GrabTitle, GrabTime,
+    GrabSource, dynamicQuery, removeString,
+    removeSection, dycolumn, refMain,
+    belongDepartment, department_DB_Name, type,
+    isSuccess, pageAddress, isPage,
+    currPage, endGeccoTime, nodeCode,
+    userTask, titleStatus, newsnumStatus
+    )
+    values (#{id,jdbcType=INTEGER}, #{websitename,jdbcType=VARCHAR}, #{websiteaddress,jdbcType=VARCHAR},
+    #{websitecron,jdbcType=VARCHAR}, #{columnid,jdbcType=INTEGER}, #{updatecycle,jdbcType=INTEGER},
+    #{webcharset,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
+    #{lasttime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{istatus,jdbcType=INTEGER},
+    #{grablist,jdbcType=VARCHAR}, #{grabsonwebsite,jdbcType=VARCHAR}, #{grabcontent,jdbcType=VARCHAR},
+    #{grabpic,jdbcType=VARCHAR}, #{grabtitle,jdbcType=VARCHAR}, #{grabtime,jdbcType=VARCHAR},
+    #{grabsource,jdbcType=VARCHAR}, #{dynamicquery,jdbcType=VARCHAR}, #{removestring,jdbcType=VARCHAR},
+    #{removesection,jdbcType=VARCHAR}, #{dycolumn,jdbcType=VARCHAR}, #{refmain,jdbcType=INTEGER},
+    #{belongdepartment,jdbcType=INTEGER}, #{departmentDbName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+    #{issuccess,jdbcType=INTEGER}, #{pageaddress,jdbcType=VARCHAR}, #{ispage,jdbcType=INTEGER},
+    #{currpage,jdbcType=INTEGER}, #{endgeccotime,jdbcType=TIMESTAMP}, #{nodecode,jdbcType=VARCHAR},
+    #{usertask,jdbcType=VARCHAR}, #{titlestatus,jdbcType=INTEGER}, #{newsnumstatus,jdbcType=INTEGER}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.TXwWebsite" >
+    insert into t_xw_website
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="websitename != null" >
+        websiteName,
+      </if>
+      <if test="websiteaddress != null" >
+        websiteAddress,
+      </if>
+      <if test="websitecron != null" >
+        websiteCron,
+      </if>
+      <if test="columnid != null" >
+        columnId,
+      </if>
+      <if test="updatecycle != null" >
+        updateCycle,
+      </if>
+      <if test="webcharset != null" >
+        webCharset,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="lasttime != null" >
+        lastTime,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="istatus != null" >
+        istatus,
+      </if>
+      <if test="grablist != null" >
+        GrabList,
+      </if>
+      <if test="grabsonwebsite != null" >
+        Grabsonwebsite,
+      </if>
+      <if test="grabcontent != null" >
+        GrabContent,
+      </if>
+      <if test="grabpic != null" >
+        GrabPic,
+      </if>
+      <if test="grabtitle != null" >
+        GrabTitle,
+      </if>
+      <if test="grabtime != null" >
+        GrabTime,
+      </if>
+      <if test="grabsource != null" >
+        GrabSource,
+      </if>
+      <if test="dynamicquery != null" >
+        dynamicQuery,
+      </if>
+      <if test="removestring != null" >
+        removeString,
+      </if>
+      <if test="removesection != null" >
+        removeSection,
+      </if>
+      <if test="dycolumn != null" >
+        dycolumn,
+      </if>
+      <if test="refmain != null" >
+        refMain,
+      </if>
+      <if test="belongdepartment != null" >
+        belongDepartment,
+      </if>
+      <if test="departmentDbName != null" >
+        department_DB_Name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="issuccess != null" >
+        isSuccess,
+      </if>
+      <if test="pageaddress != null" >
+        pageAddress,
+      </if>
+      <if test="ispage != null" >
+        isPage,
+      </if>
+      <if test="currpage != null" >
+        currPage,
+      </if>
+      <if test="endgeccotime != null" >
+        endGeccoTime,
+      </if>
+      <if test="nodecode != null" >
+        nodeCode,
+      </if>
+      <if test="usertask != null" >
+        userTask,
+      </if>
+      <if test="titlestatus != null" >
+        titleStatus,
+      </if>
+      <if test="newsnumstatus != null" >
+        newsnumStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="websitename != null" >
+        #{websitename,jdbcType=VARCHAR},
+      </if>
+      <if test="websiteaddress != null" >
+        #{websiteaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="websitecron != null" >
+        #{websitecron,jdbcType=VARCHAR},
+      </if>
+      <if test="columnid != null" >
+        #{columnid,jdbcType=INTEGER},
+      </if>
+      <if test="updatecycle != null" >
+        #{updatecycle,jdbcType=INTEGER},
+      </if>
+      <if test="webcharset != null" >
+        #{webcharset,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        #{lasttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="istatus != null" >
+        #{istatus,jdbcType=INTEGER},
+      </if>
+      <if test="grablist != null" >
+        #{grablist,jdbcType=VARCHAR},
+      </if>
+      <if test="grabsonwebsite != null" >
+        #{grabsonwebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="grabcontent != null" >
+        #{grabcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="grabpic != null" >
+        #{grabpic,jdbcType=VARCHAR},
+      </if>
+      <if test="grabtitle != null" >
+        #{grabtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="grabtime != null" >
+        #{grabtime,jdbcType=VARCHAR},
+      </if>
+      <if test="grabsource != null" >
+        #{grabsource,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicquery != null" >
+        #{dynamicquery,jdbcType=VARCHAR},
+      </if>
+      <if test="removestring != null" >
+        #{removestring,jdbcType=VARCHAR},
+      </if>
+      <if test="removesection != null" >
+        #{removesection,jdbcType=VARCHAR},
+      </if>
+      <if test="dycolumn != null" >
+        #{dycolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="refmain != null" >
+        #{refmain,jdbcType=INTEGER},
+      </if>
+      <if test="belongdepartment != null" >
+        #{belongdepartment,jdbcType=INTEGER},
+      </if>
+      <if test="departmentDbName != null" >
+        #{departmentDbName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="issuccess != null" >
+        #{issuccess,jdbcType=INTEGER},
+      </if>
+      <if test="pageaddress != null" >
+        #{pageaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ispage != null" >
+        #{ispage,jdbcType=INTEGER},
+      </if>
+      <if test="currpage != null" >
+        #{currpage,jdbcType=INTEGER},
+      </if>
+      <if test="endgeccotime != null" >
+        #{endgeccotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nodecode != null" >
+        #{nodecode,jdbcType=VARCHAR},
+      </if>
+      <if test="usertask != null" >
+        #{usertask,jdbcType=VARCHAR},
+      </if>
+      <if test="titlestatus != null" >
+        #{titlestatus,jdbcType=INTEGER},
+      </if>
+      <if test="newsnumstatus != null" >
+        #{newsnumstatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.TXwWebsiteExample" resultType="java.lang.Integer" >
+    select count(*) from t_xw_website
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xw_website
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.websitename != null" >
+        websiteName = #{record.websitename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.websiteaddress != null" >
+        websiteAddress = #{record.websiteaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.websitecron != null" >
+        websiteCron = #{record.websitecron,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnid != null" >
+        columnId = #{record.columnid,jdbcType=INTEGER},
+      </if>
+      <if test="record.updatecycle != null" >
+        updateCycle = #{record.updatecycle,jdbcType=INTEGER},
+      </if>
+      <if test="record.webcharset != null" >
+        webCharset = #{record.webcharset,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lasttime != null" >
+        lastTime = #{record.lasttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createtime != null" >
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.istatus != null" >
+        istatus = #{record.istatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.grablist != null" >
+        GrabList = #{record.grablist,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grabsonwebsite != null" >
+        Grabsonwebsite = #{record.grabsonwebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grabcontent != null" >
+        GrabContent = #{record.grabcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grabpic != null" >
+        GrabPic = #{record.grabpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grabtitle != null" >
+        GrabTitle = #{record.grabtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grabtime != null" >
+        GrabTime = #{record.grabtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grabsource != null" >
+        GrabSource = #{record.grabsource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dynamicquery != null" >
+        dynamicQuery = #{record.dynamicquery,jdbcType=VARCHAR},
+      </if>
+      <if test="record.removestring != null" >
+        removeString = #{record.removestring,jdbcType=VARCHAR},
+      </if>
+      <if test="record.removesection != null" >
+        removeSection = #{record.removesection,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dycolumn != null" >
+        dycolumn = #{record.dycolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.refmain != null" >
+        refMain = #{record.refmain,jdbcType=INTEGER},
+      </if>
+      <if test="record.belongdepartment != null" >
+        belongDepartment = #{record.belongdepartment,jdbcType=INTEGER},
+      </if>
+      <if test="record.departmentDbName != null" >
+        department_DB_Name = #{record.departmentDbName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.issuccess != null" >
+        isSuccess = #{record.issuccess,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageaddress != null" >
+        pageAddress = #{record.pageaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ispage != null" >
+        isPage = #{record.ispage,jdbcType=INTEGER},
+      </if>
+      <if test="record.currpage != null" >
+        currPage = #{record.currpage,jdbcType=INTEGER},
+      </if>
+      <if test="record.endgeccotime != null" >
+        endGeccoTime = #{record.endgeccotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nodecode != null" >
+        nodeCode = #{record.nodecode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usertask != null" >
+        userTask = #{record.usertask,jdbcType=VARCHAR},
+      </if>
+      <if test="record.titlestatus != null" >
+        titleStatus = #{record.titlestatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.newsnumstatus != null" >
+        newsnumStatus = #{record.newsnumstatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xw_website
+    set id = #{record.id,jdbcType=INTEGER},
+    websiteName = #{record.websitename,jdbcType=VARCHAR},
+    websiteAddress = #{record.websiteaddress,jdbcType=VARCHAR},
+    websiteCron = #{record.websitecron,jdbcType=VARCHAR},
+    columnId = #{record.columnid,jdbcType=INTEGER},
+    updateCycle = #{record.updatecycle,jdbcType=INTEGER},
+    webCharset = #{record.webcharset,jdbcType=VARCHAR},
+    userid = #{record.userid,jdbcType=INTEGER},
+    username = #{record.username,jdbcType=VARCHAR},
+    lastTime = #{record.lasttime,jdbcType=TIMESTAMP},
+    createTime = #{record.createtime,jdbcType=TIMESTAMP},
+    istatus = #{record.istatus,jdbcType=INTEGER},
+    GrabList = #{record.grablist,jdbcType=VARCHAR},
+    Grabsonwebsite = #{record.grabsonwebsite,jdbcType=VARCHAR},
+    GrabContent = #{record.grabcontent,jdbcType=VARCHAR},
+    GrabPic = #{record.grabpic,jdbcType=VARCHAR},
+    GrabTitle = #{record.grabtitle,jdbcType=VARCHAR},
+    GrabTime = #{record.grabtime,jdbcType=VARCHAR},
+    GrabSource = #{record.grabsource,jdbcType=VARCHAR},
+    dynamicQuery = #{record.dynamicquery,jdbcType=VARCHAR},
+    removeString = #{record.removestring,jdbcType=VARCHAR},
+    removeSection = #{record.removesection,jdbcType=VARCHAR},
+    dycolumn = #{record.dycolumn,jdbcType=VARCHAR},
+    refMain = #{record.refmain,jdbcType=INTEGER},
+    belongDepartment = #{record.belongdepartment,jdbcType=INTEGER},
+    department_DB_Name = #{record.departmentDbName,jdbcType=VARCHAR},
+    type = #{record.type,jdbcType=VARCHAR},
+    isSuccess = #{record.issuccess,jdbcType=INTEGER},
+    pageAddress = #{record.pageaddress,jdbcType=VARCHAR},
+    isPage = #{record.ispage,jdbcType=INTEGER},
+    currPage = #{record.currpage,jdbcType=INTEGER},
+    endGeccoTime = #{record.endgeccotime,jdbcType=TIMESTAMP},
+    nodeCode = #{record.nodecode,jdbcType=VARCHAR},
+    userTask = #{record.usertask,jdbcType=VARCHAR},
+    titleStatus = #{record.titlestatus,jdbcType=INTEGER},
+    newsnumStatus = #{record.newsnumstatus,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.TXwWebsite" >
+    update t_xw_website
+    <set >
+      <if test="websitename != null" >
+        websiteName = #{websitename,jdbcType=VARCHAR},
+      </if>
+      <if test="websiteaddress != null" >
+        websiteAddress = #{websiteaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="websitecron != null" >
+        websiteCron = #{websitecron,jdbcType=VARCHAR},
+      </if>
+      <if test="columnid != null" >
+        columnId = #{columnid,jdbcType=INTEGER},
+      </if>
+      <if test="updatecycle != null" >
+        updateCycle = #{updatecycle,jdbcType=INTEGER},
+      </if>
+      <if test="webcharset != null" >
+        webCharset = #{webcharset,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        lastTime = #{lasttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="istatus != null" >
+        istatus = #{istatus,jdbcType=INTEGER},
+      </if>
+      <if test="grablist != null" >
+        GrabList = #{grablist,jdbcType=VARCHAR},
+      </if>
+      <if test="grabsonwebsite != null" >
+        Grabsonwebsite = #{grabsonwebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="grabcontent != null" >
+        GrabContent = #{grabcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="grabpic != null" >
+        GrabPic = #{grabpic,jdbcType=VARCHAR},
+      </if>
+      <if test="grabtitle != null" >
+        GrabTitle = #{grabtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="grabtime != null" >
+        GrabTime = #{grabtime,jdbcType=VARCHAR},
+      </if>
+      <if test="grabsource != null" >
+        GrabSource = #{grabsource,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicquery != null" >
+        dynamicQuery = #{dynamicquery,jdbcType=VARCHAR},
+      </if>
+      <if test="removestring != null" >
+        removeString = #{removestring,jdbcType=VARCHAR},
+      </if>
+      <if test="removesection != null" >
+        removeSection = #{removesection,jdbcType=VARCHAR},
+      </if>
+      <if test="dycolumn != null" >
+        dycolumn = #{dycolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="refmain != null" >
+        refMain = #{refmain,jdbcType=INTEGER},
+      </if>
+      <if test="belongdepartment != null" >
+        belongDepartment = #{belongdepartment,jdbcType=INTEGER},
+      </if>
+      <if test="departmentDbName != null" >
+        department_DB_Name = #{departmentDbName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="issuccess != null" >
+        isSuccess = #{issuccess,jdbcType=INTEGER},
+      </if>
+      <if test="pageaddress != null" >
+        pageAddress = #{pageaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ispage != null" >
+        isPage = #{ispage,jdbcType=INTEGER},
+      </if>
+      <if test="currpage != null" >
+        currPage = #{currpage,jdbcType=INTEGER},
+      </if>
+      <if test="endgeccotime != null" >
+        endGeccoTime = #{endgeccotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nodecode != null" >
+        nodeCode = #{nodecode,jdbcType=VARCHAR},
+      </if>
+      <if test="usertask != null" >
+        userTask = #{usertask,jdbcType=VARCHAR},
+      </if>
+      <if test="titlestatus != null" >
+        titleStatus = #{titlestatus,jdbcType=INTEGER},
+      </if>
+      <if test="newsnumstatus != null" >
+        newsnumStatus = #{newsnumstatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.TXwWebsite" >
+    update t_xw_website
+    set websiteName = #{websitename,jdbcType=VARCHAR},
+    websiteAddress = #{websiteaddress,jdbcType=VARCHAR},
+    websiteCron = #{websitecron,jdbcType=VARCHAR},
+    columnId = #{columnid,jdbcType=INTEGER},
+    updateCycle = #{updatecycle,jdbcType=INTEGER},
+    webCharset = #{webcharset,jdbcType=VARCHAR},
+    userid = #{userid,jdbcType=INTEGER},
+    username = #{username,jdbcType=VARCHAR},
+    lastTime = #{lasttime,jdbcType=TIMESTAMP},
+    createTime = #{createtime,jdbcType=TIMESTAMP},
+    istatus = #{istatus,jdbcType=INTEGER},
+    GrabList = #{grablist,jdbcType=VARCHAR},
+    Grabsonwebsite = #{grabsonwebsite,jdbcType=VARCHAR},
+    GrabContent = #{grabcontent,jdbcType=VARCHAR},
+    GrabPic = #{grabpic,jdbcType=VARCHAR},
+    GrabTitle = #{grabtitle,jdbcType=VARCHAR},
+    GrabTime = #{grabtime,jdbcType=VARCHAR},
+    GrabSource = #{grabsource,jdbcType=VARCHAR},
+    dynamicQuery = #{dynamicquery,jdbcType=VARCHAR},
+    removeString = #{removestring,jdbcType=VARCHAR},
+    removeSection = #{removesection,jdbcType=VARCHAR},
+    dycolumn = #{dycolumn,jdbcType=VARCHAR},
+    refMain = #{refmain,jdbcType=INTEGER},
+    belongDepartment = #{belongdepartment,jdbcType=INTEGER},
+    department_DB_Name = #{departmentDbName,jdbcType=VARCHAR},
+    type = #{type,jdbcType=VARCHAR},
+    isSuccess = #{issuccess,jdbcType=INTEGER},
+    pageAddress = #{pageaddress,jdbcType=VARCHAR},
+    isPage = #{ispage,jdbcType=INTEGER},
+    currPage = #{currpage,jdbcType=INTEGER},
+    endGeccoTime = #{endgeccotime,jdbcType=TIMESTAMP},
+    nodeCode = #{nodecode,jdbcType=VARCHAR},
+    userTask = #{usertask,jdbcType=VARCHAR},
+    titleStatus = #{titlestatus,jdbcType=INTEGER},
+    newsnumStatus = #{newsnumstatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+<!--自定义 -->
+
+  <update id="updateTitleAndNewsnumStatus">
+    UPDATE t_xw_website set titleStatus  = #{1} , newsnumStatus = #{2} where id = #{0};
+  </update>
+
+  <!--已适配-->
+  <select id="isApaterWebsiteList" resultType="com.spider.bean.TXwWebsite">
+    select id,websiteName,websiteAddress,columnid from t_xw_website where id in(select siteid from t_wx_adapter)
+  </select>
+  <!--未适配-->
+  <select id="isNotApaterWebsiteList" resultType="com.spider.bean.TXwWebsite">
+    select id,websiteName,websiteAddress,columnid from t_xw_website where id in(select distinct id from t_xw_website where id not in (select siteid from t_wx_adapter))
+  </select>
+
+  <select id="selectById" parameterType="int" resultType="com.spider.bean.TXwWebsite">
+    select * from t_xw_website where id = #{websiteid}
+  </select>
+</mapper>

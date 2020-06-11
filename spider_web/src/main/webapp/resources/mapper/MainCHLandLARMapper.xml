@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.MainCHLandLARMapper" >
+    <select id="selectByRjs0"  resultType="com.spider.bean.Main_CHLandLAR">
+            select * from main where RJS5 &gt;= #{minTime} AND  RJS5&lt;=#{maxTime} and RJS0 ${sqlTitle} and (RJS4 LIKE ${rjs4})
+    </select>
+    <select id="selectByRjs12" resultType="com.spider.bean.Main_CHLandLAR">
+            select * from main where RJS5 &gt;= #{minTime} AND  RJS5&lt;=#{maxTime}  and RJS12 like '%${rjs12}%' AND (RJS4 LIKE ${rjs4})
+    </select>
+
+    <select id="selectByRjs0NotLike"  resultType="com.spider.bean.Main_CHLandLAR">
+        select * from main where  RJS5 &gt;= #{minTime} AND  RJS5 &lt;=#{maxTime} and RJS0  = '${sqlTitle}' and (RJS4 = ${rjs4})
+    </select>
+    <select id="selectByRjs12NotLike" resultType="com.spider.bean.Main_CHLandLAR">
+        select * from main where RJS5 &gt;= #{minTime} AND  RJS5&lt;=#{maxTime}  and RJS12 = '${rjs12}' AND (RJS4 = ${rjs4})
+    </select>
+
+
+
+    <!-- .6 informationpipeline 自检-->
+    <select id="selectByRjs0_6"  resultType="com.spider.bean.InformationPipeline">
+        select * from information_pipeline where deptcode LIKE '%${rjs4}%' AND newsTitle ${sqlTitle} and releaseTime &gt;= #{minTime} AND  releaseTime&lt;=#{maxTime}
+    </select>
+    <select id="selectByRjs12_6" resultType="com.spider.bean.InformationPipeline">
+        select * from information_pipeline where deptcode LIKE '%${rjs4}%' AND filenum like '%${rjs12}%' and releaseTime &gt;= #{minTime} AND  releaseTime&lt;=#{maxTime}
+    </select>
+
+    <select id="selectByRjs0NotLike_6"  resultType="com.spider.bean.InformationPipeline">
+        select * from information_pipeline where deptcode = '${rjs4}' AND newsTitle  = '${sqlTitle}' and releaseTime &gt;= #{minTime} AND  releaseTime&lt;=#{maxTime}
+    </select>
+    <select id="selectByRjs12NotLike_6" resultType="com.spider.bean.InformationPipeline">
+        select * from information_pipeline where deptcode = '${rjs4}' AND filenum = '${rjs12}' and releaseTime &gt;= #{minTime} AND  releaseTime&lt;=#{maxTime}
+    </select>
+
+    <!--新增-->
+    <insert id="insert" parameterType="com.spider.bean.Main_CHLandLAR" >
+        insert into main
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="rid != null" >
+                rid,
+            </if>
+            <if test="rjs0 != null" >
+                RJS0,
+            </if>
+            <if test="rjs1 != null" >
+                RJS1,
+            </if>
+            <if test="rjs4 != null" >
+                RJS4,
+            </if>
+            <if test="rjs5 != null" >
+                RJS5,
+            </if>
+            <if test="rjs6 != null" >
+                RJS6,
+            </if>
+            <if test="rjs7 != null" >
+                RJS7,
+            </if>
+            <if test="rjs8 != null" >
+                RJS8,
+            </if>
+            <if test="rjs9 != null" >
+                RJS9,
+            </if>
+            <if test="rjs10 != null" >
+                RJS10,
+            </if>
+            <if test="rjs11 != null" >
+                RJS11,
+            </if>
+            <if test="rjs12 != null" >
+                RJS12,
+            </if>
+            <if test="kword != null" >
+                kword,
+            </if>
+            <if test="appuser != null" >
+                appuser,
+            </if>
+            <if test="appdate != null" >
+                appdate,
+            </if>
+            <if test="truetag != null" >
+                truetag,
+            </if>
+            <if test="lawlevel != null" >
+                lawlevel,
+            </if>
+            <if test="rjs13 != null" >
+                RJS13,
+            </if>
+            <if test="updatetime != null" >
+                UpdateTime,
+            </if>
+            <if test="truetag1 != null" >
+                truetag_1,
+            </if>
+            <if test="linksource != null" >
+                LinkSource,
+            </if>
+            <if test="fjian != null" >
+                fjian,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="rid != null" >
+                #{rid,jdbcType=BIGINT},
+            </if>
+            <if test="rjs0 != null" >
+                #{rjs0,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs1 != null" >
+                #{rjs1,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs4 != null" >
+                #{rjs4,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs5 != null" >
+                #{rjs5,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs6 != null" >
+                #{rjs6,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs7 != null" >
+                #{rjs7,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs8 != null" >
+                #{rjs8,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs9 != null" >
+                #{rjs9,jdbcType=SMALLINT},
+            </if>
+            <if test="rjs10 != null" >
+                #{rjs10,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs11 != null" >
+                #{rjs11,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs12 != null" >
+                #{rjs12,jdbcType=VARCHAR},
+            </if>
+            <if test="kword != null" >
+                #{kword,jdbcType=VARCHAR},
+            </if>
+            <if test="appuser != null" >
+                #{appuser,jdbcType=VARCHAR},
+            </if>
+            <if test="appdate != null" >
+                #{appdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="truetag != null" >
+                #{truetag,jdbcType=INTEGER},
+            </if>
+            <if test="lawlevel != null" >
+                #{lawlevel,jdbcType=INTEGER},
+            </if>
+            <if test="rjs13 != null" >
+                #{rjs13,jdbcType=INTEGER},
+            </if>
+            <if test="updatetime != null" >
+                #{updatetime,jdbcType=INTEGER},
+            </if>
+            <if test="truetag1 != null" >
+                #{truetag1,jdbcType=INTEGER},
+            </if>
+            <if test="linksource != null" >
+                #{linksource,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="fjian != null" >
+                #{fjian,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

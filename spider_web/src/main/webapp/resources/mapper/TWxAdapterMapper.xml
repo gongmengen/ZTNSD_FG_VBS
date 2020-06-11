@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.TWxAdapterMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.TWxAdapter" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="siteId" property="siteid" jdbcType="INTEGER" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="methodName" property="methodname" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.TWxAdapterWithBLOBs" extends="BaseResultMap" >
+    <result column="title" property="title" jdbcType="LONGVARCHAR" />
+    <result column="newsContent" property="newscontent" jdbcType="LONGVARCHAR" />
+    <result column="releaseDate" property="releasedate" jdbcType="LONGVARCHAR" />
+    <result column="newNum" property="newnum" jdbcType="LONGVARCHAR" />
+    <result column="implementDate" property="implementdate" jdbcType="LONGVARCHAR" />
+    <result column="composeText" property="composetext" jdbcType="LONGVARCHAR" />
+    <result column="attachment" property="attachment" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, siteId, createTime, status, methodName
+  </sql>
+  <sql id="Blob_Column_List" >
+    title, newsContent, releaseDate, newNum, implementDate, composeText, attachment
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.TWxAdapterExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_wx_adapter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.TWxAdapterExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_wx_adapter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_wx_adapter
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_wx_adapter
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.TWxAdapterExample" >
+    delete from t_wx_adapter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.TWxAdapterWithBLOBs" >
+    insert into t_wx_adapter (Id, siteId, createTime, 
+      status, methodName, title, 
+      newsContent, releaseDate, newNum, 
+      implementDate, composeText, attachment
+      )
+    values (#{id,jdbcType=INTEGER}, #{siteid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{methodname,jdbcType=VARCHAR}, #{title,jdbcType=LONGVARCHAR}, 
+      #{newscontent,jdbcType=LONGVARCHAR}, #{releasedate,jdbcType=LONGVARCHAR}, #{newnum,jdbcType=LONGVARCHAR}, 
+      #{implementdate,jdbcType=LONGVARCHAR}, #{composetext,jdbcType=LONGVARCHAR}, #{attachment,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.TWxAdapterWithBLOBs" >
+    insert into t_wx_adapter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="siteid != null" >
+        siteId,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="methodname != null" >
+        methodName,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="newscontent != null" >
+        newsContent,
+      </if>
+      <if test="releasedate != null" >
+        releaseDate,
+      </if>
+      <if test="newnum != null" >
+        newNum,
+      </if>
+      <if test="implementdate != null" >
+        implementDate,
+      </if>
+      <if test="composetext != null" >
+        composeText,
+      </if>
+      <if test="attachment != null" >
+        attachment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="siteid != null" >
+        #{siteid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="methodname != null" >
+        #{methodname,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newscontent != null" >
+        #{newscontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="releasedate != null" >
+        #{releasedate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newnum != null" >
+        #{newnum,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="implementdate != null" >
+        #{implementdate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="composetext != null" >
+        #{composetext,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attachment != null" >
+        #{attachment,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.TWxAdapterExample" resultType="java.lang.Integer" >
+    select count(*) from t_wx_adapter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_wx_adapter
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.siteid != null" >
+        siteId = #{record.siteid,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.methodname != null" >
+        methodName = #{record.methodname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.newscontent != null" >
+        newsContent = #{record.newscontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.releasedate != null" >
+        releaseDate = #{record.releasedate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.newnum != null" >
+        newNum = #{record.newnum,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.implementdate != null" >
+        implementDate = #{record.implementdate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.composetext != null" >
+        composeText = #{record.composetext,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.attachment != null" >
+        attachment = #{record.attachment,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_wx_adapter
+    set Id = #{record.id,jdbcType=INTEGER},
+      siteId = #{record.siteid,jdbcType=INTEGER},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=INTEGER},
+      methodName = #{record.methodname,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=LONGVARCHAR},
+      newsContent = #{record.newscontent,jdbcType=LONGVARCHAR},
+      releaseDate = #{record.releasedate,jdbcType=LONGVARCHAR},
+      newNum = #{record.newnum,jdbcType=LONGVARCHAR},
+      implementDate = #{record.implementdate,jdbcType=LONGVARCHAR},
+      composeText = #{record.composetext,jdbcType=LONGVARCHAR},
+      attachment = #{record.attachment,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_wx_adapter
+    set Id = #{record.id,jdbcType=INTEGER},
+      siteId = #{record.siteid,jdbcType=INTEGER},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=INTEGER},
+      methodName = #{record.methodname,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.TWxAdapterWithBLOBs" >
+    update t_wx_adapter
+    <set >
+      <if test="siteid != null" >
+        siteId = #{siteid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="methodname != null" >
+        methodName = #{methodname,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newscontent != null" >
+        newsContent = #{newscontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="releasedate != null" >
+        releaseDate = #{releasedate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newnum != null" >
+        newNum = #{newnum,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="implementdate != null" >
+        implementDate = #{implementdate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="composetext != null" >
+        composeText = #{composetext,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attachment != null" >
+        attachment = #{attachment,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.TWxAdapterWithBLOBs" >
+    update t_wx_adapter
+    set siteId = #{siteid,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      methodName = #{methodname,jdbcType=VARCHAR},
+      title = #{title,jdbcType=LONGVARCHAR},
+      newsContent = #{newscontent,jdbcType=LONGVARCHAR},
+      releaseDate = #{releasedate,jdbcType=LONGVARCHAR},
+      newNum = #{newnum,jdbcType=LONGVARCHAR},
+      implementDate = #{implementdate,jdbcType=LONGVARCHAR},
+      composeText = #{composetext,jdbcType=LONGVARCHAR},
+      attachment = #{attachment,jdbcType=LONGVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.TWxAdapter" >
+    update t_wx_adapter
+    set siteId = #{siteid,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      methodName = #{methodname,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

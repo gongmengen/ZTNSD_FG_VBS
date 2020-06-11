@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.InformationcheckMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.Informationcheck" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="ck_kind" property="ckKind" jdbcType="INTEGER" />
+    <result column="ck_priority" property="ckPriority" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.Informationcheck" extends="BaseResultMap" >
+    <result column="ck_script" property="ckScript" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, ck_kind, ck_priority
+  </sql>
+  <sql id="Blob_Column_List" >
+    ck_script
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.InformationcheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from informationcheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.InformationcheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from informationcheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from informationcheck
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from informationcheck
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.InformationcheckExample" >
+    delete from informationcheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.Informationcheck" >
+    insert into informationcheck (Id, ck_kind, ck_priority, 
+      ck_script)
+    values (#{id,jdbcType=INTEGER}, #{ckKind,jdbcType=INTEGER}, #{ckPriority,jdbcType=INTEGER}, 
+      #{ckScript,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.Informationcheck" >
+    insert into informationcheck
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="ckKind != null" >
+        ck_kind,
+      </if>
+      <if test="ckPriority != null" >
+        ck_priority,
+      </if>
+      <if test="ckScript != null" >
+        ck_script,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ckKind != null" >
+        #{ckKind,jdbcType=INTEGER},
+      </if>
+      <if test="ckPriority != null" >
+        #{ckPriority,jdbcType=INTEGER},
+      </if>
+      <if test="ckScript != null" >
+        #{ckScript,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.InformationcheckExample" resultType="java.lang.Integer" >
+    select count(*) from informationcheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update informationcheck
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.ckKind != null" >
+        ck_kind = #{record.ckKind,jdbcType=INTEGER},
+      </if>
+      <if test="record.ckPriority != null" >
+        ck_priority = #{record.ckPriority,jdbcType=INTEGER},
+      </if>
+      <if test="record.ckScript != null" >
+        ck_script = #{record.ckScript,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update informationcheck
+    set Id = #{record.id,jdbcType=INTEGER},
+      ck_kind = #{record.ckKind,jdbcType=INTEGER},
+      ck_priority = #{record.ckPriority,jdbcType=INTEGER},
+      ck_script = #{record.ckScript,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update informationcheck
+    set Id = #{record.id,jdbcType=INTEGER},
+      ck_kind = #{record.ckKind,jdbcType=INTEGER},
+      ck_priority = #{record.ckPriority,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.Informationcheck" >
+    update informationcheck
+    <set >
+      <if test="ckKind != null" >
+        ck_kind = #{ckKind,jdbcType=INTEGER},
+      </if>
+      <if test="ckPriority != null" >
+        ck_priority = #{ckPriority,jdbcType=INTEGER},
+      </if>
+      <if test="ckScript != null" >
+        ck_script = #{ckScript,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.Informationcheck" >
+    update informationcheck
+    set ck_kind = #{ckKind,jdbcType=INTEGER},
+      ck_priority = #{ckPriority,jdbcType=INTEGER},
+      ck_script = #{ckScript,jdbcType=LONGVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.Informationcheck" >
+    update informationcheck
+    set ck_kind = #{ckKind,jdbcType=INTEGER},
+      ck_priority = #{ckPriority,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

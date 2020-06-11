@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+	<!-- 数据库连接池 -->
+	<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 数据库连接池 25 中央 -->
+	<bean id="spiderDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+
+	<!-- 数据库连接池 20 地方 -->
+	<bean id="spiderLarDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		  destroy-method="close">
+		<property name="url" value="${jdbc4.url}" />
+		<property name="username" value="${jdbc4.username}" />
+		<property name="password" value="${jdbc4.password}" />
+		<property name="driverClassName" value="${jdbc4.driver}" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+
+
+<!--	 数据库连接池 192.168.0.6-->
+	<bean id="deptcodeDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		  destroy-method="close">
+		<property name="url" value="${jdbc1.url}" />
+		<property name="username" value="${jdbc1.username}" />
+		<property name="password" value="${jdbc1.password}" />
+		<property name="driverClassName" value="${jdbc1.driver}" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+	<!--	 数据库连接池 192.168.0.6 中央-->
+	<bean id="chlDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		  destroy-method="close">
+		<property name="url" value="${jdbc2.url}" />
+		<property name="username" value="${jdbc2.username}" />
+		<property name="password" value="${jdbc2.password}" />
+		<property name="driverClassName" value="${jdbc2.driver}" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+	<!--	 数据库连接池 192.168.0.6 地方-->
+	<bean id="larDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		  destroy-method="close">
+		<property name="url" value="${jdbc3.url}" />
+		<property name="username" value="${jdbc3.username}" />
+		<property name="password" value="${jdbc3.password}" />
+		<property name="driverClassName" value="${jdbc3.driver}" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+	<bean id="dynamicDataSource" class="com.ifeng.auto.we_provider.common.db.DynamicDataSource"><!--注意： 这里写选择数据源的类地址 下面跟着给出-->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry value-ref="spiderDataSource" key="spiderDataSource"></entry>
+				<entry value-ref="deptcodeDataSource" key="deptcodeDataSource"></entry>
+				<entry value-ref="larDataSource" key="larDataSource"></entry>
+				<entry value-ref="chlDataSource" key="chlDataSource"></entry>
+				<entry value-ref="spiderLarDataSource" key="spiderLarDataSource"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="spiderDataSource" >
+		</property>
+     </bean>
+	<!-- 让spring管理sqlsessionfactory 使用mybatis和spring整合包中的 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据库连接池 -->
+		<property name="dataSource" ref="dynamicDataSource" />
+		<!-- 加载mybatis的全局配置文件 -->
+		<!--<property name="configLocation" value="classpath:SqlMapConfig.xml" />-->
+			<!-- 加载mybatis的全局配置文件 -->
+			<!-- 加载mapper映射文件 -->
+			<property name="mapperLocations" value="classpath:/mapper/*.xml"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.spider.mapper" />
+	</bean>
+</beans>
+
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+	数据库连接池
+	加载配置文件
+	<context:property-placeholder location="classpath:conf/db.properties" />
+	数据库连接池
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="maxActive" value="10" />
+		<property name="minIdle" value="5" />
+	</bean>
+	让spring管理sqlsessionfactory 使用mybatis和spring整合包中的
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		数据库连接池
+		<property name="dataSource" ref="dataSource" />
+		加载mybatis的全局配置文件
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.e3mall.mapper" />
+	</bean>
+</beans> -->
