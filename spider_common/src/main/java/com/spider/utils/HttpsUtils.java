@@ -4,6 +4,7 @@ import com.lawstar.law.util.FileTypeJudge;
 import com.spider.bean.TblErrorLog;
 import com.spider.elemente.ErrorPram;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -466,7 +467,7 @@ public class HttpsUtils {
 
 			
 			//localFilePath = "/bcn/192.168.0.5/fujian/tmp/"+folder;
-			
+			fileName = regFilename(fileName);
 			String newFilePath  = localFilePath+File.separator+fileName;
 			System.out.println("附件保存地址"+newFilePath);
 /*			int index = remoteFileUrl.lastIndexOf("/");
@@ -511,32 +512,10 @@ public class HttpsUtils {
 		return retArr;
 	}
 	
-    public static void main(String[] args) throws Exception {//System.out.println("url="+URLEncoder.encode(remoteFileUrl,"UTF-8"));
-    	//System.out.println(post("https://www.live.chinacourt.org/chat/chat/2018/03/id/49311.shtml",null,null,null));
-    	String url = "http://download.mohurd.gov.cn/bzgg/hybz/CJJT 134-2019 建筑垃圾处理技术标准 .pdf";
-    	int index = url.lastIndexOf("/");
-        String result = url.substring(0,index+1);
-        String temp = url.substring(index+1);
-    	String encode = URLEncoder.encode(temp, "utf-8");
-         System.out.println(encode);
-         encode = encode.replace("%3D",  "=");
-         encode = encode.replace("%2F", "/");
-         encode = encode.replace("+", "%20");
-         encode = encode.replace("%26", "&");
-         result += encode;
-         //result += encode;
-         System.out.println(result);
-    	executeDownloadFile(null,result,"D:/","utf-8",true);
-    	//saveUrlAs("http://www.mee.gov.cn/xxgk2018/xxgk/xxgk06/201908/","W020190809328168260378.doc//asdfaf##","D:/");
-    	//System.out.println("http://download.mohurd.gov.cn/bzgg/hybz/"+encode);
-    //	String url = "http://www.chinatax.gov.cn/n810341/n810755/index.html";
-    	if (args!=null && args.length>1) url = args[0];
-    	//System.out.println("start get ="+url);
-    	//String src= com.lawstar.law.util.HttpsUtils.getHtml(url,"utf-8");
-    	
-    	//System.out.println("src="+src);        
-    	//delDir(new File("D:\\360Downloads\\web\\"));
-    
+    public static void main(String[] args) throws Exception {
+
+	    String str = "国家水资源监控能力建设（2016-2018年）\\\\省（自治区、直辖市）项目自评估报告提纲.doc";
+        System.out.println(regFilename(str));
     }
 	public void setExt(String ext) {
 		this.ext = ext;
@@ -544,4 +523,28 @@ public class HttpsUtils {
 	public static  String getExt() {
 		return ext;
 	}
+
+	public static String regFilename(String filename){
+	    Map<String,String> signs = new HashMap<String,String>();
+	    signs.put("*","＊");
+	    signs.put("?","？");
+	    signs.put(":","：");
+	    signs.put("\"","＂");
+	    signs.put("<","＜");
+	    signs.put(">","＞");
+	    signs.put("\\","＼");
+	    signs.put("/","／");
+	    signs.put("|","｜");
+
+        String[] signs_arr  ={"*","?",":","\"","<",">","\\","/","|"};//特殊字符
+
+        for (String singn:signs_arr
+             ) {
+            if (filename.contains(singn)){
+                filename = filename.replace(singn,signs.get(singn));
+            }
+        }
+
+	    return filename;
+    }
 }
