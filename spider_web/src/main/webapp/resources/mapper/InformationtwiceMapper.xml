@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.InformationtwiceMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.Informationtwice" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="twice_kind" property="twiceKind" jdbcType="INTEGER" />
+    <result column="twice_priority" property="twicePriority" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.Informationtwice" extends="BaseResultMap" >
+    <result column="twice_script" property="twiceScript" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, twice_kind, twice_priority
+  </sql>
+  <sql id="Blob_Column_List" >
+    twice_script
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.InformationtwiceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from informationtwice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.InformationtwiceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from informationtwice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from informationtwice
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from informationtwice
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.spider.bean.InformationtwiceExample" >
+    delete from informationtwice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.Informationtwice" >
+    insert into informationtwice (Id, twice_kind, twice_priority, 
+      twice_script)
+    values (#{id,jdbcType=INTEGER}, #{twiceKind,jdbcType=INTEGER}, #{twicePriority,jdbcType=INTEGER}, 
+      #{twiceScript,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.Informationtwice" >
+    insert into informationtwice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="twiceKind != null" >
+        twice_kind,
+      </if>
+      <if test="twicePriority != null" >
+        twice_priority,
+      </if>
+      <if test="twiceScript != null" >
+        twice_script,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="twiceKind != null" >
+        #{twiceKind,jdbcType=INTEGER},
+      </if>
+      <if test="twicePriority != null" >
+        #{twicePriority,jdbcType=INTEGER},
+      </if>
+      <if test="twiceScript != null" >
+        #{twiceScript,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.InformationtwiceExample" resultType="java.lang.Integer" >
+    select count(*) from informationtwice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update informationtwice
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.twiceKind != null" >
+        twice_kind = #{record.twiceKind,jdbcType=INTEGER},
+      </if>
+      <if test="record.twicePriority != null" >
+        twice_priority = #{record.twicePriority,jdbcType=INTEGER},
+      </if>
+      <if test="record.twiceScript != null" >
+        twice_script = #{record.twiceScript,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update informationtwice
+    set Id = #{record.id,jdbcType=INTEGER},
+      twice_kind = #{record.twiceKind,jdbcType=INTEGER},
+      twice_priority = #{record.twicePriority,jdbcType=INTEGER},
+      twice_script = #{record.twiceScript,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update informationtwice
+    set Id = #{record.id,jdbcType=INTEGER},
+      twice_kind = #{record.twiceKind,jdbcType=INTEGER},
+      twice_priority = #{record.twicePriority,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.Informationtwice" >
+    update informationtwice
+    <set >
+      <if test="twiceKind != null" >
+        twice_kind = #{twiceKind,jdbcType=INTEGER},
+      </if>
+      <if test="twicePriority != null" >
+        twice_priority = #{twicePriority,jdbcType=INTEGER},
+      </if>
+      <if test="twiceScript != null" >
+        twice_script = #{twiceScript,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.Informationtwice" >
+    update informationtwice
+    set twice_kind = #{twiceKind,jdbcType=INTEGER},
+      twice_priority = #{twicePriority,jdbcType=INTEGER},
+      twice_script = #{twiceScript,jdbcType=LONGVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.Informationtwice" >
+    update informationtwice
+    set twice_kind = #{twiceKind,jdbcType=INTEGER},
+      twice_priority = #{twicePriority,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

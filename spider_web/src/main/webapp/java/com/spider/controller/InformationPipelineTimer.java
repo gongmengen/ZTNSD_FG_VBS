@@ -69,12 +69,12 @@ public class InformationPipelineTimer {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
         informationList = information_service.getTenTXwInformationPipelineIsZero();
 
-/*        //获取法规新闻 地方（ 10篇 ）
+        //获取法规新闻 地方（ 10篇 ）
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
         List<TXwInformationWithBLOBs> informationListlar = information_service.getTenTXwInformationPipelineIsZero();
         //合并集合
-        informationList.addAll(informationListlar);*/
+        informationList.addAll(informationListlar);
         if (informationList.size()==0){
 
             return "没有需要处理的数据";
@@ -271,6 +271,7 @@ public class InformationPipelineTimer {
         for (InformationPipelineWithBLOBs information:informationPipelineList
              ) {
                 //入正式库
+
                 intoCHL(information,request);
         }
             DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
@@ -1039,7 +1040,7 @@ public class InformationPipelineTimer {
     public void intoCHL(InformationPipelineWithBLOBs informationPipeline,HttpServletRequest request){
         //--------------------------------------------------------------------------参数
         //导出txt
-        String username = TimerParm.username_chl;// 由配置文件中读取
+        String username = informationPipeline.getXwcolumn().equals("100002")?"zyzd":"dfzd";// 中央和地方区分开
         DecimalFormat df = new DecimalFormat("000");
 
         //文件移动工具
@@ -1074,7 +1075,7 @@ public class InformationPipelineTimer {
             main.setRjs9((short)1);
             main.setRjs10(informationPipeline.getDeptname());
             main.setRjs12(informationPipeline.getFilenum());
-            main.setAppuser("bbb");
+            main.setAppuser("zyzd");
             main.setLinksource(informationPipeline.getSource());
             main.setFjian(informationPipeline.getFjian()); //附件名
 
@@ -1133,7 +1134,7 @@ public class InformationPipelineTimer {
     public void intoTMP(InformationPipelineWithBLOBs informationPipeline,HttpServletRequest request){
         //--------------------------------------------------------------------------参数
         //导出txt
-        String username = "eee";// 由配置文件中读取
+        String username = informationPipeline.getXwcolumn().equals("100002")?"zyzd":"dfzd";// 中央和地方区分开
         DecimalFormat df = new DecimalFormat("000");
 
         //文件移动工具

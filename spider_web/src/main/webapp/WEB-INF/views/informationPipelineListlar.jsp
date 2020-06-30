@@ -321,9 +321,9 @@
                     </ul>
                 </div>--%>
                                                      <c:if test="${sessionScope.user.level < 0}">
-                                                         <button type="button" class="btn btn-primary btn-sm" onclick="output('ddd')">最新导出</button>
+                                                         <button type="button" class="btn btn-primary btn-sm" onclick="output('dfsg')">最新导出</button>
                                                      </c:if>
-                <button type="button" class="btn btn-primary btn-sm" onclick="output('ccc')">导出</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="output('dfyz')">导出</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="outPutOver()">已导出</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="restart()">重置</button>

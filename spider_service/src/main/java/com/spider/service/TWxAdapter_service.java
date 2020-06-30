@@ -6,10 +6,7 @@ import com.spider.bean.*;
 import com.spider.elemente.ErrorPram;
 import com.spider.elemente.JavaScript_static;
 
-import com.spider.mapper.InformationcheckMapper;
-import com.spider.mapper.TWxAdapterMapper;
-import com.spider.mapper.TXwInformationMapper;
-import com.spider.mapper.TXwWebsiteMapper;
+import com.spider.mapper.*;
 
 import com.spider.utils.JavaScriptUtils;
 
@@ -33,6 +30,8 @@ public class TWxAdapter_service {
     private TXwInformationMapper informationMapper;
     @Autowired
     private InformationcheckMapper informationcheckMapper;
+    @Autowired
+    private InformationtwiceMapper informationtwiceMapper;
     //验证新闻
     public String regNews(TXwInformationWithBLOBs information,int websiteid) throws ScriptException {
 
@@ -258,6 +257,38 @@ public class TWxAdapter_service {
         criteria_releasedate.andCkKindEqualTo(5);
         List<Informationcheck> informationchecks_releasedate = informationcheckMapper.selectByExampleWithBLOBs(informationcheckExample_releasedate);
 
+        //数据二次清洗脚本
+        InformationtwiceExample informationtwiceExample_title = new InformationtwiceExample();
+        informationtwiceExample_title.setOrderByClause("twice_priority DESC");
+        InformationtwiceExample.Criteria criteria_title1 = informationtwiceExample_title.createCriteria();
+        criteria_title1.andTwiceKindEqualTo(1);
+        List<Informationtwice> informationtwices_title = informationtwiceMapper.selectByExampleWithBLOBs(informationtwiceExample_title);
+
+        InformationtwiceExample informationtwiceExample_content = new InformationtwiceExample();
+        informationtwiceExample_content.setOrderByClause("twice_priority DESC");
+        InformationtwiceExample.Criteria criteria_content1 = informationtwiceExample_content.createCriteria();
+        criteria_content1.andTwiceKindEqualTo(2);
+        List<Informationtwice> informationtwices_content = informationtwiceMapper.selectByExampleWithBLOBs(informationtwiceExample_content);
+
+        InformationtwiceExample informationtwiceExample_newsnum = new InformationtwiceExample();
+        informationtwiceExample_newsnum.setOrderByClause("twice_priority DESC");
+        InformationtwiceExample.Criteria criteria_newsnum1 = informationtwiceExample_newsnum.createCriteria();
+        criteria_newsnum1.andTwiceKindEqualTo(3);
+        List<Informationtwice> informationtwices_newsnum = informationtwiceMapper.selectByExampleWithBLOBs(informationtwiceExample_newsnum);
+
+        InformationtwiceExample informationtwiceExample_attachment = new InformationtwiceExample();
+        informationtwiceExample_attachment.setOrderByClause("twice_priority DESC");
+        InformationtwiceExample.Criteria criteria_attachment1 = informationtwiceExample_attachment.createCriteria();
+        criteria_attachment1.andTwiceKindEqualTo(4);
+        List<Informationtwice> informationtwices_attachment = informationtwiceMapper.selectByExampleWithBLOBs(informationtwiceExample_attachment);
+
+        InformationtwiceExample informationtwiceExample_releasedate = new InformationtwiceExample();
+        informationtwiceExample_releasedate.setOrderByClause("twice_priority DESC");
+        InformationtwiceExample.Criteria criteria_releasedate1 = informationtwiceExample_releasedate.createCriteria();
+        criteria_releasedate1.andTwiceKindEqualTo(5);
+        List<Informationtwice> informationtwices_releasedate = informationtwiceMapper.selectByExampleWithBLOBs(informationtwiceExample_releasedate);
+
+
         //信息处理异常记录
         List<TblErrorLog> errorLogs = new ArrayList<TblErrorLog>();
         JavaScriptUtils javaScriptUtils = new JavaScriptUtils();
@@ -376,9 +407,10 @@ public class TWxAdapter_service {
         if (!"".equals(result.getNewstitle())&&!"".equals(result.getNewscontent())) {
             InformationPipelineWithBLOBs rdtResult = getRdtResult(information, request, errorLogs, result);
 
+            //对rdt处理后的数据信息 再次进行数据清洗(二次检查【矫正】)
+            rdtResult = twicedPipelineEntry(rdtResult,errorLogs,javaScriptUtils,information,informationtwices_title,informationtwices_content,informationtwices_newsnum,informationtwices_attachment,informationtwices_releasedate);
 
             resu.put("result",rdtResult);
-
             //rdt处理后  进行质量检查
             validEntry(rdtResult,errorLogs,javaScriptUtils,information,informationchecks_title,informationchecks_content,informationchecks_newsnum,informationchecks_attachment,informationchecks_releasedate);
 
@@ -388,6 +420,79 @@ public class TWxAdapter_service {
 
         resu.put("errorlogs",errorLogs);
         return resu;
+    }
+    private InformationPipelineWithBLOBs twicedPipelineEntry(InformationPipelineWithBLOBs rdtResult, List<TblErrorLog> errorLogs, JavaScriptUtils javaScriptUtils, TXwInformationWithBLOBs information, List<Informationtwice> informationchecks_title, List<Informationtwice> informationchecks_content, List<Informationtwice> informationchecks_newsnum, List<Informationtwice> informationchecks_attachment, List<Informationtwice> informationchecks_releasedate) {
+        String xwcolumn = rdtResult.getXwcolumn();
+        String dbn = "chl"; //数据库类型
+        if (xwcolumn .equals("100002")){
+            dbn = "chl";
+        }else if (xwcolumn .equals("100003")){
+            dbn = "lar";
+        }
+
+        if (informationchecks_title!=null){
+            for (Informationtwice informationcheck:informationchecks_title
+                    ) {
+                try {
+                    rdtResult.setNewstitle( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+                } catch (Exception e) {
+                    errorLogs.add(new TblErrorLog(10015, ErrorPram.getErrorPram().get(10015),information.getId(),information.getXwcolumn()));
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (informationchecks_content!=null){
+            for (Informationtwice informationcheck:informationchecks_content
+                    ) {
+                try {
+                    rdtResult.setNewscontent( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+
+                } catch (Exception e) {
+                    errorLogs.add(new TblErrorLog(10024, ErrorPram.getErrorPram().get(10024),information.getId(),information.getXwcolumn()));
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (informationchecks_newsnum!=null){
+            for (Informationtwice informationcheck:informationchecks_newsnum
+                    ) {
+                try {
+                    rdtResult.setFilenum( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+
+                } catch (Exception e) {
+                    errorLogs.add(new TblErrorLog(10035, ErrorPram.getErrorPram().get(10035),information.getId(),information.getXwcolumn()));
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (informationchecks_attachment!=null){
+            for (Informationtwice informationcheck:informationchecks_attachment
+                    ) {
+                try {
+                    rdtResult.setAttachment( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+
+                } catch (Exception e) {
+                    errorLogs.add(new TblErrorLog(10066, ErrorPram.getErrorPram().get(10066),information.getId(),information.getXwcolumn()));
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (informationchecks_releasedate!=null){
+            for (Informationtwice informationcheck:informationchecks_releasedate
+                    ) {
+                try {
+                    rdtResult.setReleasetime( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+
+                } catch (Exception e) {
+                    errorLogs.add(new TblErrorLog(10045, ErrorPram.getErrorPram().get(10045),information.getId(),information.getXwcolumn()));
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return rdtResult;
+        //errorLogs.add(new TblErrorLog(1009, ErrorPram.getErrorPram().get(1009),information.getId(),information.getXwcolumn()));
+
     }
 
     private void validEntry(InformationPipelineWithBLOBs rdtResult, List<TblErrorLog> errorLogs, JavaScriptUtils javaScriptUtils, TXwInformationWithBLOBs information, List<Informationcheck> informationchecks_title, List<Informationcheck> informationchecks_content, List<Informationcheck> informationchecks_newsnum, List<Informationcheck> informationchecks_attachment, List<Informationcheck> informationchecks_releasedate) {
