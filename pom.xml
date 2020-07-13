@@ -40,6 +40,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.3.7</version>
+        </dependency>
+
         <!-- 解决xls文档处理-->
 <!--        <dependency>
             <groupId> e-iceblue </groupId>

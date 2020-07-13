@@ -1,5 +1,10 @@
 package com.spider.utils;
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
+import cn.hutool.http.HttpUtil;
 import com.lawstar.law.util.FileTypeJudge;
 import com.spider.bean.TblErrorLog;
 import com.spider.elemente.ErrorPram;
@@ -27,22 +32,19 @@ import org.apache.http.util.EntityUtils;
 
 import com.lawstar.basic.util.Tools;
 
+import sun.net.www.content.image.jpeg;
+
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.net.URLDecoder;
+import java.net.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HttpsUtils {
     private static final String HTTP = "http";
@@ -410,6 +412,7 @@ public class HttpsUtils {
 		String attachListStr ="";//存放数据库的附件名称列表，多个使用|隔开
 		Map retArr = new HashMap();
 		boolean b =false;
+		boolean flag = true;
 		//处理url
         url = url==null?"":url;
 		String[] attachArr = url.split("##");
@@ -420,13 +423,26 @@ public class HttpsUtils {
 		for(String attachStr:attachArr) {
 			if(attachStr.trim().length()<=0) continue;
 			remoteFileUrl = attachStr.substring(0,attachStr.lastIndexOf("//"));
-			String fileName 	  = attachStr.substring(attachStr.lastIndexOf("//")+2);
-			if(fileName.indexOf(".")<0){//从下载地址提取
+
+
+			String fileName 	  = URLDecoder.decode(attachStr.substring(attachStr.lastIndexOf("//")+2));
+
+			if (!ReUtil.isMatch(".+\\.[a-z]+", fileName)){
+                //如果不匹配正则则标记为false ，等下载链接确定后从下载链接中获取请求头的filename信息
+                flag=false;
+            }
+
+/*			if(fileName.indexOf(".")<0){//从下载地址提取
+
+
 				int ext_pos = remoteFileUrl.lastIndexOf(".");
 				if(ext_pos>-1){
 					fileName = fileName + remoteFileUrl.substring(ext_pos);
 				}
+
 			}else{
+
+
 			    try {
 			        Integer.parseInt(fileName.substring(fileName.indexOf(".")-1,fileName.indexOf(".")));
                     int ext_pos = remoteFileUrl.lastIndexOf(".");
@@ -436,7 +452,8 @@ public class HttpsUtils {
                 }catch (Exception e){
 
                 }
-            }
+            }*/
+
 			//修改url为http格式
 			String baseUrl_tmp = baseUrl.substring(0,baseUrl.lastIndexOf("/")+1);
 			if(remoteFileUrl.length()>0 && remoteFileUrl.charAt(0)=='/'){
@@ -467,7 +484,31 @@ public class HttpsUtils {
 
 			
 			//localFilePath = "/bcn/192.168.0.5/fujian/tmp/"+folder;
-			fileName = regFilename(fileName);
+
+            if (!flag){
+                //先尝试从请求头的filename中获取
+                fileName = getFileName(remoteFileUrl)==null?getFileName(remoteFileUrl):URLDecoder.decode(getFileName(remoteFileUrl));
+
+                if (StrUtil.isBlank(fileName)||!ReUtil.isMatch(".+\\.[a-z]+", fileName)) {
+                    //再从请求链接中获取文件名
+                    fileName = StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1)==null?StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1):URLDecoder.decode(StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1));
+
+                    if (StrUtil.isBlank(fileName)||!ReUtil.isMatch(".+\\.[a-z]+", fileName)) {
+                        //以上都获取不到 就使用编码后的路径做为文件名
+                        fileName = URLUtil.encodeQuery(remoteFileUrl, CharsetUtil.CHARSET_UTF_8);
+                    }
+                }
+
+
+
+                if (fileName == null){
+                    tblErrorLogs.add(new TblErrorLog(10067, ErrorPram.errorPram.get(10067)+remoteFileUrl, informationId, xwcolumn));
+                    //throw new FileNameDownloadException("附件名获取失败！请检查下载链接【"+remoteFileUrl+"】");
+                }
+            }
+
+
+			fileName = fileName==null?fileName:regFilename(fileName);
 			String newFilePath  = localFilePath+File.separator+fileName;
 			System.out.println("附件保存地址"+newFilePath);
 /*			int index = remoteFileUrl.lastIndexOf("/");
@@ -511,12 +552,7 @@ public class HttpsUtils {
 
 		return retArr;
 	}
-	
-    public static void main(String[] args) throws Exception {
 
-	    String str = "国家水资源监控能力建设（2016-2018年）\\\\省（自治区、直辖市）项目自评估报告提纲.doc";
-        System.out.println(regFilename(str));
-    }
 	public void setExt(String ext) {
 		this.ext = ext;
 	}
@@ -547,4 +583,41 @@ public class HttpsUtils {
 
 	    return filename;
     }
+
+    public static void main(String[] args) throws Exception {
+
+        //String filename = getFileName("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594383600179&di=af3a040288339e0a534e4aa8c2d543f0&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F14%2F75%2F01300000164186121366756803686.jpg");
+
+
+        String url = "附件二：北京市知识产权局行政处罚裁量基准表（试行）.docx";
+        System.out.println(URLDecoder.decode(url));
+
+       //System.out.println(filename);
+    }
+    public static String getFileName(String urlStr){
+        String fileName = null;
+        HttpURLConnection uc = null;
+        try {
+            URL url = new URL(urlStr);
+            uc = (HttpURLConnection)url.openConnection();
+            //避免直接请求被权限导致403 因此设置 User-Agent 模拟用户
+            uc.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            uc.connect();
+            if (uc.getResponseCode()==200) {
+                fileName = uc.getHeaderField("Content-Disposition");
+                fileName = new String(fileName.getBytes("ISO-8859-1"), "GBK");
+                fileName = URLDecoder.decode(fileName.substring(fileName.indexOf("filename=") + 9), "UTF-8");
+            }else {
+                System.out.println("请求状态："+uc.getResponseCode());
+                System.out.println("请求信息："+uc.getResponseMessage());
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
+
 }

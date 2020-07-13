@@ -45,6 +45,7 @@
     <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-commons:1.7.0-M1" level="project" />
+    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />

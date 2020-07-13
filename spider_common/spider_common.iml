@@ -24,6 +24,7 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.2" level="project" />
     <orderEntry type="module" module-name="spider_bean" />
+    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />

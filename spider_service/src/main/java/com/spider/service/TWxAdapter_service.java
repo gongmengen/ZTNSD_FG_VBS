@@ -1,5 +1,6 @@
 package com.spider.service;
 
+import cn.hutool.http.HtmlUtil;
 import com.lawstar.law.model.RecordDataType;
 import com.lawstar.law.robots.MainDeal;
 import com.spider.bean.*;
@@ -385,7 +386,9 @@ public class TWxAdapter_service {
 /*                if ("".equals(entry)){
                     errorLogs.add(new TblErrorLog(10061,ErrorPram.getErrorPram().get(10061),information.getId(),information.getXwcolumn()));
                 }*/
-                result.setAttachment(entry);
+
+                //避免出现&被转义成&amp;的情况，因此将附件链接decode一下
+                result.setAttachment(HtmlUtil.unescape(entry));
             }catch (Exception e){
                 errorLogs.add(new TblErrorLog(1006,ErrorPram.getErrorPram().get(1006),information.getId(),information.getXwcolumn()));
             }
