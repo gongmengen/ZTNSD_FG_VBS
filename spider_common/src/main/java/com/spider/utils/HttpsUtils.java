@@ -428,7 +428,7 @@ public class HttpsUtils {
 			String fileName 	  = URLDecoder.decode(attachStr.substring(attachStr.lastIndexOf("//")+2));
 
 			if (!ReUtil.isMatch(".+\\.[a-z]+", fileName)){
-                //如果不匹配正则则标记为false ，等下载链接确定后从下载链接中获取请求头的filename信息
+                //脚本获取的文件名 不做处理只做验证不匹配正则则取文件后缀名拼接到 filename后面
                 flag=false;
             }
 
@@ -486,24 +486,27 @@ public class HttpsUtils {
 			//localFilePath = "/bcn/192.168.0.5/fujian/tmp/"+folder;
 
             if (!flag){
+			    String jbfileName = null;
                 //先尝试从请求头的filename中获取
-                fileName = getFileName(remoteFileUrl)==null?getFileName(remoteFileUrl):URLDecoder.decode(getFileName(remoteFileUrl));
+                jbfileName = getFileName(remoteFileUrl)==null?getFileName(remoteFileUrl):URLDecoder.decode(getFileName(remoteFileUrl));
 
-                if (StrUtil.isBlank(fileName)||!ReUtil.isMatch(".+\\.[a-z]+", fileName)) {
+                if (StrUtil.isBlank(jbfileName)||!ReUtil.isMatch(".+\\.[a-z]+", jbfileName)) {
                     //再从请求链接中获取文件名
-                    fileName = StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1)==null?StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1):URLDecoder.decode(StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1));
+                    jbfileName = StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1)==null?StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1):URLDecoder.decode(StrUtil.subSuf(remoteFileUrl, remoteFileUrl.lastIndexOf('/') + 1));
 
-                    if (StrUtil.isBlank(fileName)||!ReUtil.isMatch(".+\\.[a-z]+", fileName)) {
+                    if (StrUtil.isBlank(jbfileName)||!ReUtil.isMatch(".+\\.[a-z]+", jbfileName)) {
                         //以上都获取不到 就使用编码后的路径做为文件名
-                        fileName = URLUtil.encodeQuery(remoteFileUrl, CharsetUtil.CHARSET_UTF_8);
+                        jbfileName = URLUtil.encodeQuery(remoteFileUrl, CharsetUtil.CHARSET_UTF_8);
                     }
                 }
 
 
 
-                if (fileName == null){
+                if (jbfileName == null){
                     tblErrorLogs.add(new TblErrorLog(10067, ErrorPram.errorPram.get(10067)+remoteFileUrl, informationId, xwcolumn));
                     //throw new FileNameDownloadException("附件名获取失败！请检查下载链接【"+remoteFileUrl+"】");
+                }else {
+                    fileName = fileName+jbfileName.substring(jbfileName.lastIndexOf("."));
                 }
             }
 
