@@ -30,7 +30,7 @@ public class JavaScriptUtils {
     }
 
     //质量检查脚本
-    public String validEntry(String title,String appDate,String numTxt,String depcode,String deptName,String dbsType,String AttachStr,String src_code,String txt,String javaScript) throws ScriptException {
+    public String validEntry(String title,String appDate,String numTxt,String depcode,String deptName,String dbsType,String AttachStr,String src_code,String txt,String txt_code,String javaScript) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
         String result = "";

@@ -47,7 +47,7 @@ public class InformationPipeline {
 
     private String extend1;
 
-    private String extend2;
+    private String extend2;//程序中占用  存放带标签的正文
 
     private String extend3;
 

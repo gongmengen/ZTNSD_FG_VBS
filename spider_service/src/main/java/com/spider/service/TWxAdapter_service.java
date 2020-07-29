@@ -321,11 +321,13 @@ public class TWxAdapter_service {
         if (adapter.getComposetext()!=null&&adapter.getComposetext()!="") {
             try {
                 String entry = javaScriptUtils.entry(information.getNewscontentnotupdate(), JavaScript_static.LAWSTARLIB_JS + adapter.getComposetext());
+                String contentPart = javaScriptUtils.entry(information.getNewscontentnotupdate(), dynamicJavaScript(JavaScript_static.LAWSTARLIB_JS + adapter.getComposetext()));
 
                 if ("".equals(entry)){
                     errorLogs.add(new TblErrorLog(10021,ErrorPram.getErrorPram().get(10021),information.getId(),information.getXwcolumn()));
                 }
                 result.setNewscontent(entry);
+                result.setExtend2(contentPart);
             }catch (Exception e){
                 errorLogs.add(new TblErrorLog(1002,ErrorPram.getErrorPram().get(1002),information.getId(),information.getXwcolumn()));
             }
@@ -424,6 +426,13 @@ public class TWxAdapter_service {
         resu.put("errorlogs",errorLogs);
         return resu;
     }
+
+    //动态修改脚本返回值  使其返回带标签的正文内容
+    private String dynamicJavaScript(String s) {
+        String replace = s.replace("txt = deal_prepared(txt);", "txt = deal_prepared(txt);return txt;");
+        return replace;
+    }
+
     private InformationPipelineWithBLOBs twicedPipelineEntry(InformationPipelineWithBLOBs rdtResult, List<TblErrorLog> errorLogs, JavaScriptUtils javaScriptUtils, TXwInformationWithBLOBs information, List<Informationtwice> informationchecks_title, List<Informationtwice> informationchecks_content, List<Informationtwice> informationchecks_newsnum, List<Informationtwice> informationchecks_attachment, List<Informationtwice> informationchecks_releasedate) {
         String xwcolumn = rdtResult.getXwcolumn();
         String dbn = "chl"; //数据库类型
@@ -437,7 +446,7 @@ public class TWxAdapter_service {
             for (Informationtwice informationcheck:informationchecks_title
                     ) {
                 try {
-                    rdtResult.setNewstitle( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+                    rdtResult.setNewstitle( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS+informationcheck.getTwiceScript()));
                 } catch (Exception e) {
                     errorLogs.add(new TblErrorLog(10015, ErrorPram.getErrorPram().get(10015),information.getId(),information.getXwcolumn()));
                     e.printStackTrace();
@@ -448,7 +457,7 @@ public class TWxAdapter_service {
             for (Informationtwice informationcheck:informationchecks_content
                     ) {
                 try {
-                    rdtResult.setNewscontent( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+                    rdtResult.setNewscontent( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS+informationcheck.getTwiceScript()));
 
                 } catch (Exception e) {
                     errorLogs.add(new TblErrorLog(10024, ErrorPram.getErrorPram().get(10024),information.getId(),information.getXwcolumn()));
@@ -460,7 +469,7 @@ public class TWxAdapter_service {
             for (Informationtwice informationcheck:informationchecks_newsnum
                     ) {
                 try {
-                    rdtResult.setFilenum( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+                    rdtResult.setFilenum( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS+informationcheck.getTwiceScript()));
 
                 } catch (Exception e) {
                     errorLogs.add(new TblErrorLog(10035, ErrorPram.getErrorPram().get(10035),information.getId(),information.getXwcolumn()));
@@ -472,7 +481,7 @@ public class TWxAdapter_service {
             for (Informationtwice informationcheck:informationchecks_attachment
                     ) {
                 try {
-                    rdtResult.setAttachment( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+                    rdtResult.setAttachment( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS+informationcheck.getTwiceScript()));
 
                 } catch (Exception e) {
                     errorLogs.add(new TblErrorLog(10066, ErrorPram.getErrorPram().get(10066),information.getId(),information.getXwcolumn()));
@@ -484,7 +493,7 @@ public class TWxAdapter_service {
             for (Informationtwice informationcheck:informationchecks_releasedate
                     ) {
                 try {
-                    rdtResult.setReleasetime( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),informationcheck.getTwiceScript()));
+                    rdtResult.setReleasetime( javaScriptUtils.twicedEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS+informationcheck.getTwiceScript()));
 
                 } catch (Exception e) {
                     errorLogs.add(new TblErrorLog(10045, ErrorPram.getErrorPram().get(10045),information.getId(),information.getXwcolumn()));
@@ -511,7 +520,9 @@ public class TWxAdapter_service {
             for (Informationcheck informationcheck:informationchecks_title
                     ) {
                 try {
-                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),rdtResult.getExtend2(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    //执行完成 清空extent2
+                    rdtResult.setExtend2(null);
                     if (resu.indexOf("false")>-1){
                         String[] resus = resu.split("#");
                         errorLogs.add(new TblErrorLog(Integer.parseInt(resus[1]), resus[2],information.getId(),information.getXwcolumn()));
@@ -527,7 +538,9 @@ public class TWxAdapter_service {
             for (Informationcheck informationcheck:informationchecks_content
                     ) {
                 try {
-                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),rdtResult.getExtend2(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    //执行完成 清空extent2
+                    rdtResult.setExtend2(null);
                     if (resu.indexOf("false")>-1){
                         String[] resus = resu.split("#");
                         errorLogs.add(new TblErrorLog(Integer.parseInt(resus[1]), resus[2],information.getId(),information.getXwcolumn()));
@@ -543,7 +556,9 @@ public class TWxAdapter_service {
             for (Informationcheck informationcheck:informationchecks_newsnum
                     ) {
                 try {
-                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),rdtResult.getExtend2(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    //执行完成 清空extent2
+                    rdtResult.setExtend2(null);
                     if (resu.indexOf("false")>-1){
                         String[] resus = resu.split("#");
                         errorLogs.add(new TblErrorLog(Integer.parseInt(resus[1]), resus[2],information.getId(),information.getXwcolumn()));
@@ -559,7 +574,9 @@ public class TWxAdapter_service {
             for (Informationcheck informationcheck:informationchecks_attachment
                     ) {
                 try {
-                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),rdtResult.getExtend2(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    //执行完成 清空extent2
+                    rdtResult.setExtend2(null);
                     if (resu.indexOf("false")>-1){
                         String[] resus = resu.split("#");
                         errorLogs.add(new TblErrorLog(Integer.parseInt(resus[1]), resus[2],information.getId(),information.getXwcolumn()));
@@ -575,8 +592,9 @@ public class TWxAdapter_service {
             for (Informationcheck informationcheck:informationchecks_releasedate
                     ) {
                 try {
-                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
-                    System.out.println(resu);
+                    String resu = javaScriptUtils.validEntry(rdtResult.getNewstitle(),rdtResult.getReleasetime(),rdtResult.getFilenum(),rdtResult.getDeptcode(),rdtResult.getDeptname(),dbn,rdtResult.getAttachment(),information.getNewscontentnotupdate(),rdtResult.getNewscontent(),rdtResult.getExtend2(),JavaScript_static.LAWSTARLIB_JS +informationcheck.getCkScript());
+                    //执行完成 清空extent2
+                    rdtResult.setExtend2(null);
                     if (resu.indexOf("false")>-1){
                         String[] resus = resu.split("#");
                         errorLogs.add(new TblErrorLog(Integer.parseInt(resus[1]), resus[2],information.getId(),information.getXwcolumn()));
@@ -629,7 +647,7 @@ public class TWxAdapter_service {
             logs.append("新闻ID："+result.getInformationId()+"\r\n");
             logs.append("原始正文："+result.getNewscontent()+"\r\n");
 
-            //rdt = md.doAllTask(tXwWebsite.getBelongdepartment()+"",tXwWebsite.getDepartmentDbName(), result.getNewstitle(), result.getFilenum(), result.getNewscontent(), dbn,tXwWebsite.getTitlestatus(),tXwWebsite.getNewsnumstatus(),result.getReleasetime(),null);
+            rdt = md.doAllTask(tXwWebsite.getBelongdepartment()+"",tXwWebsite.getDepartmentDbName(), result.getNewstitle(), result.getFilenum(), result.getNewscontent(), dbn,tXwWebsite.getTitlestatus(),tXwWebsite.getNewsnumstatus(),result.getReleasetime(),null);
 
             //记录处理后的正文
             logs.append("rdt处理后正文："+rdt.getTxt()+"\r\n");
@@ -659,6 +677,7 @@ public class TWxAdapter_service {
         //设置 发布日期、实施日期
         result.setReleasetime(rdt.getRJS5()==null?"":rdt.getRJS5());
         result.setExtend1(rdt.getRJS6()==null?"":rdt.getRJS6());//实施日期
+
         return result;
     }
 
