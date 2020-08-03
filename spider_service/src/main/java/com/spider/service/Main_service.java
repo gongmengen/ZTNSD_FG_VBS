@@ -6,6 +6,7 @@ import com.spider.mapper.MainMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,5 +35,40 @@ public class Main_service {
         MainExample.Criteria criteria = mainExample.createCriteria();
         criteria.andRjs12EqualTo(rjs12);
         return mainMapper.selectByExampleWithBLOBs(mainExample);
+    }
+
+    public List<MainWithBLOBs> getListByAppuser(String appuser) {
+        MainExample mainExample = new MainExample();
+        MainExample.Criteria criteria = mainExample.createCriteria();
+        criteria.andAppuserEqualTo(appuser);
+        return mainMapper.selectByExampleWithBLOBs(mainExample);
+    }
+
+    public boolean deleteByNumbers(String[] id) {
+        boolean flag = true;
+        for (String number : id) {
+            if (mainMapper.deleteByPrimaryKey(Long.parseLong(number))<0){
+                flag = false;
+            }
+        }
+        return flag;
+
+    }
+
+    public List<MainWithBLOBs> getRandomListByAppuser(String appuser) {
+        return mainMapper.randomByAppuser(appuser);
+    }
+
+    public MainWithBLOBs getMainByNumber(long number) {
+        return mainMapper.selectByPrimaryKey(number);
+    }
+
+    public List<MainWithBLOBs> getMainByNumbers(String[] id) {
+
+        List<MainWithBLOBs> mains = new ArrayList<MainWithBLOBs>();
+        for (String s : id) {
+            mains.add(mainMapper.selectByPrimaryKey(Long.parseLong(s)));
+        }
+        return mains;
     }
 }

@@ -29,6 +29,16 @@ public class TimerParm {
 
     public static String timerurlforchl;
 
+    public static String fjPath5_chl;
+
+    public static String getFjPath5_chl() {
+        return fjPath5_chl;
+    }
+
+    public static void setFjPath5_chl(String fjPath5_chl) {
+        TimerParm.fjPath5_chl = fjPath5_chl;
+    }
+
     public static String getTimerurlfortmp() {
         return timerurlfortmp;
     }

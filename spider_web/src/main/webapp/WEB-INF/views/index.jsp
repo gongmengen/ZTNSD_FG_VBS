@@ -161,6 +161,18 @@
                         </ul>
                     </li>
                 </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/manCheck/list">临时库列表(中央)</a>
+                            <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
                 <li>
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 

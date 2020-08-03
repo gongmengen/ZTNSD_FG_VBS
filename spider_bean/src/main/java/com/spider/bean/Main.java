@@ -52,6 +52,17 @@ public class Main {
     //增加 重复判断字段
     private Integer pre_distinct;
 
+    //附件数
+    private Integer fj_count;
+
+    public Integer getFj_count() {
+        return fj_count;
+    }
+
+    public void setFj_count(Integer fj_count) {
+        this.fj_count = fj_count;
+    }
+
     public Integer getPre_distinct() {
         return pre_distinct;
     }
