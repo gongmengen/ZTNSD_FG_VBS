@@ -143,6 +143,8 @@ public class ManCheck_controller {
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
             if (intoCHL(mainWithBLOBs,request)) {
                 String[] numbers = {mainWithBLOBs.getNumber() + ""};
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
                 main_service.deleteByNumbers(numbers);
             }
         }
