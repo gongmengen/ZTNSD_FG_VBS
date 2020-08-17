@@ -40,7 +40,7 @@ public class JavaScriptUtils {
         if (engine instanceof Invocable) {
             Invocable invocable = (Invocable) engine;
             ValidEntry executeMethod = invocable.getInterface(ValidEntry.class);
-            result = executeMethod.validEntry(title,appDate,numTxt,depcode,deptName,dbsType,AttachStr,src_code,txt);
+            result = executeMethod.validEntry(title,appDate,numTxt,depcode,deptName,dbsType,AttachStr,src_code,txt,txt_code);
         }
 
         return result;
