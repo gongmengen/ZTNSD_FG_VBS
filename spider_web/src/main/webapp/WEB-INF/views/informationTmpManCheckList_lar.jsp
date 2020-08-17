@@ -35,6 +35,7 @@
 
     <link href="<%=basePath%>css/animate.css" rel="stylesheet">
     <link href="<%=basePath%>css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="http://yanshi.sucaihuo.com/modals/40/4078/demo/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
 </head>
 
@@ -330,8 +331,49 @@
                         <li><a href="javascript:void(0);" onclick="closeTimer()">关闭定时器</a></li>
                     </ul>
                 </div>--%>
-                <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
-                 <button type="button" class="btn btn-primary btn-sm" onclick="nextStep()">下一步</button>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">抽查规则</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="nextStep()">下一步</button>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">抽查规则</h4>
+                                </div>
+                                <div class="modal-body">
+
+
+
+
+                                            <div class="checkbox checkbox-info checkbox-circle">
+                                                <input id="checkbox7" name="rulebox" value="1" type="checkbox">
+                                                <label for="checkbox7">
+                                                    抽查数量，总数*20%，至少20条；
+                                                </label>
+                                            </div>
+                                            <div class="checkbox checkbox-info checkbox-circle">
+                                                <input id="checkbox8" name="rulebox" value="2" type="checkbox">
+                                                <label for="checkbox8">
+                                                    优先抽查以下部门代码/1 /2 /3 /6 /7 ;
+                                                </label>
+                                            </div>
+                                            <div class="checkbox checkbox-info checkbox-circle">
+                                                <input id="checkbox9" name="rulebox" value="3" type="checkbox">
+                                                <label for="checkbox9">
+                                                    优先抽查文字小于100个，而且没有附件的数据。
+                                                </label>
+                                            </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
             </span>
                 <h2>临时库列表（地方）</h2>
@@ -380,6 +422,8 @@
                                 <thead>
                                 <tr>
                                     <th class="hide_column">隐藏列</th>
+
+                                    <th><input type="checkbox" id="checkbox"></th>
                                     <th>标题</th>
                                     <%--                                    <th>原网站</th>
                                                                         <th>新闻地址</th>--%>
@@ -390,7 +434,8 @@
 
                                     <th>收录时间</th>
                                     <th>附件</th>
-                                    <th><input type="checkbox" id="checkbox"></th>
+                                    <th>操作</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -398,7 +443,10 @@
                                     <tr class="gradeX">
                                         <td class="hide_column">${main.linksource}</td>
                                         <td class="center">
-                                            ${main.rjs0}
+                                            <input type="checkbox" name="mycheckbox" value="${main.number}">
+                                        </td>
+                                        <td class="center">
+                                                ${main.rjs0}
                                             <button type="button" class="btn btn-primary btn-xs" onclick="openSource('${main.linksource}')">来源</button>
                                         </td>
                                             <%--                                        <td class="center"><a href="${websiteList.websiteAddress}" target="_blank">原网站</a> </td>
@@ -409,9 +457,11 @@
                                         <td class="center">${main.rjs10}</td>
                                         <td class="center"><fmt:formatDate value="${main.appdate}" pattern="yyyy-MM-dd HH:mm" ></fmt:formatDate></td>
                                         <td class="center">${main.fj_count}</td>
+
                                         <td class="center">
-                                            <input type="checkbox" name="mycheckbox" value="${main.number}">
+                                            <button type="button" class="btn btn-warning btn-sm" onclick="deleteConfirm('${main.number}')">删除</button>
                                         </td>
+
                                     </tr>
 
                                 </c:forEach>
@@ -437,7 +487,6 @@
 
 
 </div>
-
 <!-- Mainly scripts -->
 <script src="<%=basePath%>js/jquery-2.1.1.min.js"></script>
 <script src="<%=basePath%>js/bootstrap.min.js?v=3.4.0"></script>
@@ -457,6 +506,9 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
+        $('.dataTables-example').dataTable({
+            "sortOrder": [ 7, 'asc' ],'bStateSave': true,
+        });
         if (!${selectLength eq null}){
             $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
         }//默认显示条数
@@ -470,50 +522,8 @@
                 url: "<%=basePath%>rememberSelectLength"});
         } ).DataTable();
 
-
-        /*        //隐藏url 列
-                $('.dataTables-example').dataTable( {
-                      "columnDefs" :
-                          [{
-                              className: "hide_column",
-                              "targets": [0]
-                          }]
-                  } );*/
-
-        $('.dataTables-example').dataTable();
-
-        /* Init DataTables */
-        var oTable = $('#editable').dataTable();
-
-        /* Apply the jEditable handlers to the table */
-        oTable.$('td').editable('../example_ajax.php', {
-            "callback": function (sValue, y) {
-                var aPos = oTable.fnGetPosition(this);
-                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-            },
-            "submitdata": function (value, settings) {
-                return {
-                    "row_id": this.parentNode.getAttribute('id'),
-                    "column": oTable.fnGetPosition(this)[2]
-                };
-            },
-
-            "width": "90%",
-            "height": "100%"
-        });
-
-
     });
 
-    function fnClickAddRow() {
-        $('#editable').dataTable().fnAddData([
-            "Custom row",
-            "New row",
-            "New row",
-            "New row",
-            "New row"]);
-
-    }
 </script>
 <style>
 
@@ -557,6 +567,41 @@
 
 <script>
 
+
+    function deleteConfirm(deleteID)
+    {
+        $.ajax('<%=basePath%>manCheck/delete', {
+            dataType : 'json',
+            data: {
+                ids:deleteID
+            },
+            success: function(data)
+            {
+                if (data==true)
+                {
+                    alert('删除成功!');
+                    start = $('.dataTables-example').dataTable().fnSettings()._iDisplayStart;
+                    total = $('.dataTables-example').dataTable().fnSettings().fnRecordsDisplay();
+                    window.location.reload();
+                    if((total-start)==1){
+                        if (start > 0) {
+                            $('.dataTables-example').dataTable().fnPageChange( 'previous', true );
+                        }
+                    }
+                }
+                else
+                {
+                    alert('删除发生错误，请联系管理员!');
+                }
+            },
+            error: function()
+            {
+                alert('服务器无响应，请联系管理员!');
+            }
+        });
+
+
+    }
 
     //debugger;
     $("#checkbox").click(function () {
@@ -664,9 +709,19 @@
             }
         })
     }
-    function nextStep(data) {
+    function nextStep() {
 
-        window.location.href="<%=path%>/manCheck/randomTwentyFive_lar";
+        var informationPipelineIds = "";
+        $('input[name="mycheckbox"]').each(function () {
+            if (this.checked){
+                informationPipelineIds += this.value+" ";
+            }
+        });
+
+
+
+
+        window.location.href="<%=path%>/manCheck/randomTwentyFive_lar?informationIds="+informationPipelineIds;
     }
     function openDetail(data) {
 

@@ -389,7 +389,6 @@
 
                                     <th>收录时间</th>
                                     <th>附件</th>
-
                                     <th><input type="checkbox" id="checkbox"></th>
                                 </tr>
                                 </thead>
@@ -398,7 +397,7 @@
                                     <tr class="gradeX">
                                         <td class="hide_column">${main.linksource}</td>
                                         <td class="center">
-                                                <a href="javascript:void(0);"  target="_blank" onclick="openDetail('${main.number}')">${main.rjs0}</a>
+                                            <a href="javascript:void(0);"  target="_blank" onclick="openDetail('${main.number}')">${main.rjs0}</a>
                                             <button type="button" class="btn btn-primary btn-xs" onclick="openSource('${main.linksource}')">来源</button>
                                         </td>
                                             <%--                                        <td class="center"><a href="${websiteList.websiteAddress}" target="_blank">原网站</a> </td>
@@ -484,6 +483,9 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
+        $('.dataTables-example').DataTable({
+            "ordering": false, // 禁止排序
+        });
         if (!${selectLength eq null}){
             $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
         }//默认显示条数
@@ -703,6 +705,7 @@
         window.open(data);
     }
     function manCheckDownloadFJ(id) {
+
         var targetUrl = "<%=basePath%>/manCheck/downloadFJ";
 
         $.ajax({
@@ -720,7 +723,7 @@
     }
     function downLoadAttachment(id,count) {
         debugger;
-        var targetUrl = "<%=basePath%>/downLoadAttachment";
+        var targetUrl = "<%=basePath%>/manCheck/downLoadAttachment";
         var fjName = "";
         fjName = $("#fjian"+count).text();
 

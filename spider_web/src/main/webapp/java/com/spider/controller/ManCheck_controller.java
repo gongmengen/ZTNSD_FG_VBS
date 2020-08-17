@@ -184,7 +184,7 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
-        //获取地方库新闻数据
+        //获取中央库新闻数据
         List<MainWithBLOBs> mainList = main_service.getRandomListByAppuser("zyzd");
 
         for (MainWithBLOBs mainWithBLOBs : mainList) {
@@ -208,59 +208,25 @@ public class ManCheck_controller {
         return "informationTmpManCheckRandomList";
     }
 
-    private List<MainWithBLOBs> priorityRex(List<MainWithBLOBs> mainList,String informationIds) {
 
-        //选中得新闻
-
-        String[] _informationIds = informationIds.split(" ");
-
-        //初始化得分
-
-
-        String[] deptCodes = {"/1","/2","/3", "/6", "/7"};
-        for (MainWithBLOBs mainWithBLOB : mainList) {
-            int score = 0;
-            //1、优先抽查以下部门代码/1 /2 /3 /6 /7 ;
-            for (String deptCode : deptCodes) {
-                if (mainWithBLOB.getRjs4().equals(deptCode)){
-                    score += 1;
-                }
-            }
-            //2、没有附件的数据。
-
-            if (mainWithBLOB.getFjian()==null){
-                score += 1;
-            }
-
-            //3、优先抽查文字小于100个
-
-            if (mainWithBLOB.getContentSize()<100){
-                score += 1;
-            }
-            //4、步骤一页面 选中得新闻
-            for (String number : _informationIds) {
-                if (mainWithBLOB.getNumber().equals(number)){
-                    score += 1;
-                }
-            }
-            mainWithBLOB.setCompare_score(score);
-        }
-
-        Collections.sort(mainList, Main.MAIN_BY_SCORE);
-
-        return mainList;
-
-
-    }
 
     //展示随机二十五篇新闻 地方
     @RequestMapping("randomTwentyFive_lar")
-    public String randomTwentyFive_lar(Model model){
+    public String randomTwentyFive_lar(@RequestParam(value = "informationIds")String informationIds,Model model){
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取地方库新闻数据
         List<MainWithBLOBs> mainList = main_service.getRandomListByAppuser("dfzd");
+
+        for (MainWithBLOBs mainWithBLOBs : mainList) {
+            mainWithBLOBs.setContentSize(readTxt(mainWithBLOBs.getAppuser(),mainWithBLOBs.getRjs8()).length());
+        }
+
+        mainList = priorityRex(mainList,informationIds);
+
+
+
         for (MainWithBLOBs mainWithBLOBs : mainList) {
             if (StringUtils.isNotBlank(mainWithBLOBs.getFjian())) {
                 String[] fj = mainWithBLOBs.getFjian().split("\\|");
@@ -269,9 +235,8 @@ public class ManCheck_controller {
                 mainWithBLOBs.setFj_count(0);
             }
         }
-
-
         model.addAttribute("mainList",mainList);
+
 
         return "informationTmpManCheckRandomList_lar";
     }
@@ -463,6 +428,49 @@ public class ManCheck_controller {
         return resu;
     }
 
+    private List<MainWithBLOBs> priorityRex(List<MainWithBLOBs> mainList,String informationIds) {
 
+        //选中得新闻
+
+        String[] _informationIds = informationIds.split(" ");
+
+        //初始化得分
+
+
+        String[] deptCodes = {"/1","/2","/3", "/6", "/7"};
+        for (MainWithBLOBs mainWithBLOB : mainList) {
+            int score = 0;
+            //1、优先抽查以下部门代码/1 /2 /3 /6 /7 ;
+            for (String deptCode : deptCodes) {
+                if (mainWithBLOB.getRjs4().equals(deptCode)){
+                    score += 1;
+                }
+            }
+            //2、没有附件的数据。
+
+            if (mainWithBLOB.getFjian()==null){
+                score += 1;
+            }
+
+            //3、优先抽查文字小于100个
+
+            if (mainWithBLOB.getContentSize()<100){
+                score += 1;
+            }
+            //4、步骤一页面 选中得新闻
+            for (String number : _informationIds) {
+                if (mainWithBLOB.getNumber().equals(number)){
+                    score += 1;
+                }
+            }
+            mainWithBLOB.setCompare_score(score);
+        }
+
+        Collections.sort(mainList, Main.MAIN_BY_SCORE);
+
+        return mainList;
+
+
+    }
 
 }
