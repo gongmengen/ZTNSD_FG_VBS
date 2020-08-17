@@ -1,13 +1,14 @@
 package com.spider.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.spider.bean.MainExample;
 import com.spider.bean.MainWithBLOBs;
 import com.spider.mapper.MainMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class Main_service {
@@ -56,7 +57,10 @@ public class Main_service {
     }
 
     public List<MainWithBLOBs> getRandomListByAppuser(String appuser) {
-        return mainMapper.randomByAppuser(appuser);
+        MainExample mainExample = new MainExample();
+        MainExample.Criteria criteria = mainExample.createCriteria();
+        criteria.andAppuserEqualTo(appuser);
+        return mainMapper.selectByExampleWithBLOBs(mainExample);
     }
 
     public MainWithBLOBs getMainByNumber(long number) {
