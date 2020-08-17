@@ -26,10 +26,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -143,8 +140,6 @@ public class ManCheck_controller {
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
             if (intoCHL(mainWithBLOBs,request)) {
                 String[] numbers = {mainWithBLOBs.getNumber() + ""};
-                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
                 main_service.deleteByNumbers(numbers);
             }
         }
@@ -173,17 +168,33 @@ public class ManCheck_controller {
 
     private String readTxt(String appuser,String filename) {
         String contextPath = TimerParm.txtPath5 + File.separator + appuser + File.separator +filename;
-        return FileUtil.readString(contextPath,"GBK");
+        try {
+            String resu = FileUtil.readString(contextPath,"GBK");
+            return resu;
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+
     }
 
     //展示随机二十五篇新闻 中央
     @RequestMapping("randomTwentyFive")
-    public String randomTwentyFive(Model model){
+    public String randomTwentyFive(@RequestParam(value = "informationIds")String informationIds, Model model){
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取地方库新闻数据
         List<MainWithBLOBs> mainList = main_service.getRandomListByAppuser("zyzd");
+
+        for (MainWithBLOBs mainWithBLOBs : mainList) {
+            mainWithBLOBs.setContentSize(readTxt(mainWithBLOBs.getAppuser(),mainWithBLOBs.getRjs8()).length());
+        }
+
+        mainList = priorityRex(mainList,informationIds);
+
+
+
         for (MainWithBLOBs mainWithBLOBs : mainList) {
             if (StringUtils.isNotBlank(mainWithBLOBs.getFjian())) {
                 String[] fj = mainWithBLOBs.getFjian().split("\\|");
@@ -195,6 +206,51 @@ public class ManCheck_controller {
         model.addAttribute("mainList",mainList);
 
         return "informationTmpManCheckRandomList";
+    }
+
+    private List<MainWithBLOBs> priorityRex(List<MainWithBLOBs> mainList,String informationIds) {
+
+        //选中得新闻
+
+        String[] _informationIds = informationIds.split(" ");
+
+        //初始化得分
+
+
+        String[] deptCodes = {"/1","/2","/3", "/6", "/7"};
+        for (MainWithBLOBs mainWithBLOB : mainList) {
+            int score = 0;
+            //1、优先抽查以下部门代码/1 /2 /3 /6 /7 ;
+            for (String deptCode : deptCodes) {
+                if (mainWithBLOB.getRjs4().equals(deptCode)){
+                    score += 1;
+                }
+            }
+            //2、没有附件的数据。
+
+            if (mainWithBLOB.getFjian()==null){
+                score += 1;
+            }
+
+            //3、优先抽查文字小于100个
+
+            if (mainWithBLOB.getContentSize()<100){
+                score += 1;
+            }
+            //4、步骤一页面 选中得新闻
+            for (String number : _informationIds) {
+                if (mainWithBLOB.getNumber().equals(number)){
+                    score += 1;
+                }
+            }
+            mainWithBLOB.setCompare_score(score);
+        }
+
+        Collections.sort(mainList, Main.MAIN_BY_SCORE);
+
+        return mainList;
+
+
     }
 
     //展示随机二十五篇新闻 地方
@@ -222,7 +278,7 @@ public class ManCheck_controller {
     //删除
     @RequestMapping("delete")
     @ResponseBody
-    public String delete(@RequestParam("ids")String ids){
+    public boolean delete(@RequestParam("ids")String ids){
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
@@ -230,10 +286,10 @@ public class ManCheck_controller {
 
         if(main_service.deleteByNumbers(id)){
 
-            return "删除成功";
+            return true;
         }else {
 
-            return "删除失败";
+            return false;
         }
 
     }

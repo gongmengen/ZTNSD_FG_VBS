@@ -604,8 +604,4 @@
   <select id="findMaxRjs8" resultType="String" parameterType="String">
     select max(RJS8) from MAIN where RJS8 like '%${username}%'
   </select>
-
-  <select id="randomByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
-      select * from main where appuser = '${appuser}' order by rand(number) limit 25
-  </select>
 </mapper>

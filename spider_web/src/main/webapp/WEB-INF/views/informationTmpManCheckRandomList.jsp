@@ -483,6 +483,9 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
+        $('.dataTables-example').DataTable({
+                "ordering": false, // 禁止排序
+        });
         if (!${selectLength eq null}){
             $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
         }//默认显示条数

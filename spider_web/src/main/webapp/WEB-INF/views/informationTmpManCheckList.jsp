@@ -332,7 +332,6 @@
                     </ul>
                 </div>--%>
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">抽查规则</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="nextStep()">下一步</button>
 
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -423,6 +422,8 @@
                                 <thead>
                                 <tr>
                                     <th class="hide_column">隐藏列</th>
+
+                                    <th><input type="checkbox" id="checkbox"></th>
                                     <th>标题</th>
                                     <%--                                    <th>原网站</th>
                                                                         <th>新闻地址</th>--%>
@@ -433,13 +434,17 @@
 
                                     <th>收录时间</th>
                                     <th>附件</th>
-                                    <th><input type="checkbox" id="checkbox"></th>
+                                    <th>操作</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${mainList}" var="main" varStatus="xb">
                                     <tr class="gradeX">
                                         <td class="hide_column">${main.linksource}</td>
+                                        <td class="center">
+                                            <input type="checkbox" name="mycheckbox" value="${main.number}">
+                                        </td>
                                         <td class="center">
                                             ${main.rjs0}
                                             <button type="button" class="btn btn-primary btn-xs" onclick="openSource('${main.linksource}')">来源</button>
@@ -454,8 +459,9 @@
                                         <td class="center">${main.fj_count}</td>
 
                                         <td class="center">
-                                            <input type="checkbox" name="mycheckbox" value="${main.number}">
+                                            <button type="button" class="btn btn-warning btn-sm" onclick="deleteConfirm('${main.number}')">删除</button>
                                         </td>
+
                                     </tr>
 
                                 </c:forEach>
@@ -500,6 +506,9 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
+        $('.dataTables-example').dataTable({
+            "sortOrder": [ 7, 'asc' ],'bStateSave': true,
+        });
         if (!${selectLength eq null}){
             $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
         }//默认显示条数
@@ -513,50 +522,8 @@
                 url: "<%=basePath%>rememberSelectLength"});
         } ).DataTable();
 
-
-        /*        //隐藏url 列
-                $('.dataTables-example').dataTable( {
-                      "columnDefs" :
-                          [{
-                              className: "hide_column",
-                              "targets": [0]
-                          }]
-                  } );*/
-
-        $('.dataTables-example').dataTable();
-
-        /* Init DataTables */
-        var oTable = $('#editable').dataTable();
-
-        /* Apply the jEditable handlers to the table */
-        oTable.$('td').editable('../example_ajax.php', {
-            "callback": function (sValue, y) {
-                var aPos = oTable.fnGetPosition(this);
-                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-            },
-            "submitdata": function (value, settings) {
-                return {
-                    "row_id": this.parentNode.getAttribute('id'),
-                    "column": oTable.fnGetPosition(this)[2]
-                };
-            },
-
-            "width": "90%",
-            "height": "100%"
-        });
-
-
     });
 
-    function fnClickAddRow() {
-        $('#editable').dataTable().fnAddData([
-            "Custom row",
-            "New row",
-            "New row",
-            "New row",
-            "New row"]);
-
-    }
 </script>
 <style>
 
@@ -600,6 +567,41 @@
 
 <script>
 
+
+    function deleteConfirm(deleteID)
+    {
+            $.ajax('<%=basePath%>manCheck/delete', {
+                dataType : 'json',
+                data: {
+                    ids:deleteID
+                },
+                success: function(data)
+                {
+                    if (data==true)
+                    {
+                        alert('删除成功!');
+                        start = $('.dataTables-example').dataTable().fnSettings()._iDisplayStart;
+                        total = $('.dataTables-example').dataTable().fnSettings().fnRecordsDisplay();
+                        window.location.reload();
+                        if((total-start)==1){
+                            if (start > 0) {
+                                $('.dataTables-example').dataTable().fnPageChange( 'previous', true );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        alert('删除发生错误，请联系管理员!');
+                    }
+                },
+                error: function()
+                {
+                    alert('服务器无响应，请联系管理员!');
+                }
+            });
+
+
+    }
 
     //debugger;
     $("#checkbox").click(function () {
@@ -707,29 +709,19 @@
             }
         })
     }
-    function nextStep(data) {
+    function nextStep() {
 
         var informationPipelineIds = "";
-        $('input[name="rulebox"]').each(function () {
+        $('input[name="mycheckbox"]').each(function () {
             if (this.checked){
-                informationPipelineIds += " "+this.value+" ";
+                informationPipelineIds += this.value+" ";
             }
         });
-        var sql = "";
-
-        debugger;
-        if(informationPipelineIds.indexOf('1')>0){
-            sql += "1.0sql";
-        }
-        if(informationPipelineIds.indexOf('2')>0){
-            sql += "2.0sql";
-        }
-        if(informationPipelineIds.indexOf('3')>0){
-            sql += "3.0sql";
-        }
 
 
-        window.location.href="<%=path%>/manCheck/randomTwentyFive";
+
+
+        window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds="+informationPipelineIds;
     }
     function openDetail(data) {
 
