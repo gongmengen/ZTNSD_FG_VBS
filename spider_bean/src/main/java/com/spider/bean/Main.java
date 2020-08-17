@@ -1,5 +1,6 @@
 package com.spider.bean;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Main {
@@ -54,6 +55,42 @@ public class Main {
 
     //附件数
     private Integer fj_count;
+
+    //正文字数
+    private long contentSize;
+
+    //排序得分
+    private int compare_score;
+
+    public static final Comparator<Main> MAIN_BY_SCORE = new Comparator<Main>(){
+        public int compare(Main o1, Main o2) {
+            if (o1.getCompare_score()>o2.getCompare_score()){
+                return -1;
+            }else if (o1.getCompare_score()<o2.getCompare_score()){
+                return 1;
+            }else {
+                return 0;
+            }
+
+        }
+    };
+
+
+    public int getCompare_score() {
+        return compare_score;
+    }
+
+    public void setCompare_score(int compare_score) {
+        this.compare_score = compare_score;
+    }
+
+    public long getContentSize() {
+        return contentSize;
+    }
+
+    public void setContentSize(long contentSize) {
+        this.contentSize = contentSize;
+    }
 
     public Integer getFj_count() {
         return fj_count;
