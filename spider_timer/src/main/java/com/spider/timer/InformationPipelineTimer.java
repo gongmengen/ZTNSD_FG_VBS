@@ -34,7 +34,7 @@ public class InformationPipelineTimer{
         System.out.println("定时任务执行。。。");
         if (TimerParm.TIMER_STATUS.equals("open")){//全局参数  标识是否继续执行定时器
             sendRequestByHttpclientGet(TimerParm.LOCAL_HOST);
-            sendRequestByHttpclientGet(TimerParm.timerurlforchl);
+            //sendRequestByHttpclientGet(TimerParm.timerurlforchl);
             sendRequestByHttpclientGet(TimerParm.timerurlfortmp);
         }
     }
