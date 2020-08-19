@@ -11,15 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,6 +51,143 @@ public class ManCheck_controller {
     @Autowired
     private MainCHLandLAR_service mainCHLandLAR_service;
 
+
+    //重命名附件
+    @RequestMapping("resetFileName")
+    @ResponseBody
+    public boolean resetFileName(@RequestParam(value = "filename")String filename,@RequestParam(value = "oldname")String oldname,@RequestParam(value = "number")long number) throws UnsupportedEncodingException {
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+        MainWithBLOBs mainByNumber = main_service.getMainByNumber(number);
+
+        //附件重命名
+        String attachmentPATH = TimerParm.fjPath5 + File.separator + mainByNumber.getRjs8().substring(0,mainByNumber.getRjs8().indexOf("."))+ File.separator + URLDecoder.decode(URLDecoder.decode(oldname,"UTF-8"),"UTF-8");
+        FileUtil.rename(new File(attachmentPATH),URLDecoder.decode(URLDecoder.decode(filename,"UTF-8"),"UTF-8"),true);
+
+        //数据库字段回填
+        MainWithBLOBs main = new MainWithBLOBs();
+        main.setFjian(mainByNumber.getFjian().replace(URLDecoder.decode(URLDecoder.decode(oldname,"UTF-8"),"UTF-8"),URLDecoder.decode(URLDecoder.decode(filename,"UTF-8"),"UTF-8")));
+        main.setNumber(mainByNumber.getNumber());
+
+        return main_service.update(main);
+
+    }
+
+
+    //上传附件 (加锁  避免数据库维护失败)
+    @RequestMapping("upload")
+    @ResponseBody
+    public synchronized boolean upload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("number") long number,
+            HttpServletRequest request) {
+
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+        MainWithBLOBs mainByNumber = main_service.getMainByNumber(number);
+        String path = TimerParm.fjPath5 + File.separator + mainByNumber.getRjs8().substring(0,mainByNumber.getRjs8().indexOf(".")) ;
+
+        //判断file数组不能为空并且长度大于0
+        if(file!=null){
+            MultipartFile files = file;
+            //保存文件
+            saveFile(files, path);
+
+            //维护数据库
+            String fjian = "";
+            if (StringUtils.isNotBlank(mainByNumber.getFjian())) {
+                //已有附件  拼接在已有字符串后面
+                fjian = mainByNumber.getFjian() + "|" + files.getOriginalFilename();
+
+
+            } else {
+                //没有附件  直接set
+                fjian = files.getOriginalFilename();
+            }
+            MainWithBLOBs main = new MainWithBLOBs();
+            main.setFjian(fjian);
+            main.setNumber(mainByNumber.getNumber());
+            main_service.update(main);
+
+
+        }
+        // 重定向
+        return true;
+    }
+
+    private boolean saveFile(MultipartFile file, String path) {
+        // 判断文件是否为空
+        if (!file.isEmpty()) {
+            try {
+                File filepath = new File(path);
+                if (!filepath.exists())
+                    filepath.mkdirs();
+                // 文件保存路径
+                String savePath = path +File.separator+ file.getOriginalFilename();
+                // 转存文件
+                file.transferTo(new File(savePath));
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    //删除附件
+    @RequestMapping("delAttachment")
+    @ResponseBody
+    public boolean delAttachment(@RequestParam(value = "filename")String filename,@RequestParam(value = "number")long number) throws UnsupportedEncodingException {
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+        //删除附件
+        MainWithBLOBs mainByNumber = main_service.getMainByNumber(number);
+        String attachmentPATH = TimerParm.fjPath5 + File.separator + mainByNumber.getRjs8().substring(0,mainByNumber.getRjs8().indexOf("."))+ File.separator + URLDecoder.decode(URLDecoder.decode(filename,"UTF-8"),"UTF-8");
+        FileUtil.del(attachmentPATH);
+        //维护数据库信息
+        String newsfjian = "";
+        String[] attachments = mainByNumber.getFjian().split("\\|");
+        for (String attachment : attachments) {
+            if (attachment.equals(URLDecoder.decode(URLDecoder.decode(filename,"UTF-8"),"UTF-8"))){
+                continue;
+            }
+            newsfjian+=attachment+"|";
+        }
+
+        MainWithBLOBs main = new MainWithBLOBs();
+        main.setFjian(newsfjian.substring(0,newsfjian.length()-1));
+        main.setNumber(mainByNumber.getNumber());
+
+
+
+
+
+        return main_service.update(main);
+
+    }
+    //修改
+    @RequestMapping("update")
+
+    public void update(InformationPipelineWithBLOBs information, HttpServletResponse response,Model model) throws IOException {
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        //为了获取正文不得不通过  informationPipeline 转换一下
+
+        MainWithBLOBs main = new MainWithBLOBs(Long.parseLong(information.getExtend2()),information.getNewstitle(),information.getDeptcode(),information.getReleasetime(),information.getImptime(),information.getDeptname(),information.getFilenum());
+        if (main_service.update(main)){
+            //正文按照页面上 的数据写回到txt中
+            String contextPath = TimerParm.txtPath5 + File.separator + information.getExtend3() + File.separator +information.getFilename();
+            FileUtil.writeString(information.getNewscontent(),contextPath,"GBK");
+            //正文按照页面上 的数据写回到 hting/txt中(兼容旧法规工具)
+            String contextCopyPath = TimerParm.txtCopyPath5 + File.separator +information.getFilename();
+            FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
+
+            response.sendRedirect("detail/"+information.getExtend2());
+
+        }
+
+    }
 
     //附件下载
     @RequestMapping("downLoadAttachment/{id}/{fjName}")
@@ -157,11 +294,32 @@ public class ManCheck_controller {
         String content = readTxt(main.getAppuser(),main.getRjs8());
 
 
+//-------------------------------------------------------------------------------------attachment
+        //附件集合返回对象
+
+        ArrayList<HashMap> attachmentList = new ArrayList<HashMap>();
 
 
+        //获取附件信息
 
+        String attachmentPath = TimerParm.fjPath5+File.separator+(main.getRjs8().substring(0,main.getRjs8().indexOf(".")));
+
+        //文件路径
+        List<File> files = FileUtil.loopFiles(attachmentPath);
+        if (files.size()>0){
+            for (File file : files) {
+                HashMap attachment = new HashMap();
+                attachment.put("filename",file.getName());
+                attachment.put("size",(file.length()/1024)+"kb");
+                attachment.put("status","原始文件");
+
+                attachmentList.add(attachment);
+            }
+        }
+//-------------------------------------------------------------------------------------attachment
         model.addAttribute("main",main);
         model.addAttribute("content",content);
+        model.addAttribute("attachmentList",attachmentList);
 
         return "informationTmpManCheckDetail";
     }

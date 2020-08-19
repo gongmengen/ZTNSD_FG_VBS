@@ -5,6 +5,13 @@ public class MainWithBLOBs extends Main {
 
     private String fjian;
 
+    public MainWithBLOBs() {
+    }
+
+    public MainWithBLOBs(Long number, String rjs0, String rjs4, String rjs5, String rjs6, String rjs10, String rjs12) {
+        super(number, rjs0, rjs4, rjs5, rjs6, rjs10, rjs12);
+    }
+
     public String getLinksource() {
         return linksource;
     }
@@ -20,4 +27,6 @@ public class MainWithBLOBs extends Main {
     public void setFjian(String fjian) {
         this.fjian = fjian == null ? null : fjian.trim();
     }
+
+
 }

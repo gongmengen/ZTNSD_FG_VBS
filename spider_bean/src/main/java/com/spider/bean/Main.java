@@ -76,6 +76,19 @@ public class Main {
     };
 
 
+    public Main(Long number, String rjs0, String rjs4,String rjs5,String rjs6, String rjs10,String rjs12) {
+        this.number = number;
+        this.rjs0 = rjs0;
+        this.rjs4 = rjs4;
+        this.rjs5 = rjs5;
+        this.rjs6 = rjs6;
+        this.rjs10 = rjs10;
+        this.rjs12 = rjs12;
+    }
+
+    public Main() {
+    }
+
     public int getCompare_score() {
         return compare_score;
     }

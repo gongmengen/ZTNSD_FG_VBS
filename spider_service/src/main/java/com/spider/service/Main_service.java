@@ -1,6 +1,7 @@
 package com.spider.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.spider.bean.Main;
 import com.spider.bean.MainExample;
 import com.spider.bean.MainWithBLOBs;
 import com.spider.mapper.MainMapper;
@@ -74,5 +75,12 @@ public class Main_service {
             mains.add(mainMapper.selectByPrimaryKey(Long.parseLong(s)));
         }
         return mains;
+    }
+
+    public boolean update(MainWithBLOBs main) {
+        MainExample mainExample = new MainExample();
+        MainExample.Criteria criteria = mainExample.createCriteria();
+        criteria.andNumberEqualTo(main.getNumber());
+        return mainMapper.updateByExampleSelective(main,mainExample)==1?true:false;
     }
 }
