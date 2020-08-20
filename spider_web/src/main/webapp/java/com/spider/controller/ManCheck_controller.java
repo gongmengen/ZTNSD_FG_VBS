@@ -589,9 +589,10 @@ public class ManCheck_controller {
     private List<MainWithBLOBs> priorityRex(List<MainWithBLOBs> mainList,String informationIds) {
 
         //选中得新闻
-
-        String[] _informationIds = informationIds.split(" ");
-
+        String[] _informationIds = {};
+        if (StringUtils.isNotBlank(informationIds)) {
+            _informationIds = informationIds.split(" ");
+        }
         //初始化得分
 
 
@@ -617,7 +618,7 @@ public class ManCheck_controller {
             }
             //4、步骤一页面 选中得新闻
             for (String number : _informationIds) {
-                if (mainWithBLOB.getNumber().equals(number)){
+                if (mainWithBLOB.getNumber().equals(Long.parseLong(number))){
                     score += 1;
                 }
             }
