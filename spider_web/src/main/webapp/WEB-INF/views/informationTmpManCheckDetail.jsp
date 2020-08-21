@@ -416,7 +416,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">正文：</label>
                     <div class="col-sm-8">
-                        <textarea id="newscontent" name="newscontent" autoHeight="true" style="overflow: hidden;" class="form-control" required="" aria-required="true">${content}</textarea>
+                        <textarea id="newscontent"   name="newscontent"  style="height: 1000px" class="form-control" required="" aria-required="true">${content}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -668,6 +668,8 @@
         window.location.href="<%=basePath%>manCheck/downLoadAttachment/"+number+"/"+filename;
     }
 </script>
+
+
 </body>
 
 </html>

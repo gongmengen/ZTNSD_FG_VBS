@@ -274,14 +274,20 @@ public class ManCheck_controller {
         //导出到chl
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
+
+        boolean flag = true;
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
             if (intoCHL(mainWithBLOBs,request)) {
                 String[] numbers = {mainWithBLOBs.getNumber() + ""};
-                main_service.deleteByNumbers(numbers);
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+                flag = main_service.deleteByNumbers(numbers);
+            }else {
+                flag = false;
             }
         }
 
-        return "导出成功";
+        return flag == true?"导出成功":"导出失败";
     }
     //详情
     @RequestMapping("detail/{number}")
