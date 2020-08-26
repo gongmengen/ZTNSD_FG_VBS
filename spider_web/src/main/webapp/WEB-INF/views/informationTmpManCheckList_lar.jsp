@@ -332,6 +332,7 @@
                     </ul>
                 </div>--%>
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">抽查规则</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="nextStep()">下一步</button>
 
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
