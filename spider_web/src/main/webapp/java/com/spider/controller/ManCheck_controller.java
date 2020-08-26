@@ -282,6 +282,9 @@ public class ManCheck_controller {
                 DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                 DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
                 flag = main_service.deleteByNumbers(numbers);
+                //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
             }else {
                 flag = false;
             }
@@ -412,8 +415,33 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         String[] id = ids.trim().split(" ");
-
+        List<MainWithBLOBs> mainByNumbers = main_service.getMainByNumbers(id);
         if(main_service.deleteByNumbers(id)){
+
+
+            for (MainWithBLOBs mainByNumber : mainByNumbers) {
+
+
+                try {
+
+                    //删除txt
+                    NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtPath5 + File.separator +mainByNumber.getAppuser()+ File.separator +mainByNumber.getRjs8()));
+                    //删除hting/txt
+                    NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtCopyPath5 + File.separator + mainByNumber.getRjs8()));
+                    //删除附件
+                    NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5 + File.separator + mainByNumber.getRjs8().substring(0,mainByNumber.getRjs8().indexOf("."))));
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+
+
 
             return true;
         }else {
@@ -557,6 +585,12 @@ public class ManCheck_controller {
             }
             //移动
             FileUtil.move(start1,target2,true);
+
+
+            //删除 hting 的txt
+
+            NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtCopyPath5 + File.separator + oldFileName));
+
 
 
             return true;
