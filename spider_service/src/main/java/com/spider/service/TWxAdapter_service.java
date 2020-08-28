@@ -407,7 +407,7 @@ public class TWxAdapter_service {
         result.setImptime(information.getWebsiteid()+"");
         //存储结果集
         Map resu = new HashMap<String,String>();
-        resu.put("result",result);
+
         //正文和标题不为 "" 则进行rdt处理
         if (!"".equals(result.getNewstitle())&&!"".equals(result.getNewscontent())) {
             InformationPipelineWithBLOBs rdtResult = getRdtResult(information, request, errorLogs, result);
@@ -415,14 +415,13 @@ public class TWxAdapter_service {
             //对rdt处理后的数据信息 再次进行数据清洗(二次检查【矫正】)
             rdtResult = twicedPipelineEntry(rdtResult,errorLogs,javaScriptUtils,information,informationtwices_title,informationtwices_content,informationtwices_newsnum,informationtwices_attachment,informationtwices_releasedate);
 
-            resu.put("result",rdtResult);
+
             //rdt处理后  进行质量检查
             validEntry(rdtResult,errorLogs,javaScriptUtils,information,informationchecks_title,informationchecks_content,informationchecks_newsnum,informationchecks_attachment,informationchecks_releasedate);
-
+            resu.put("result",rdtResult);
 
         }
-
-
+        resu.put("result",result);
         resu.put("errorlogs",errorLogs);
         return resu;
     }
@@ -768,5 +767,20 @@ public class TWxAdapter_service {
         return result;
 
 
+    }
+
+    public String get_IMG_URL_By_Js(String title,String appDate,String numTxt,String depcode,String deptName,String dbsType,String AttachStr,String src_code,String txt,String txt_code,String javaScript) {
+        JavaScriptUtils javaScriptUtils = new JavaScriptUtils();
+        String entry = "";
+        try {
+             entry = javaScriptUtils.imgEntry(title,appDate,numTxt,depcode,deptName,dbsType,AttachStr,src_code,txt,txt_code,javaScript);
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+
+        return entry;
     }
 }

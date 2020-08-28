@@ -13,7 +13,33 @@ public class JavaScript_static {
     public static String LAWSTAR_APPDATE;
     public static String LAWSTAR_WENHAO;
     public static String LAWSTAR_ATTMENTS;
+    public static String LAWSTAR_IMG;
 
+
+
+    //通用 img 下载
+    public void setLawstarIMG() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        try {
+            String filepath = "js/lawstar_img.js";
+            URI resource = App.class.getClassLoader().getResource(filepath).toURI();
+
+            File uriFile = new File(resource);
+            System.out.println(uriFile.getAbsolutePath());
+
+            //FileReader fr = new FileReader(uriFile.getAbsolutePath());
+            builder.append(Tools.readFile(String.valueOf(uriFile.getAbsoluteFile()),"UTF-8").toString());
+/*            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(uriFile.getAbsoluteFile()),"utf-8"));
+            while(br.readLine()!=null){
+                builder.append(br.readLine()+"\r\n");
+            }*/
+
+
+        } catch (URISyntaxException e) {
+            System.err.println(e);
+        }
+        LAWSTAR_IMG = builder.toString();
+    }
     //通用 base
     public void setLawstarlibJs() throws IOException {
         StringBuilder builder = new StringBuilder();

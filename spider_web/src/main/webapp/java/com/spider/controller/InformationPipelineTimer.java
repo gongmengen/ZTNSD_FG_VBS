@@ -3,6 +3,7 @@ package com.spider.controller;
 
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.lawstar.basic.util.Tools;
+import com.spider.elemente.JavaScript_static;
 import com.spider.exception.OverOutputExistException;
 import com.spider.utils.HttpsUtils;
 import com.spider.bean.*;
@@ -11,6 +12,7 @@ import com.spider.elemente.TimerParm;
 import com.spider.service.*;
 import com.spider.utils.DistinctMainPramUtil;
 import com.spider.utils.NioFileUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -290,7 +292,7 @@ public class InformationPipelineTimer {
         return "ok";
     }
 
-    //根据website表 refmain = 3 将预处理信息直接推送到 chl 数据库
+    //根据website表 refmain = 3 将预处理信息直接推送到 tmp 数据库
     @RequestMapping("basicTimerForTMP")
     @ResponseBody
     public synchronized String  basicTimerForTMP(HttpServletRequest request) {
@@ -316,7 +318,7 @@ public class InformationPipelineTimer {
 
             for (InformationPipelineWithBLOBs information:informationPipelineList
                     ) {
-                //入正式库
+                //入临时库
                 intoTMP(information,request);
             }
             for (InformationPipelineWithBLOBs information:informationPipelineList
@@ -605,6 +607,79 @@ public class InformationPipelineTimer {
             return "删除失败";
         }
 
+
+    }
+
+    //调用脚本下载图片
+    @RequestMapping("imgDownload")
+    @ResponseBody
+    public String imgDownload(@RequestParam("ids")String ids,HttpServletRequest request){
+
+        String[] id = ids.trim().split(" ");
+
+        DynamicDataSourceHolder.clearCustomerType();
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+        List<InformationPipelineWithBLOBs> informationPipelineByIds = informationPipeline_service.getInformationPipelineByIds(id);
+
+
+        for (InformationPipelineWithBLOBs informationPipeline:informationPipelineByIds
+                ) {
+            DynamicDataSourceHolder.clearCustomerType();
+            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+            TXwInformationWithBLOBs information = information_service.getInformation(informationPipeline.getInformationId());
+            String imgPath = adapter_service.get_IMG_URL_By_Js(informationPipeline.getNewstitle(),informationPipeline.getReleasetime(),informationPipeline.getFilenum(),informationPipeline.getDeptcode(),informationPipeline.getDeptname(),informationPipeline.getXwcolumn().equals("100002")?"chl":"lar",informationPipeline.getAttachment(),information.getNewscontentnotupdate(),informationPipeline.getNewscontent(),informationPipeline.getExtend2(), JavaScript_static.LAWSTARLIB_JS +JavaScript_static.LAWSTAR_IMG);
+            //将 附件全部重新下载一遍
+            DynamicDataSourceHolder.clearCustomerType();
+            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+
+            //追加之前判断是否已经存在
+            String attachment = "";
+            if (StringUtils.isNotBlank(imgPath)){
+                String[] img = imgPath.split("##");
+                attachment = informationPipeline.getAttachment();
+                for (String s : img) {
+                    if (attachment.indexOf(s)>-1){
+                        break;
+                    }else {
+                       attachment = attachment+s+"##";
+                    }
+                }
+
+            }
+
+
+            InformationPipelineWithBLOBs informationPipeline1 = new InformationPipelineWithBLOBs();
+            informationPipeline1.setAttachment(attachment);
+
+
+
+            //根据下载地址下载 img
+            String localAttachmentPATH = request.getRealPath(TimerParm.attachmentPATH)+File.separator+(informationPipeline.getFilename().substring(0,informationPipeline.getFilename().indexOf(".")));
+            //保存附件
+            try {
+                Map downLoadResult = HttpsUtils.saveUrlAs(informationPipeline.getSource(), informationPipeline1.getAttachment(), localAttachmentPATH, informationPipeline.getInformationId(), Integer.parseInt(informationPipeline.getXwcolumn()));
+                if (downLoadResult!=null&&downLoadResult.get(0).equals("false")){
+
+                }else {
+                    informationPipeline1.setFjian(downLoadResult.get(1)+"");
+                    //附件个数
+                    String fjian = informationPipeline1.getFjian();
+                    if (fjian!=null&&!"".equals(fjian)){
+                        informationPipeline1.setFjcount(fjian.split("\\|").length);
+                    }else {
+                        informationPipeline1.setFjcount(0);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //维护数据库
+            informationPipeline_service.updateIstatus(informationPipeline1,informationPipeline.getId());
+        }
+
+            return "下载成功";
 
     }
 

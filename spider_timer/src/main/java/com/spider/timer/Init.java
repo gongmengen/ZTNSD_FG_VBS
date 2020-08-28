@@ -35,6 +35,7 @@ public class Init {
         javaScript_static.setLawstar_appdate();
         javaScript_static.setLawstar_wenhao();
         javaScript_static.setLawstar_attments();
+        javaScript_static.setLawstarIMG();
         System.out.println("js文件加载完成");
         //获取timerBasic.properties文件
         LoadResourceUtil loadResourceUtil = new LoadResourceUtil();

@@ -327,6 +327,7 @@
                 <button type="button" class="btn btn-primary btn-sm" onclick="outPutOver()">已导出</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="restart()">重置</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="img_download()">img—upload</button>
             </span>
                 <h2>中央法规</h2>
                 <ol class="breadcrumb">
@@ -661,6 +662,51 @@
     })
 
 
+
+   //已导出
+
+   function img_download() {
+
+       var informationPipelineIds = "";
+       $('input[name="mycheckbox"]').each(function () {
+           if (this.checked){
+               informationPipelineIds += this.value+" ";
+           }
+       });
+       if (informationPipelineIds.length>0){
+           $.ajax({
+               beforeSend: function () {
+                   $("#loading").html("<div class=\"spiner-example\">\n" +
+                       "                            <div class=\"sk-spinner sk-spinner-wave\">\n" +
+                       "                                <div class=\"sk-rect1\"></div>\n" +
+                       "                                <div class=\"sk-rect2\"></div>\n" +
+                       "                                <div class=\"sk-rect3\"></div>\n" +
+                       "                                <div class=\"sk-rect4\"></div>\n" +
+                       "                                <div class=\"sk-rect5\"></div>\n" +
+                       "                            </div>\n" +
+                       "                        </div>");
+                   $("#loading").css("display","block");
+                   $(".modal-body").css("display","none");
+
+               },
+               complete: function () {
+                   $("#loading").css("display","none");
+                   // $("#loading").remove();
+               },
+               data:{ids:informationPipelineIds},
+               url: "<%=basePath%>imgDownload",
+               success: function(data){
+                   alert(data);
+                   window.location.reload();
+               }});
+       }else {
+           alert("请选择要下载的新闻")
+       }
+
+
+
+
+   }
 
    //已导出
 

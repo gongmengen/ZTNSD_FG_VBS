@@ -38,7 +38,7 @@ public class InformationPipeline_controller {
     private UserTask_service userTask_service;
 
 
-    //查询temp数据库得到js处理后的新闻数据 已导出
+        //查询temp数据库得到js处理后的新闻数据 已导出
     @RequestMapping("/outOverInformationDetail/{id}/{flag}")
     public String getOutOverInformationDetail(@PathVariable(value = "id")int id,@PathVariable(value = "flag")int xwcolumn, Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
