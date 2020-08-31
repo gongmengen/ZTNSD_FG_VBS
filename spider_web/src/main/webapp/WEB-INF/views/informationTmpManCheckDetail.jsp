@@ -309,7 +309,10 @@
                 </ol>
             </div>
             <div class="col-sm-8">
+
                 <div class="title-action">
+                    <a href="javacript:void(0);" onclick="virtualDelete('${main.number}')" class="btn btn-primary">逻辑删除</a>
+                    <a href="javacript:void(0);" onclick="deleteAll('${main.number}')" class="btn btn-primary">物理删除</a>
                     <a href="${main.linksource}" target="_blank" class="btn btn-primary">来源</a>
                 </div>
             </div>
@@ -667,6 +670,34 @@
         filename = filename.replace(new RegExp("\\.","gm"),"-");
         window.location.href="<%=basePath%>manCheck/downLoadAttachment/"+number+"/"+filename;
     }
+</script>
+<script type="text/javascript">
+
+    //逻辑删除，删除后不可入库不可显示
+    function virtualDelete(number) {
+        $.ajax({
+            url: "<%=basePath%>manCheck/virtualDelete",
+            data:{"number":number},
+            success: function(){
+                alert("删除成功！")
+                window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds=";
+            }
+        });
+    }
+
+    //物理删除
+    function deleteAll(number) {
+
+            $.ajax({
+                data:{ids:number},
+                url: "<%=basePath%>manCheck/delete",
+                success: function(data){
+                    alert(data);
+                    window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds=";
+                }});
+
+    }
+
 </script>
 
 

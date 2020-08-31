@@ -39,4 +39,6 @@ public interface MainMapper {
     //自定义
 
     String findMaxRjs8(@Param(value="username")String username);
+
+    List<MainWithBLOBs> getListByAppuser(@Param(value="appuser")String appuser);
 }

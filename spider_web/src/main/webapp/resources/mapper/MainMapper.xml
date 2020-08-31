@@ -604,4 +604,9 @@
   <select id="findMaxRjs8" resultType="String" parameterType="String">
     select max(RJS8) from MAIN where RJS8 like '%${username}%'
   </select>
+  <select id="getListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
+    select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian
+    from main
+    WHERE ( appuser = '${appuser}'  and ifnull(truetag_1,0) &lt;&gt; 1 )
+  </select>
 </mapper>

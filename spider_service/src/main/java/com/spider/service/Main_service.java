@@ -40,10 +40,7 @@ public class Main_service {
     }
 
     public List<MainWithBLOBs> getListByAppuser(String appuser) {
-        MainExample mainExample = new MainExample();
-        MainExample.Criteria criteria = mainExample.createCriteria();
-        criteria.andAppuserEqualTo(appuser);
-        return mainMapper.selectByExampleWithBLOBs(mainExample);
+        return mainMapper.getListByAppuser(appuser);
     }
 
     public boolean deleteByNumbers(String[] id) {
@@ -55,13 +52,6 @@ public class Main_service {
         }
         return flag;
 
-    }
-
-    public List<MainWithBLOBs> getRandomListByAppuser(String appuser) {
-        MainExample mainExample = new MainExample();
-        MainExample.Criteria criteria = mainExample.createCriteria();
-        criteria.andAppuserEqualTo(appuser);
-        return mainMapper.selectByExampleWithBLOBs(mainExample);
     }
 
     public MainWithBLOBs getMainByNumber(long number) {

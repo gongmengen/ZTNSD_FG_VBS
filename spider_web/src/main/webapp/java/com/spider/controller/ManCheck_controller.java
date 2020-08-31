@@ -51,6 +51,22 @@ public class ManCheck_controller {
     @Autowired
     private MainCHLandLAR_service mainCHLandLAR_service;
 
+    //逻辑删除
+    @RequestMapping("virtualDelete")
+    @ResponseBody
+    public boolean virtualDelete(@RequestParam("number")long number){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        MainWithBLOBs main = new MainWithBLOBs();
+        main.setNumber(number);
+        main.setTruetag1(1);//标记为删除状态
+        if(main_service.update(main)){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     //重命名附件
     @RequestMapping("resetFileName")
@@ -352,7 +368,7 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取中央库新闻数据
-        List<MainWithBLOBs> mainList = main_service.getRandomListByAppuser("zyzd");
+        List<MainWithBLOBs> mainList = main_service.getListByAppuser("zyzd");
 
         for (MainWithBLOBs mainWithBLOBs : mainList) {
             mainWithBLOBs.setContentSize(readTxt(mainWithBLOBs.getAppuser(),mainWithBLOBs.getRjs8()).length());
@@ -384,7 +400,7 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取地方库新闻数据
-        List<MainWithBLOBs> mainList = main_service.getRandomListByAppuser("dfzd");
+        List<MainWithBLOBs> mainList = main_service.getListByAppuser("dfzd");
 
         for (MainWithBLOBs mainWithBLOBs : mainList) {
             mainWithBLOBs.setContentSize(readTxt(mainWithBLOBs.getAppuser(),mainWithBLOBs.getRjs8()).length());
