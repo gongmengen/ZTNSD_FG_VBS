@@ -48,8 +48,10 @@
                             <img alt="image" class="img-circle" src="img/profile_small.jpg" />
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Beaut-zihan</strong>
-                             </span> <span class="text-muted text-xs block">超级管理员 <b class="caret"></b></span> </span>
+                                <span class="clear">
+                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name} </strong></span>
+
+                                </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="form_avatar.html">修改头像</a>
@@ -71,11 +73,14 @@
 
                 </li>
 
-                <li>
+
+
+
+
+                <li >
                     <a href="index.html#"><i class="fa fa-table"></i> <span class="nav-label">适配网站</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <!--                        <li><a href="table_basic.html">基本表格</a>
-                                                </li>-->
+
                         <li><a href="<%=basePath%>websiteList">网站列表(中央)</a>
                         </li>
                         <li><a href="<%=basePath%>websiteList_lar">网站列表(地方)</a>
@@ -136,6 +141,49 @@
                         </li>
                     </ul>
                 </li>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa-comments"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/task/list">网站分配列表(中央)</a>
+                            <li><a href="/task/list_lar">网站分配列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">网站数据抓取监测</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/monitor/list">网站抓取列表(中央)</a>
+                            <li><a href="/monitor/list_lar">网站抓取列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/manCheck/list">临时库列表(中央)</a>
+                            <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
+                <li>
+                    <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
+
+                </li>
+
+
+
                 <script type="text/javascript">
                     function lawstar_title_update() {
                         window.location.href="/lawstar_title_update";
@@ -160,34 +208,6 @@
                         window.location.href="/lawstar_common_update";
                     }
                 </script>
-                <!--                <li>
-                                    <a href="index.html#"><i class="fa fa-sitemap"></i> <span class="nav-label">菜单 </span><span class="fa arrow"></span></a>
-                                    <ul class="nav nav-second-level">
-                                        <li>
-                                            <a href="index.html#">三级菜单 <span class="fa arrow"></span></a>
-                                            <ul class="nav nav-third-level">
-                                                <li>
-                                                    <a href="index.html#">三级菜单 01</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index.html#">三级菜单 01</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index.html#">三级菜单 01</a>
-                                                </li>
-
-                                            </ul>
-                                        </li>
-                                        <li><a href="index.html#">二级菜单</a>
-                                        </li>
-                                        <li>
-                                            <a href="index.html#">二级菜单</a>
-                                        </li>
-                                        <li>
-                                            <a href="index.html#">二级菜单</a>
-                                        </li>
-                                    </ul>
-                                </li>-->
             </ul>
 
         </div>

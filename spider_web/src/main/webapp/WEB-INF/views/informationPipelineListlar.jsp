@@ -50,7 +50,7 @@
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name}</strong></span>
+                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name} </strong></span>
 
                                 </span>
                         </a>
@@ -127,6 +127,9 @@
                         <li>
                             <a href="javascript:void(0);" onclick="lawstar_attments_update()">附件</a>
                         </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="lawstar_common_update()">common.js</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="active">
@@ -141,7 +144,7 @@
                 </li>
                 <c:if test="${sessionScope.user.level < 0}">
                     <li>
-                        <a href="index.html#"><i class="fa fa-desktop"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
+                        <a href="index.html#"><i class="fa fa-comments"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <!--                        <li><a href="table_basic.html">基本表格</a>
                                                     </li>-->
@@ -163,10 +166,25 @@
                         </ul>
                     </li>
                 </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/manCheck/list">临时库列表(中央)</a>
+                            <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
                 <li>
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 
                 </li>
+
+
+
                 <script type="text/javascript">
                     function lawstar_title_update() {
                         window.location.href="/lawstar_title_update";
@@ -186,6 +204,9 @@
 
                     function lawstar_attments_update() {
                         window.location.href="/lawstar_attments_update";
+                    }
+                    function lawstar_common_update() {
+                        window.location.href="/lawstar_common_update";
                     }
                 </script>
             </ul>

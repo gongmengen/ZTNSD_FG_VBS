@@ -48,8 +48,10 @@
                             <img alt="image" class="img-circle" src="img/profile_small.jpg" />
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Beaut-zihan</strong>
-                             </span>  <span class="text-muted text-xs block">超级管理员 <b class="caret"></b></span> </span>
+                                <span class="clear">
+                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name} </strong></span>
+
+                                </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="form_avatar.html">修改头像</a>
@@ -75,9 +77,10 @@
 
 
 
-                <li>
+                <li >
                     <a href="index.html#"><i class="fa fa-table"></i> <span class="nav-label">适配网站</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
+
                         <li><a href="<%=basePath%>websiteList">网站列表(中央)</a>
                         </li>
                         <li><a href="<%=basePath%>websiteList_lar">网站列表(地方)</a>
@@ -87,13 +90,21 @@
                 <li class="active">
                     <a href="index.html#"><i class="fa fa-sitemap"></i> <span class="nav-label">已适配/未适配 </span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="/isApaterWebsiteList">已适配</a>
+                        <li><a href="javascript:void(0);" onclick="isApaterWebsiteList()">已适配</a>
                         </li>
                         <li class="active">
                             <a href="/isNotApaterWebsiteList">未适配</a>
                         </li>
                     </ul>
                 </li>
+                <script type="text/javascript">
+                    function isApaterWebsiteList() {
+                        window.location.href="/isApaterWebsiteList";
+                    }
+                    function isNotApaterWebsiteList() {
+                        window.location.href="/isNotApaterWebsiteList";
+                    }
+                </script>
                 <li>
                     <a href="index.html#"><i class="fa fa-magic"></i> <span class="nav-label">通用脚本修改 </span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -115,6 +126,9 @@
                         <li>
                             <a href="javascript:void(0);" onclick="lawstar_attments_update()">附件</a>
                         </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="lawstar_common_update()">common.js</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -127,6 +141,49 @@
                         </li>
                     </ul>
                 </li>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa-comments"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/task/list">网站分配列表(中央)</a>
+                            <li><a href="/task/list_lar">网站分配列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">网站数据抓取监测</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/monitor/list">网站抓取列表(中央)</a>
+                            <li><a href="/monitor/list_lar">网站抓取列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
+                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                    </li>-->
+                            <li><a href="/manCheck/list">临时库列表(中央)</a>
+                            <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
+                <li>
+                    <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
+
+                </li>
+
+
+
                 <script type="text/javascript">
                     function lawstar_title_update() {
                         window.location.href="/lawstar_title_update";
@@ -146,6 +203,9 @@
 
                     function lawstar_attments_update() {
                         window.location.href="/lawstar_attments_update";
+                    }
+                    function lawstar_common_update() {
+                        window.location.href="/lawstar_common_update";
                     }
                 </script>
             </ul>
