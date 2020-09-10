@@ -386,7 +386,8 @@
                                     <th>文号</th>
                                     <th>部门代码</th>
                                     <th>部门名称</th>
-
+                                    <th>部门代码（新）</th>
+                                    <th>部门名称（新）</th>
                                     <th>收录时间</th>
                                     <th>附件</th>
                                     <th><input type="checkbox" id="checkbox"></th>
@@ -406,6 +407,8 @@
                                         <td class="center">${main.rjs12}</td>
                                         <td class="center">${main.rjs4}</td>
                                         <td class="center">${main.rjs10}</td>
+                                        <td class="center">${main.rjs14}</td>
+                                        <td class="center">${main.rjs15}</td>
                                         <td class="center"><fmt:formatDate value="${main.appdate}" pattern="yyyy-MM-dd HH:mm" ></fmt:formatDate></td>
                                         <td class="center">
                                             <c:if test="${main.fj_count == 0}">

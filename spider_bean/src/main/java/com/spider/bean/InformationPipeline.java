@@ -51,6 +51,10 @@ public class InformationPipeline {
 
     private String extend3;
 
+    private String rjs14;
+
+    private String rjs15;
+
     public Integer getId() {
         return id;
     }
@@ -241,5 +245,21 @@ public class InformationPipeline {
 
     public void setExtend3(String extend3) {
         this.extend3 = extend3 == null ? null : extend3.trim();
+    }
+
+    public String getRjs14() {
+        return rjs14;
+    }
+
+    public void setRjs14(String rjs14) {
+        this.rjs14 = rjs14 == null ? null : rjs14.trim();
+    }
+
+    public String getRjs15() {
+        return rjs15;
+    }
+
+    public void setRjs15(String rjs15) {
+        this.rjs15 = rjs15 == null ? null : rjs15.trim();
     }
 }

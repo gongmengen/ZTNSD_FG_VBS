@@ -102,6 +102,12 @@
             <if test="fjian != null" >
                 fjian,
             </if>
+            <if test="rjs14 != null" >
+                RJS14,
+            </if>
+            <if test="rjs15 != null" >
+                RJS15,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="rid != null" >
@@ -169,6 +175,12 @@
             </if>
             <if test="fjian != null" >
                 #{fjian,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rjs14 != null" >
+                #{RJS14,jdbcType=VARCHAR},
+            </if>
+            <if test="rjs15 != null" >
+                #{RJS15,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

@@ -308,6 +308,37 @@ public class ManCheck_controller {
 
         return flag == true?"导出成功":"导出失败";
     }
+    //人工审查的新闻可以从 tmp临时库  导入到  lar正式库
+    @RequestMapping("output_lar")
+    @ResponseBody
+    public String output_lar(@RequestParam("ids")String ids,HttpServletRequest request){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+        String[] id = ids.trim().split(" ");
+        //获取地方库新闻数据
+        List<MainWithBLOBs> tmpMainList = main_service.getMainByNumbers(id);
+
+        //导出到lar
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+
+        boolean flag = true;
+        for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
+            if (intoCHL(mainWithBLOBs,request)) {
+                String[] numbers = {mainWithBLOBs.getNumber() + ""};
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+                flag = main_service.deleteByNumbers(numbers);
+                //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+            }else {
+                flag = false;
+            }
+        }
+
+        return flag == true?"导出成功":"导出失败";
+    }
     //详情
     @RequestMapping("detail/{number}")
     public String detail(@PathVariable(value = "number")String number,Model model){
@@ -567,6 +598,8 @@ public class ManCheck_controller {
         main.setKword(tmpmain.getKword());
         main.setLawlevel(5);
         main.setTruetag(1);
+        main.setRjs14(tmpmain.getRjs14());
+        main.setRjs15(tmpmain.getRjs15());
         mainCHLandLAR_service.insert(main);
 
 

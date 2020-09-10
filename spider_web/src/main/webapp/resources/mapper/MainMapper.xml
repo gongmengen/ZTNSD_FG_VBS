@@ -25,6 +25,8 @@
     <result column="RJS13" property="rjs13" jdbcType="INTEGER" />
     <result column="UpdateTime" property="updatetime" jdbcType="INTEGER" />
     <result column="truetag_1" property="truetag1" jdbcType="INTEGER" />
+    <result column="RJS14" property="rjs14" jdbcType="VARCHAR" />
+    <result column="RJS15" property="rjs15" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.MainWithBLOBs" extends="BaseResultMap" >
     <result column="LinkSource" property="linksource" jdbcType="LONGVARCHAR" />
@@ -89,8 +91,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, 
-    appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1
+    number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword,
+    appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1,
+    RJS14, RJS15
   </sql>
   <sql id="Blob_Column_List" >
     LinkSource, fjian
@@ -126,7 +129,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -144,24 +147,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.spider.bean.MainWithBLOBs" >
-    insert into main (number, RJS0, RJS1, 
-      RJS4, RJS5, RJS6, RJS7, 
-      RJS8, RJS9, RJS10, 
-      RJS11, RJS12, kword, 
-      appuser, appdate, truetag, 
-      lawlevel, Marked, anyou, 
-      rid, RJS13, UpdateTime, 
-      truetag_1, LinkSource, fjian, pre_distinct
-      )
-    values (#{number,jdbcType=BIGINT}, #{rjs0,jdbcType=VARCHAR}, #{rjs1,jdbcType=VARCHAR}, 
-      #{rjs4,jdbcType=VARCHAR}, #{rjs5,jdbcType=VARCHAR}, #{rjs6,jdbcType=VARCHAR}, #{rjs7,jdbcType=VARCHAR}, 
-      #{rjs8,jdbcType=VARCHAR}, #{rjs9,jdbcType=SMALLINT}, #{rjs10,jdbcType=VARCHAR}, 
-      #{rjs11,jdbcType=VARCHAR}, #{rjs12,jdbcType=VARCHAR}, #{kword,jdbcType=VARCHAR}, 
-      #{appuser,jdbcType=VARCHAR}, #{appdate,jdbcType=TIMESTAMP}, #{truetag,jdbcType=INTEGER}, 
-      #{lawlevel,jdbcType=INTEGER}, #{marked,jdbcType=INTEGER}, #{anyou,jdbcType=VARCHAR}, 
-      #{rid,jdbcType=DECIMAL}, #{rjs13,jdbcType=INTEGER}, #{updatetime,jdbcType=INTEGER}, 
-      #{truetag1,jdbcType=INTEGER}, #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR}, #{pre_distinct,jdbcType=INTEGER}
-      )
+    insert into main (number, RJS0, RJS1,
+    RJS4, RJS5, RJS6, RJS7,
+    RJS8, RJS9, RJS10,
+    RJS11, RJS12, kword,
+    appuser, appdate, truetag,
+    lawlevel, Marked, anyou,
+    rid, RJS13, UpdateTime,
+    truetag_1, RJS14, RJS15,
+    LinkSource, fjian)
+    values (#{number,jdbcType=BIGINT}, #{rjs0,jdbcType=VARCHAR}, #{rjs1,jdbcType=VARCHAR},
+    #{rjs4,jdbcType=VARCHAR}, #{rjs5,jdbcType=VARCHAR}, #{rjs6,jdbcType=VARCHAR}, #{rjs7,jdbcType=VARCHAR},
+    #{rjs8,jdbcType=VARCHAR}, #{rjs9,jdbcType=SMALLINT}, #{rjs10,jdbcType=VARCHAR},
+    #{rjs11,jdbcType=VARCHAR}, #{rjs12,jdbcType=VARCHAR}, #{kword,jdbcType=VARCHAR},
+    #{appuser,jdbcType=VARCHAR}, #{appdate,jdbcType=TIMESTAMP}, #{truetag,jdbcType=INTEGER},
+    #{lawlevel,jdbcType=INTEGER}, #{marked,jdbcType=INTEGER}, #{anyou,jdbcType=VARCHAR},
+    #{rid,jdbcType=DECIMAL}, #{rjs13,jdbcType=INTEGER}, #{updatetime,jdbcType=INTEGER},
+    #{truetag1,jdbcType=INTEGER}, #{rjs14,jdbcType=VARCHAR}, #{rjs15,jdbcType=VARCHAR},
+    #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.spider.bean.MainWithBLOBs" >
     insert into main
@@ -234,6 +237,12 @@
       </if>
       <if test="truetag1 != null" >
         truetag_1,
+      </if>
+      <if test="rjs14 != null" >
+        RJS14,
+      </if>
+      <if test="rjs15 != null" >
+        RJS15,
       </if>
       <if test="linksource != null" >
         LinkSource,
@@ -311,6 +320,12 @@
       </if>
       <if test="truetag1 != null" >
         #{truetag1,jdbcType=INTEGER},
+      </if>
+      <if test="rjs14 != null" >
+        #{rjs14,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs15 != null" >
+        #{rjs15,jdbcType=VARCHAR},
       </if>
       <if test="linksource != null" >
         #{linksource,jdbcType=LONGVARCHAR},
@@ -398,6 +413,12 @@
       <if test="record.truetag1 != null" >
         truetag_1 = #{record.truetag1,jdbcType=INTEGER},
       </if>
+      <if test="record.rjs14 != null" >
+        RJS14 = #{record.rjs14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjs15 != null" >
+        RJS15 = #{record.rjs15,jdbcType=VARCHAR},
+      </if>
       <if test="record.linksource != null" >
         LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
       </if>
@@ -412,30 +433,32 @@
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update main
     set number = #{record.number,jdbcType=BIGINT},
-      RJS0 = #{record.rjs0,jdbcType=VARCHAR},
-      RJS1 = #{record.rjs1,jdbcType=VARCHAR},
-      RJS4 = #{record.rjs4,jdbcType=VARCHAR},
-      RJS5 = #{record.rjs5,jdbcType=VARCHAR},
-      RJS6 = #{record.rjs6,jdbcType=VARCHAR},
-      RJS7 = #{record.rjs7,jdbcType=VARCHAR},
-      RJS8 = #{record.rjs8,jdbcType=VARCHAR},
-      RJS9 = #{record.rjs9,jdbcType=SMALLINT},
-      RJS10 = #{record.rjs10,jdbcType=VARCHAR},
-      RJS11 = #{record.rjs11,jdbcType=VARCHAR},
-      RJS12 = #{record.rjs12,jdbcType=VARCHAR},
-      kword = #{record.kword,jdbcType=VARCHAR},
-      appuser = #{record.appuser,jdbcType=VARCHAR},
-      appdate = #{record.appdate,jdbcType=TIMESTAMP},
-      truetag = #{record.truetag,jdbcType=INTEGER},
-      lawlevel = #{record.lawlevel,jdbcType=INTEGER},
-      Marked = #{record.marked,jdbcType=INTEGER},
-      anyou = #{record.anyou,jdbcType=VARCHAR},
-      rid = #{record.rid,jdbcType=DECIMAL},
-      RJS13 = #{record.rjs13,jdbcType=INTEGER},
-      UpdateTime = #{record.updatetime,jdbcType=INTEGER},
-      truetag_1 = #{record.truetag1,jdbcType=INTEGER},
-      LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
-      fjian = #{record.fjian,jdbcType=LONGVARCHAR}
+    RJS0 = #{record.rjs0,jdbcType=VARCHAR},
+    RJS1 = #{record.rjs1,jdbcType=VARCHAR},
+    RJS4 = #{record.rjs4,jdbcType=VARCHAR},
+    RJS5 = #{record.rjs5,jdbcType=VARCHAR},
+    RJS6 = #{record.rjs6,jdbcType=VARCHAR},
+    RJS7 = #{record.rjs7,jdbcType=VARCHAR},
+    RJS8 = #{record.rjs8,jdbcType=VARCHAR},
+    RJS9 = #{record.rjs9,jdbcType=SMALLINT},
+    RJS10 = #{record.rjs10,jdbcType=VARCHAR},
+    RJS11 = #{record.rjs11,jdbcType=VARCHAR},
+    RJS12 = #{record.rjs12,jdbcType=VARCHAR},
+    kword = #{record.kword,jdbcType=VARCHAR},
+    appuser = #{record.appuser,jdbcType=VARCHAR},
+    appdate = #{record.appdate,jdbcType=TIMESTAMP},
+    truetag = #{record.truetag,jdbcType=INTEGER},
+    lawlevel = #{record.lawlevel,jdbcType=INTEGER},
+    Marked = #{record.marked,jdbcType=INTEGER},
+    anyou = #{record.anyou,jdbcType=VARCHAR},
+    rid = #{record.rid,jdbcType=DECIMAL},
+    RJS13 = #{record.rjs13,jdbcType=INTEGER},
+    UpdateTime = #{record.updatetime,jdbcType=INTEGER},
+    truetag_1 = #{record.truetag1,jdbcType=INTEGER},
+    RJS14 = #{record.rjs14,jdbcType=VARCHAR},
+    RJS15 = #{record.rjs15,jdbcType=VARCHAR},
+    LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
+    fjian = #{record.fjian,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -443,28 +466,30 @@
   <update id="updateByExample" parameterType="map" >
     update main
     set number = #{record.number,jdbcType=BIGINT},
-      RJS0 = #{record.rjs0,jdbcType=VARCHAR},
-      RJS1 = #{record.rjs1,jdbcType=VARCHAR},
-      RJS4 = #{record.rjs4,jdbcType=VARCHAR},
-      RJS5 = #{record.rjs5,jdbcType=VARCHAR},
-      RJS6 = #{record.rjs6,jdbcType=VARCHAR},
-      RJS7 = #{record.rjs7,jdbcType=VARCHAR},
-      RJS8 = #{record.rjs8,jdbcType=VARCHAR},
-      RJS9 = #{record.rjs9,jdbcType=SMALLINT},
-      RJS10 = #{record.rjs10,jdbcType=VARCHAR},
-      RJS11 = #{record.rjs11,jdbcType=VARCHAR},
-      RJS12 = #{record.rjs12,jdbcType=VARCHAR},
-      kword = #{record.kword,jdbcType=VARCHAR},
-      appuser = #{record.appuser,jdbcType=VARCHAR},
-      appdate = #{record.appdate,jdbcType=TIMESTAMP},
-      truetag = #{record.truetag,jdbcType=INTEGER},
-      lawlevel = #{record.lawlevel,jdbcType=INTEGER},
-      Marked = #{record.marked,jdbcType=INTEGER},
-      anyou = #{record.anyou,jdbcType=VARCHAR},
-      rid = #{record.rid,jdbcType=DECIMAL},
-      RJS13 = #{record.rjs13,jdbcType=INTEGER},
-      UpdateTime = #{record.updatetime,jdbcType=INTEGER},
-      truetag_1 = #{record.truetag1,jdbcType=INTEGER}
+    RJS0 = #{record.rjs0,jdbcType=VARCHAR},
+    RJS1 = #{record.rjs1,jdbcType=VARCHAR},
+    RJS4 = #{record.rjs4,jdbcType=VARCHAR},
+    RJS5 = #{record.rjs5,jdbcType=VARCHAR},
+    RJS6 = #{record.rjs6,jdbcType=VARCHAR},
+    RJS7 = #{record.rjs7,jdbcType=VARCHAR},
+    RJS8 = #{record.rjs8,jdbcType=VARCHAR},
+    RJS9 = #{record.rjs9,jdbcType=SMALLINT},
+    RJS10 = #{record.rjs10,jdbcType=VARCHAR},
+    RJS11 = #{record.rjs11,jdbcType=VARCHAR},
+    RJS12 = #{record.rjs12,jdbcType=VARCHAR},
+    kword = #{record.kword,jdbcType=VARCHAR},
+    appuser = #{record.appuser,jdbcType=VARCHAR},
+    appdate = #{record.appdate,jdbcType=TIMESTAMP},
+    truetag = #{record.truetag,jdbcType=INTEGER},
+    lawlevel = #{record.lawlevel,jdbcType=INTEGER},
+    Marked = #{record.marked,jdbcType=INTEGER},
+    anyou = #{record.anyou,jdbcType=VARCHAR},
+    rid = #{record.rid,jdbcType=DECIMAL},
+    RJS13 = #{record.rjs13,jdbcType=INTEGER},
+    UpdateTime = #{record.updatetime,jdbcType=INTEGER},
+    truetag_1 = #{record.truetag1,jdbcType=INTEGER},
+    RJS14 = #{record.rjs14,jdbcType=VARCHAR},
+    RJS15 = #{record.rjs15,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -538,6 +563,12 @@
       <if test="truetag1 != null" >
         truetag_1 = #{truetag1,jdbcType=INTEGER},
       </if>
+      <if test="rjs14 != null" >
+        RJS14 = #{rjs14,jdbcType=VARCHAR},
+      </if>
+      <if test="rjs15 != null" >
+        RJS15 = #{rjs15,jdbcType=VARCHAR},
+      </if>
       <if test="linksource != null" >
         LinkSource = #{linksource,jdbcType=LONGVARCHAR},
       </if>
@@ -550,29 +581,31 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.MainWithBLOBs" >
     update main
     set RJS0 = #{rjs0,jdbcType=VARCHAR},
-      RJS1 = #{rjs1,jdbcType=VARCHAR},
-      RJS4 = #{rjs4,jdbcType=VARCHAR},
-      RJS5 = #{rjs5,jdbcType=VARCHAR},
-      RJS6 = #{rjs6,jdbcType=VARCHAR},
-      RJS7 = #{rjs7,jdbcType=VARCHAR},
-      RJS8 = #{rjs8,jdbcType=VARCHAR},
-      RJS9 = #{rjs9,jdbcType=SMALLINT},
-      RJS10 = #{rjs10,jdbcType=VARCHAR},
-      RJS11 = #{rjs11,jdbcType=VARCHAR},
-      RJS12 = #{rjs12,jdbcType=VARCHAR},
-      kword = #{kword,jdbcType=VARCHAR},
-      appuser = #{appuser,jdbcType=VARCHAR},
-      appdate = #{appdate,jdbcType=TIMESTAMP},
-      truetag = #{truetag,jdbcType=INTEGER},
-      lawlevel = #{lawlevel,jdbcType=INTEGER},
-      Marked = #{marked,jdbcType=INTEGER},
-      anyou = #{anyou,jdbcType=VARCHAR},
-      rid = #{rid,jdbcType=DECIMAL},
-      RJS13 = #{rjs13,jdbcType=INTEGER},
-      UpdateTime = #{updatetime,jdbcType=INTEGER},
-      truetag_1 = #{truetag1,jdbcType=INTEGER},
-      LinkSource = #{linksource,jdbcType=LONGVARCHAR},
-      fjian = #{fjian,jdbcType=LONGVARCHAR}
+    RJS1 = #{rjs1,jdbcType=VARCHAR},
+    RJS4 = #{rjs4,jdbcType=VARCHAR},
+    RJS5 = #{rjs5,jdbcType=VARCHAR},
+    RJS6 = #{rjs6,jdbcType=VARCHAR},
+    RJS7 = #{rjs7,jdbcType=VARCHAR},
+    RJS8 = #{rjs8,jdbcType=VARCHAR},
+    RJS9 = #{rjs9,jdbcType=SMALLINT},
+    RJS10 = #{rjs10,jdbcType=VARCHAR},
+    RJS11 = #{rjs11,jdbcType=VARCHAR},
+    RJS12 = #{rjs12,jdbcType=VARCHAR},
+    kword = #{kword,jdbcType=VARCHAR},
+    appuser = #{appuser,jdbcType=VARCHAR},
+    appdate = #{appdate,jdbcType=TIMESTAMP},
+    truetag = #{truetag,jdbcType=INTEGER},
+    lawlevel = #{lawlevel,jdbcType=INTEGER},
+    Marked = #{marked,jdbcType=INTEGER},
+    anyou = #{anyou,jdbcType=VARCHAR},
+    rid = #{rid,jdbcType=DECIMAL},
+    RJS13 = #{rjs13,jdbcType=INTEGER},
+    UpdateTime = #{updatetime,jdbcType=INTEGER},
+    truetag_1 = #{truetag1,jdbcType=INTEGER},
+    RJS14 = #{rjs14,jdbcType=VARCHAR},
+    RJS15 = #{rjs15,jdbcType=VARCHAR},
+    LinkSource = #{linksource,jdbcType=LONGVARCHAR},
+    fjian = #{fjian,jdbcType=LONGVARCHAR}
     where number = #{number,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.spider.bean.Main" >
@@ -598,9 +631,13 @@
       rid = #{rid,jdbcType=DECIMAL},
       RJS13 = #{rjs13,jdbcType=INTEGER},
       UpdateTime = #{updatetime,jdbcType=INTEGER},
-      truetag_1 = #{truetag1,jdbcType=INTEGER}
+      truetag_1 = #{truetag1,jdbcType=INTEGER},
+      RJS14 = #{rjs14,jdbcType=VARCHAR},
+      RJS15 = #{rjs15,jdbcType=VARCHAR}
     where number = #{number,jdbcType=BIGINT}
   </update>
+
+  <!-- 自定义sql -->
   <select id="findMaxRjs8" resultType="String" parameterType="String">
     select max(RJS8) from MAIN where RJS8 like '%${username}%'
   </select>

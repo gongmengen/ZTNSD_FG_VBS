@@ -1614,6 +1614,146 @@ public class MainExample {
             addCriterion("truetag_1 not between", value1, value2, "truetag1");
             return (Criteria) this;
         }
+
+        public Criteria andRjs14IsNull() {
+            addCriterion("RJS14 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14IsNotNull() {
+            addCriterion("RJS14 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14EqualTo(String value) {
+            addCriterion("RJS14 =", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14NotEqualTo(String value) {
+            addCriterion("RJS14 <>", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14GreaterThan(String value) {
+            addCriterion("RJS14 >", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14GreaterThanOrEqualTo(String value) {
+            addCriterion("RJS14 >=", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14LessThan(String value) {
+            addCriterion("RJS14 <", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14LessThanOrEqualTo(String value) {
+            addCriterion("RJS14 <=", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14Like(String value) {
+            addCriterion("RJS14 like", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14NotLike(String value) {
+            addCriterion("RJS14 not like", value, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14In(List<String> values) {
+            addCriterion("RJS14 in", values, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14NotIn(List<String> values) {
+            addCriterion("RJS14 not in", values, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14Between(String value1, String value2) {
+            addCriterion("RJS14 between", value1, value2, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs14NotBetween(String value1, String value2) {
+            addCriterion("RJS14 not between", value1, value2, "rjs14");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15IsNull() {
+            addCriterion("RJS15 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15IsNotNull() {
+            addCriterion("RJS15 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15EqualTo(String value) {
+            addCriterion("RJS15 =", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15NotEqualTo(String value) {
+            addCriterion("RJS15 <>", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15GreaterThan(String value) {
+            addCriterion("RJS15 >", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15GreaterThanOrEqualTo(String value) {
+            addCriterion("RJS15 >=", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15LessThan(String value) {
+            addCriterion("RJS15 <", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15LessThanOrEqualTo(String value) {
+            addCriterion("RJS15 <=", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15Like(String value) {
+            addCriterion("RJS15 like", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15NotLike(String value) {
+            addCriterion("RJS15 not like", value, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15In(List<String> values) {
+            addCriterion("RJS15 in", values, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15NotIn(List<String> values) {
+            addCriterion("RJS15 not in", values, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15Between(String value1, String value2) {
+            addCriterion("RJS15 between", value1, value2, "rjs15");
+            return (Criteria) this;
+        }
+
+        public Criteria andRjs15NotBetween(String value1, String value2) {
+            addCriterion("RJS15 not between", value1, value2, "rjs15");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

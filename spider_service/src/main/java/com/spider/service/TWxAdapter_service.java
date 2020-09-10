@@ -670,10 +670,12 @@ public class TWxAdapter_service {
         result.setNewscontent(rdt.getTxt()==null?"":rdt.getTxt().equals("")?result.getNewscontent():rdt.getTxt());
         result.setRjs1(rdt.getRJS1()==null?"":rdt.getRJS1());
         result.setKeyword(rdt.getKword()==null?"":rdt.getKword());
-
+        result.setRjs14(rdt.getRJS14()==null?"":rdt.getRJS14().equals("")?result.getRjs14():rdt.getRJS14());
+        result.setRjs15(rdt.getRJS15()==null?"":rdt.getRJS15().equals("")?result.getRjs15():rdt.getRJS15());
         //设置 发布日期、实施日期
         result.setReleasetime(rdt.getRJS5()==null?"":rdt.getRJS5());
         result.setExtend1(rdt.getRJS6()==null?"":rdt.getRJS6());//实施日期
+
 
         return result;
     }

@@ -405,6 +405,8 @@
                                     <th>文号</th>
                                     <th>部门代码</th>
                                     <th>部门名称</th>
+                                    <th>部门代码（新）</th>
+                                    <th>部门名称（新）</th>
                                     <th>所属库</th>
                                     <th>收录时间</th>
                                     <th>重复</th>
@@ -427,6 +429,8 @@
                                         <td class="center">${websiteList.filenum}</td>
                                         <td class="center">${websiteList.deptcode}</td>
                                         <td class="center">${websiteList.deptname}</td>
+                                        <td class="center">${websiteList.rjs14}</td>
+                                        <td class="center">${websiteList.rjs15}</td>
                                         <td class="center">
                                             <c:if test="${websiteList.xwcolumn.equals('100002')}">
                                                 中央

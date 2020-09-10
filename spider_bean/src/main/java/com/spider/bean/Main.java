@@ -50,6 +50,11 @@ public class Main {
 
     private Integer truetag1;
 
+    private String rjs14;
+
+    private String rjs15;
+
+
     //增加 重复判断字段
     private Integer pre_distinct;
 
@@ -303,5 +308,22 @@ public class Main {
 
     public void setTruetag1(Integer truetag1) {
         this.truetag1 = truetag1;
+    }
+
+
+    public String getRjs14() {
+        return rjs14;
+    }
+
+    public void setRjs14(String rjs14) {
+        this.rjs14 = rjs14 == null ? null : rjs14.trim();
+    }
+
+    public String getRjs15() {
+        return rjs15;
+    }
+
+    public void setRjs15(String rjs15) {
+        this.rjs15 = rjs15 == null ? null : rjs15.trim();
     }
 }

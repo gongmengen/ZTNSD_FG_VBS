@@ -49,6 +49,27 @@ public class Main_CHLandLAR {
 
     private String fjian;
 
+    //新增
+    private String rjs14;
+
+    private String rjs15;
+
+    public String getRjs14() {
+        return rjs14;
+    }
+
+    public void setRjs14(String rjs14) {
+        this.rjs14 = rjs14;
+    }
+
+    public String getRjs15() {
+        return rjs15;
+    }
+
+    public void setRjs15(String rjs15) {
+        this.rjs15 = rjs15;
+    }
+
     public Integer getRid() {
         return rid;
     }
