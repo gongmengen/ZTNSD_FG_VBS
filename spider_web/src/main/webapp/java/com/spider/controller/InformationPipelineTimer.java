@@ -483,6 +483,8 @@ public class InformationPipelineTimer {
             main.setKword(information.getKeyword());
             main.setLawlevel(5);
             main.setAppdate(new Date());
+            main.setRjs14(information.getRjs14());
+            main.setRjs15(information.getRjs15());
 
             try {
                 //如果已导出的数据中存在相同的id则放弃导出
@@ -610,7 +612,7 @@ public class InformationPipelineTimer {
 
     }
 
-    //调用脚本下载图片
+    //调用脚本下载图片 中央
     @RequestMapping("imgDownload")
     @ResponseBody
     public String imgDownload(@RequestParam("ids")String ids,HttpServletRequest request){
@@ -680,6 +682,78 @@ public class InformationPipelineTimer {
         }
 
             return "下载成功";
+
+    }
+    //调用脚本下载图片 地方
+    @RequestMapping("imgDownload_lar")
+    @ResponseBody
+    public String imgDownload_lar(@RequestParam("ids")String ids,HttpServletRequest request){
+
+        String[] id = ids.trim().split(" ");
+
+        DynamicDataSourceHolder.clearCustomerType();
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+        List<InformationPipelineWithBLOBs> informationPipelineByIds = informationPipeline_service.getInformationPipelineByIds(id);
+
+
+        for (InformationPipelineWithBLOBs informationPipeline:informationPipelineByIds
+                ) {
+            DynamicDataSourceHolder.clearCustomerType();
+            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
+            TXwInformationWithBLOBs information = information_service.getInformation(informationPipeline.getInformationId());
+            String imgPath = adapter_service.get_IMG_URL_By_Js(informationPipeline.getNewstitle(),informationPipeline.getReleasetime(),informationPipeline.getFilenum(),informationPipeline.getDeptcode(),informationPipeline.getDeptname(),informationPipeline.getXwcolumn().equals("100002")?"chl":"lar",informationPipeline.getAttachment(),information.getNewscontentnotupdate(),informationPipeline.getNewscontent(),informationPipeline.getExtend2(), JavaScript_static.LAWSTARLIB_JS +JavaScript_static.LAWSTAR_IMG);
+            //将 附件全部重新下载一遍
+            DynamicDataSourceHolder.clearCustomerType();
+            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+
+            //追加之前判断是否已经存在
+            String attachment = "";
+            if (StringUtils.isNotBlank(imgPath)){
+                String[] img = imgPath.split("##");
+                attachment = informationPipeline.getAttachment();
+                for (String s : img) {
+                    if (attachment.indexOf(s)>-1){
+                        break;
+                    }else {
+                        attachment = attachment+s+"##";
+                    }
+                }
+
+            }
+
+
+            InformationPipelineWithBLOBs informationPipeline1 = new InformationPipelineWithBLOBs();
+            informationPipeline1.setAttachment(attachment);
+
+
+
+            //根据下载地址下载 img
+            String localAttachmentPATH = request.getRealPath(TimerParm.attachmentPATH)+File.separator+(informationPipeline.getFilename().substring(0,informationPipeline.getFilename().indexOf(".")));
+            //保存附件
+            try {
+                Map downLoadResult = HttpsUtils.saveUrlAs(informationPipeline.getSource(), informationPipeline1.getAttachment(), localAttachmentPATH, informationPipeline.getInformationId(), Integer.parseInt(informationPipeline.getXwcolumn()));
+                if (downLoadResult!=null&&downLoadResult.get(0).equals("false")){
+
+                }else {
+                    informationPipeline1.setFjian(downLoadResult.get(1)+"");
+                    //附件个数
+                    String fjian = informationPipeline1.getFjian();
+                    if (fjian!=null&&!"".equals(fjian)){
+                        informationPipeline1.setFjcount(fjian.split("\\|").length);
+                    }else {
+                        informationPipeline1.setFjcount(0);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //维护数据库
+            informationPipeline_service.updateIstatus(informationPipeline1,informationPipeline.getId());
+        }
+
+        return "下载成功";
 
     }
 
@@ -1253,6 +1327,8 @@ public class InformationPipelineTimer {
         main.setKword(informationPipeline.getKeyword());
         main.setLawlevel(5);
         main.setAppdate(new Date());
+        main.setRjs14(informationPipeline.getRjs14());
+        main.setRjs15(informationPipeline.getRjs15());
         main_service.insert(main);
 
 

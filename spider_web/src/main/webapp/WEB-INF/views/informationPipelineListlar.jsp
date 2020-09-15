@@ -703,7 +703,7 @@
                    // $("#loading").remove();
                },
                data:{ids:informationPipelineIds},
-               url: "<%=basePath%>imgDownload",
+               url: "<%=basePath%>imgDownload_lar",
                success: function(data){
                    alert(data);
                    window.location.reload();
