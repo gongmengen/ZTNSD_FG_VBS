@@ -1,7 +1,6 @@
 package com.spider.utils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -175,5 +174,57 @@ public class NioFileUtil {
      */
     public static boolean isSub(Path parent,Path sub) throws IOException{
         return (null==sub)?false:sameOrSub(parent,sub.getParent());
+    }
+
+
+    //利用系统指令删除文件夹
+    public static String forceDeleteDirectory_linux(String directory){
+        File tagFile=new File(directory);
+        if(tagFile.exists()){
+            try {
+
+                String[] cmd = new String[] {"sh", "-c", "rm -f -r "+directory};
+                Runtime rt = Runtime.getRuntime(); // 获取运行时系统
+                Process proc = rt.exec(cmd); // 执行命令
+                InputStream stderr =  proc.getInputStream(); // 获取输入流
+                InputStreamReader isr = new InputStreamReader(stderr,"gbk");
+                BufferedReader br = new BufferedReader(isr);
+                String line = null;
+                /*while ((line = br.readLine()) != null) { // 打印出命令执行的结果
+                System.out.println(line);
+            }*/
+            } catch (Throwable t) {
+                t.printStackTrace();
+                return t.getMessage();
+            }
+            return "ok";
+        }else {
+            return "目录不存在";
+        }
+    }
+    //利用系统指令删除文件夹
+    public static String forceDeleteDirectory_windows(String directory){
+        File tagFile=new File(directory);
+        if(tagFile.exists()){
+            try {
+
+                String[] cmd = new String[] {"cmd.exe", "/c", "rd "+directory+" /q /s"};
+                Runtime rt = Runtime.getRuntime(); // 获取运行时系统
+                Process proc = rt.exec(cmd); // 执行命令
+                InputStream stderr =  proc.getInputStream(); // 获取输入流
+                InputStreamReader isr = new InputStreamReader(stderr,"gbk");
+                BufferedReader br = new BufferedReader(isr);
+                String line = null;
+                /*while ((line = br.readLine()) != null) { // 打印出命令执行的结果
+                System.out.println(line);
+            }*/
+            } catch (Throwable t) {
+                t.printStackTrace();
+                return t.getMessage();
+            }
+            return "ok";
+        }else {
+            return "目录不存在";
+        }
     }
 }

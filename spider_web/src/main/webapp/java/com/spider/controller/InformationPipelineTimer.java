@@ -181,6 +181,13 @@ public class InformationPipelineTimer {
             //检查是否有字段超过数据库限制
             checkInformationPipeline(informationPipeline,errorLog_service);
 
+            System.out.println("------------------------------");
+
+            System.out.println(informationPipeline.getInformationId());
+            System.out.println(informationPipeline.getXwcolumn());
+            System.out.println(informationPipeline.getXwcolumn().equals("100003"));
+            System.out.println("------------------------------");
+
             if (informationPipeline.getXwcolumn().equals("100003")){
                 DynamicDataSourceHolder.clearCustomerType();
                 DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
@@ -1340,7 +1347,7 @@ public class InformationPipelineTimer {
             Path start = Paths.get(request.getRealPath(TimerParm.attachmentPATH) + File.separator + username + df.format(beginNum) + "s" + df.format(endNum));
             Path target = Paths.get(TimerParm.fjPath5);
             //移动附件之前先判断目标地址中是否存在重名文件夹 如果存在则先删除掉目标文件夹
-            NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5 + File.separator + username + df.format(beginNum) + "s" + df.format(endNum)));
+            System.out.println(NioFileUtil.forceDeleteDirectory_linux(TimerParm.fjPath5 + File.separator + username + df.format(beginNum) + "s" + df.format(endNum)));
             //在移动
             fileUtil.operateDir(true, start, target, StandardCopyOption.REPLACE_EXISTING);
 

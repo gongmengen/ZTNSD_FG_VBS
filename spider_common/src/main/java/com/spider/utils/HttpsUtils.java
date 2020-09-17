@@ -608,8 +608,10 @@ public class HttpsUtils {
             uc.connect();
             if (uc.getResponseCode()==200) {
                 fileName = uc.getHeaderField("Content-Disposition");
-                fileName = new String(fileName.getBytes("ISO-8859-1"), "GBK");
-                fileName = URLDecoder.decode(fileName.substring(fileName.indexOf("filename=") + 9), "UTF-8");
+                if (StringUtils.isNotBlank(fileName)) {
+                    fileName = new String(fileName.getBytes("ISO-8859-1"), "GBK");
+                    fileName = URLDecoder.decode(fileName.substring(fileName.indexOf("filename=") + 9), "UTF-8");
+                }
             }else {
                 System.out.println("请求状态："+uc.getResponseCode());
                 System.out.println("请求信息："+uc.getResponseMessage());
