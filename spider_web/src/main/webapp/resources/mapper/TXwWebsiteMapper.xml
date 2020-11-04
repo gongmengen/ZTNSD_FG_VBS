@@ -717,4 +717,8 @@
   <select id="selectById" parameterType="int" resultType="com.spider.bean.TXwWebsite">
     select * from t_xw_website where id = #{websiteid}
   </select>
+
+  <select id="getTXwWebsiteListWithMonitorDate" resultType="com.spider.bean.TXwWebsite">
+    select * from t_xw_website
+  </select>
 </mapper>

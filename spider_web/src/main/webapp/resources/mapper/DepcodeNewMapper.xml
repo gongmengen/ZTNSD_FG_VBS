@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.DepcodeNewMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.DepcodeNew" >
+    <result column="dep_number" property="depNumber" jdbcType="CHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="alis_name" property="alisName" jdbcType="VARCHAR" />
+    <result column="sort_f" property="sortF" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    dep_number, dep_name, alis_name, sort_f
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.DepcodeNewExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from depcode_new
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.spider.bean.DepcodeNewExample" >
+    delete from depcode_new
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.spider.bean.DepcodeNew" >
+    insert into depcode_new (dep_number, dep_name, alis_name, 
+      sort_f)
+    values (#{depNumber,jdbcType=CHAR}, #{depName,jdbcType=VARCHAR}, #{alisName,jdbcType=VARCHAR}, 
+      #{sortF,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spider.bean.DepcodeNew" >
+    insert into depcode_new
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="depNumber != null" >
+        dep_number,
+      </if>
+      <if test="depName != null" >
+        dep_name,
+      </if>
+      <if test="alisName != null" >
+        alis_name,
+      </if>
+      <if test="sortF != null" >
+        sort_f,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="depNumber != null" >
+        #{depNumber,jdbcType=CHAR},
+      </if>
+      <if test="depName != null" >
+        #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="alisName != null" >
+        #{alisName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortF != null" >
+        #{sortF,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.spider.bean.DepcodeNewExample" resultType="java.lang.Integer" >
+    select count(*) from depcode_new
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update depcode_new
+    <set >
+      <if test="record.depNumber != null" >
+        dep_number = #{record.depNumber,jdbcType=CHAR},
+      </if>
+      <if test="record.depName != null" >
+        dep_name = #{record.depName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alisName != null" >
+        alis_name = #{record.alisName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sortF != null" >
+        sort_f = #{record.sortF,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update depcode_new
+    set dep_number = #{record.depNumber,jdbcType=CHAR},
+      dep_name = #{record.depName,jdbcType=VARCHAR},
+      alis_name = #{record.alisName,jdbcType=VARCHAR},
+      sort_f = #{record.sortF,jdbcType=SMALLINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <!-- 自定义 -->
+
+  <select id="limitList" resultType="com.spider.bean.DepcodeNew">
+    select dep_number as depNumber, dep_name as depName, alis_name as alisName, sort_f as sortF from depcode_new ORDER BY dep_number desc limit #{0},#{1}
+  </select>
+
+  <select id="getMaxNumber" resultType="Integer">
+    select max(dep_number) from depcode_new where dep_number &lt;99999
+  </select>
+</mapper>

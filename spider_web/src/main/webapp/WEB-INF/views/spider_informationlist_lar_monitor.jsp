@@ -158,7 +158,9 @@
                         <li class="active"><a href="/monitor/list_lar">网站抓取列表(地方)</a>
                         </li>
                     </ul>
-                </li>
+                </li>                <li>
+                <a href="/deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
+            </li>
                 <li>
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 

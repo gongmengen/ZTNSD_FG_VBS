@@ -75,8 +75,22 @@ public class TXwWebsite {
 
     private Integer newsnumstatus;
 
+    //新增字段
+
+    private Integer monitorDate;
+
+    public Integer getMonitorDate() {
+        return monitorDate;
+    }
+
+    public void setMonitorDate(Integer monitorDate) {
+        this.monitorDate = monitorDate;
+    }
+
     //表中不含有的字段
     private Integer spidercount;
+
+
 
     public Integer getNotUpdateTime() {
         return notUpdateTime;

@@ -76,7 +76,7 @@ public class Monitor_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
         //全部网站列表
-        List<TXwWebsite> tXwWebsiteList = website_service.getTXwWebsiteList("root");
+        List<TXwWebsite> tXwWebsiteList = website_service.getTXwWebsiteListWithMonitorDate();
         //根据网站获取新闻数量
         List<TXwWebsite> spiderCountByWebsiteid = information_service.getSpiderCountByWebsiteid(start,end);
         //获取网站最后更新日期
@@ -140,7 +140,7 @@ public class Monitor_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
         //全部网站列表
-        List<TXwWebsite> tXwWebsiteList = website_service.getTXwWebsiteList("root");
+        List<TXwWebsite> tXwWebsiteList = website_service.getTXwWebsiteListWithMonitorDate();
         //根据网站获取新闻数量
         List<TXwWebsite> spiderCountByWebsiteid = information_service.getSpiderCountByWebsiteid(start, end);
         //获取网站最后更新日期

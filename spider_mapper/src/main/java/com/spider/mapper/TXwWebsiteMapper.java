@@ -36,4 +36,6 @@ public interface TXwWebsiteMapper {
     TXwWebsite selectById(Integer websiteid);
 
     void updateTitleAndNewsnumStatus(int id,int title, int newsnum);
+
+    List<TXwWebsite> getTXwWebsiteListWithMonitorDate();
 }

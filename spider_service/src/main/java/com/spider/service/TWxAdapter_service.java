@@ -11,6 +11,7 @@ import com.spider.mapper.*;
 
 import com.spider.utils.JavaScriptUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -508,9 +509,6 @@ public class TWxAdapter_service {
 
     private void validEntry(InformationPipelineWithBLOBs rdtResult, List<TblErrorLog> errorLogs, JavaScriptUtils javaScriptUtils, TXwInformationWithBLOBs information, List<Informationcheck> informationchecks_title, List<Informationcheck> informationchecks_content, List<Informationcheck> informationchecks_newsnum, List<Informationcheck> informationchecks_attachment, List<Informationcheck> informationchecks_releasedate) {
 
-        System.out.println("txt_code :::");
-        System.out.println(rdtResult.getExtend2());
-
         String xwcolumn = rdtResult.getXwcolumn();
         String dbn = "chl"; //数据库类型
         if (xwcolumn .equals("100002")){
@@ -675,6 +673,15 @@ public class TWxAdapter_service {
         //设置 发布日期、实施日期
         result.setReleasetime(rdt.getRJS5()==null?"":rdt.getRJS5());
         result.setExtend1(rdt.getRJS6()==null?"":rdt.getRJS6());//实施日期
+
+        //如果新闻的栏目与rdt返回的不同则标记为 error
+        if (StringUtils.isNotBlank(rdt.getDbsType())){
+            int rdt_type = Integer.parseInt(rdt.getDbsType().equals("chl")?"100002":"100003");
+
+            if (!(rdt_type==information.getXwcolumn())){
+                errorLogs.add(new TblErrorLog(1011, ErrorPram.getErrorPram().get(1011),information.getId(),information.getXwcolumn()));
+            }
+        }
 
 
         return result;

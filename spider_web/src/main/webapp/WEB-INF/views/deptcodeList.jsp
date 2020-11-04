@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -34,6 +35,7 @@
 
     <link href="<%=basePath%>css/animate.css" rel="stylesheet">
     <link href="<%=basePath%>css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="http://yanshi.sucaihuo.com/modals/40/4078/demo/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
 </head>
 
@@ -48,8 +50,10 @@
                             <img alt="image" class="img-circle" src="img/profile_small.jpg" />
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Beaut-zihan</strong>
-                             </span>  <span class="text-muted text-xs block">超级管理员 <b class="caret"></b></span> </span>
+                                <span class="clear">
+                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name}</strong></span>
+
+                                </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="form_avatar.html">修改头像</a>
@@ -61,7 +65,7 @@
                             <li><a href="mailbox.html">信箱</a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="login.html">安全退出</a>
+                            <li><a href="<%=basePath%>/outSys">安全退出</a>
                             </li>
                         </ul>
                     </div>
@@ -75,7 +79,7 @@
 
 
 
-                <li>
+                <li >
                     <a href="index.html#"><i class="fa fa-table"></i> <span class="nav-label">适配网站</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
 
@@ -136,17 +140,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="active">
+                <c:if test="${sessionScope.user.level < 0}">
+                    <li>
                         <a href="index.html#"><i class="fa fa-desktop"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <!--                        <li><a href="table_basic.html">基本表格</a>
                                                     </li>-->
-                            <li class="active"><a href="/task/list">网站分配列表(中央)</a>
+                            <li><a href="/task/list">网站分配列表(中央)</a>
                             <li><a href="/task/list_lar">网站分配列表(地方)</a>
                             </li>
                         </ul>
-                </li>
-
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.user.level < 0}">
                     <li>
                         <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">网站数据抓取监测</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -157,20 +163,20 @@
                             </li>
                         </ul>
                     </li>
-                <c:if test="${sessionScope.user.level < 0}">
-                    <li>
-                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <!--                        <li><a href="table_basic.html">基本表格</a>
-                                                    </li>-->
-                            <li><a href="/manCheck/list">临时库列表(中央)</a>
-                            <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
-                            </li>
-                        </ul>
-                    </li>
-                </c:if>                <li>
-                <a href="/deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
-            </li>
+                </c:if>
+                <li >
+                    <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                </li>-->
+                        <li><a href="/manCheck/list">临时库列表(中央)</a>
+                        <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="<%=basePath%>deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
+                </li>
                 <li>
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 
@@ -205,7 +211,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="table_data_tables.html#"><i class="fa fa-bars"></i> </a>
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="<%=basePath%>informationPipeline#"><i class="fa fa-bars"></i> </a>
                     <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                         <div class="form-group">
                             <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
@@ -214,7 +220,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message"><a href="index.html" title="返回首页"><i class="fa fa-home"></i></a>欢迎使用H+后台主题</span>
+                        <span class="m-r-sm text-muted welcome-message"><a href="<%=basePath%>index" title="返回首页"><i class="fa fa-home"></i></a>欢迎使用爬虫规则适配系统</span>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
@@ -294,7 +300,7 @@
 
 
                     <li>
-                        <a href="login.html">
+                        <a href="<%=basePath%>/outSys">
                             <i class="fa fa-sign-out"></i> 退出
                         </a>
                     </li>
@@ -303,23 +309,43 @@
             </nav>
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
+
+
+            <script type="text/javascript">
+
+                function openTimer() {
+                    $.ajax({ url: "<%=basePath%>openTimer", success: function(data){
+                        alert(data)
+                    }});
+                }
+                function closeTimer() {
+                    $.ajax({ url: "<%=basePath%>closeTimer", success: function(data){
+                        alert(data)
+                    }});
+                }
+
+            </script>
             <div class="col-lg-10">
-                <h2>网站分配列表</h2>
+             <span style="float: right;margin-top: 30px;">
+
+
+            </span>
+                <h2>临时库列表（中央）</h2>
                 <ol class="breadcrumb">
                     <li>
-                        <a href="index.html">主页</a>
+                        <a href="<%=basePath%>index">主页</a>
                     </li>
                     <li>
-                        <a>网站适配分配管理</a>
+                        <a>人工审核</a>
                     </li>
                     <li>
-                        <strong>网站分配列表</strong>
+                        <strong>临时库列表（中央）</strong>
                     </li>
                 </ol>
             </div>
             <div class="col-lg-2">
                 <div class="text-center" style="padding-top: 30px">
-                    <a data-toggle="modal" class="btn btn-primary" href="form_basic.html#modal-form">分配任务</a>
+                    <a data-toggle="modal" class="btn btn-primary" href="form_basic.html#modal-form">添加</a>
                 </div>
                 <div id="modal-form" class="modal fade" aria-hidden="true">
                     <div class="modal-dialog">
@@ -327,27 +353,18 @@
                             <div class="modal-body">
                                 <div class="row">
 
-                                        <form role="form" class="form-horizontal" method="post" action="/task/add" id="myform1">
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">可分配用户
-
-                                                </label>
-                                                <input type="hidden" id = "websiteids" name="websiteids">
-                                                <div class="col-sm-10">
-                                                    <c:forEach items="${userTaskList}" var="userList">
-
-                                                        <div class="radio">
-                                                            <label>
-                                                                <input type="radio" value="${userList.name}"  name="username">${userList.name}</label>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
+                                    <form role="form" class="form-horizontal" id="myform1">
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                            <input id="_deptName1" type="text"/>部门名称1
+                                            <input id="_deptName2" type="text"/>部门名称2
                                             </div>
-                                            <div>
-                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" onclick="sendPipeline()"><strong>确认分配</strong>
-                                                </button>
-                                            </div>
-                                        </form>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" onclick="insertDept()"><strong>确认添加</strong>
+                                            </button>
+                                        </div>
+                                    </form>
 
                                 </div>
                             </div>
@@ -355,13 +372,14 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>基本 <small>分类，查找</small></h5>
+
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -370,76 +388,29 @@
                                     <i class="fa fa-wrench"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="table_data_tables.html#">选项1</a>
-                                    </li>
-                                    <li><a href="table_data_tables.html#">选项2</a>
+                                    <li><a href="#">选项</a>
                                     </li>
                                 </ul>
                                 <a class="close-link">
                                     <i class="fa fa-times"></i>
                                 </a>
                             </div>
-
-
                         </div>
+                        <div id="loading"></div>
                         <div class="ibox-content">
-
-                            <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <table class="table table-bordered dataTables-example"><!-- 无分页查询功能：table table-bordered -->
                                 <thead>
                                 <tr>
-                                    <th>网站ID</th>
-                                    <th>网站名称</th>
-                                    <th  style="display: none">URL</th>
-                                    <th>所属部门</th>
-                                    <th>推送状态</th>
 
-                                    <th>负责人</th>
-                                    <th><input type="checkbox" id="checkbox"></th>
+                                    <th>部门代码</th>
+                                    <th>部门名称</th>
+                                    <th>部门名称</th>
+                                    <th>操作</th>
+
+
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <c:forEach items="${websiteList}" var="websiteList">
-                                    <tr class="gradeX">
-                                        <td>${websiteList.id}</td>
-                                            <%--                                    <c:forEach items="${informationWebsiteList}" var="informationWebsiteList">
-                                                                                    <c:if test="${websiteList.id == informationWebsiteList.websiteid}">
-                                                                                        <td>${websiteList.websitename}</td>
 
-                                                                                    </c:if>
-                                                                                    <c:if test="${websiteList.id != informationWebsiteList.websiteid}">
-                                                                                        <td style="color:red;">${websiteList.websitename}</td>
-                                                                                    </c:if>
-                                                                                </c:forEach>--%>
-                                        <c:if test="${websiteList.istatus == 1}">
-                                            <td>${websiteList.websitename}</td>
-                                        </c:if>
-                                        <c:if test="${websiteList.istatus == 0}">
-                                            <td  style="color:red;">${websiteList.websitename}</td>
-                                        </c:if>
-                                        <td  style="display: none"><a href="${websiteList.websiteaddress}" target="_blank">${websiteList.websiteaddress}</a> </td>
-                                        <td class="center">${websiteList.columnid}</td>
-
-                                        <c:if test="${websiteList.refmain == 1}">
-                                            <td class="center"><i class="fa fa-circle" style="color: greenyellow"></i></td>
-                                        </c:if>
-                                        <c:if test="${websiteList.refmain != 1 &&websiteList.refmain != 2&&websiteList.refmain != 3}">
-                                            <td class="center"><i class="fa fa-circle" style="color: #8B91A0"></i></td>
-                                        </c:if>
-                                        <c:if test="${websiteList.refmain == 2}">
-                                            <td class="center"><i class="fa fa-circle" style="color: #00E8D7"></i></td>
-                                        </c:if>
-                                        <c:if test="${websiteList.refmain == 3}">
-                                            <td class="center"><i class="fa fa-circle" style="color: yellow"></i></td>
-                                        </c:if>
-
-                                        <td class="center"> ${websiteList.usertask}</td>
-                                        <td class="center">
-                                            <input type="checkbox" name="mycheckbox" value="${websiteList.id}">
-                                        </td>
-                                    </tr>
-
-                                </c:forEach>
-                                </tbody>
                             </table>
 
                         </div>
@@ -461,7 +432,6 @@
 
 
 </div>
-
 <!-- Mainly scripts -->
 <script src="<%=basePath%>js/jquery-2.1.1.min.js"></script>
 <script src="<%=basePath%>js/bootstrap.min.js?v=3.4.0"></script>
@@ -481,40 +451,36 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
-        $('.dataTables-example').dataTable();
 
-        /* Init DataTables */
-        var oTable = $('#editable').dataTable();
+        $('.dataTables-example').DataTable({//绑定要遍历数据的 table 的 id
 
-        /* Apply the jEditable handlers to the table */
-        oTable.$('td').editable('../example_ajax.php', {
-            "callback": function (sValue, y) {
-                var aPos = oTable.fnGetPosition(this);
-                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-            },
-            "submitdata": function (value, settings) {
-                return {
-                    "row_id": this.parentNode.getAttribute('id'),
-                    "column": oTable.fnGetPosition(this)[2]
-                };
+            pageLength : 25,/* 页大小，同时当前页每次加 10，不明白为什么每次增加 10 */
+
+            serverSide : true,/* 启用服务端分页，如果前端分页，这里为 false */
+            searching : false,
+            ajax : {
+                url : "<%=basePath%>deptcodeList",
+                type : "post",
+                data : {},
+                dataFilter : function(json){
+                    return json;
+                }
             },
 
-            "width": "90%",
-            "height": "100%"
+            /* 中间遍历的数据 */
+            columns : [
+                {data:"depNumber",render:function(data){return ("<input type='text' style=\"border: none;width: 100%;\" value='"+data+"'>");}},//0 这里可以 {title:"Id编码",data:"id"} //title 列头标题，则可以省略前面 html 代码里面 <table></table> 内的 <tr></tr> 标签！
+                {data:"depName",render:function(data){return ("<input type='text' style=\"border: none;width: 100%;\" value='"+data+"'>");}},//1 这里的 header_title 对应后台返回的 bean 的属性值即可自动赋值显示
+                {data:"alisName",render:function(data){return ("<input type='text' style=\"border: none;width: 100%;\" value='"+data+"'>");}},
+                {defaultContent:"<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"updateConfirm(this)\">修改</button>&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm(this)\">删除</button>"}
+            ]
         });
+
+        $('.dataTables-example').dataTable();
 
 
     });
 
-    function fnClickAddRow() {
-        $('#editable').dataTable().fnAddData([
-            "Custom row",
-            "New row",
-            "New row",
-            "New row",
-            "New row"]);
-
-    }
 </script>
 <style>
 
@@ -555,8 +521,110 @@
 
 </script>
 
-<!-- 自定义  -->
-<script type="text/javascript">
+
+<script>
+    function insertDept() {
+        var _deptName1 = $("#_deptName1").val();
+        var _deptName2 = $("#_deptName2").val();
+
+        $.ajax('<%=basePath%>deptcode/insert', {
+            dataType : 'json',
+            data: {
+                deptName1:_deptName1,
+                deptName2:_deptName2
+
+            },
+            success: function(data)
+            {
+                if (data==true)
+                {
+                    alert('添加成功!');
+                    window.location.reload();
+
+                }
+                else
+                {
+                    alert('添加发生错误，请联系管理员!');
+                }
+            },
+            error: function()
+            {
+                alert('服务器无响应，请联系管理员!');
+            }
+        });
+    }
+
+    function deleteConfirm(_this)
+    {
+        var number = $(_this).parent().prev().prev().prev().find('input').val();
+        $.ajax('<%=basePath%>deptcode/delete', {
+            dataType : 'json',
+            data: {
+                ids:number
+            },
+            success: function(data)
+            {
+                if (data==true)
+                {
+                    alert('删除成功!');
+                    window.location.reload();
+
+                }
+                else
+                {
+                    alert('删除发生错误，请联系管理员!');
+                }
+            },
+            error: function()
+            {
+                alert('服务器无响应，请联系管理员!');
+            }
+        });
+
+
+    }
+    function updateConfirm(_this)
+    {
+        var name1 = $(_this).parent().prev().prev().find('input').val();
+        var name2 = $(_this).parent().prev().find('input').val();
+        var number = $(_this).parent().prev().prev().prev().find('input').val();
+        $.ajax('<%=basePath%>deptcode/update', {
+            dataType : 'json',
+            data: {
+                name1:name1,
+                name2:name2,
+                number:number
+
+            },
+            success: function(data)
+            {
+                if (data==true)
+                {
+                    alert('修改成功!');
+                    start = $('.dataTables-example').dataTable().fnSettings()._iDisplayStart;
+                    total = $('.dataTables-example').dataTable().fnSettings().fnRecordsDisplay();
+                    window.location.reload();
+                    if((total-start)==1){
+                        if (start > 0) {
+                            $('.dataTables-example').dataTable().fnPageChange( 'previous', true );
+                        }
+                    }
+                }
+                else
+                {
+                    alert('修改发生错误，请联系管理员!');
+                }
+            },
+            error: function()
+            {
+                alert('服务器无响应，请联系管理员!');
+            }
+        });
+
+
+    }
+
+    //debugger;
     $("#checkbox").click(function () {
         if(this.checked){
             $('input[name="mycheckbox"]').each(function () {
@@ -570,9 +638,99 @@
 
     })
 
-    //推送
-    function sendPipeline() {
 
+
+    //已导出
+
+    function outPutOver() {
+        window.location.href="<%=basePath%>/outPutOver/100002";
+    }
+
+
+    //导出
+    function output(name) {
+        var informationPipelineIds = "";
+        $('input[name="mycheckbox"]').each(function () {
+            if (this.checked){
+                informationPipelineIds += this.value+" ";
+            }
+        });
+        if (informationPipelineIds.length>0){
+            $.ajax({
+                beforeSend: function () {
+                    $("#loading").html("<div class=\"spiner-example\">\n" +
+                        "                            <div class=\"sk-spinner sk-spinner-wave\">\n" +
+                        "                                <div class=\"sk-rect1\"></div>\n" +
+                        "                                <div class=\"sk-rect2\"></div>\n" +
+                        "                                <div class=\"sk-rect3\"></div>\n" +
+                        "                                <div class=\"sk-rect4\"></div>\n" +
+                        "                                <div class=\"sk-rect5\"></div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>");
+                    $("#loading").css("display","block");
+                    $(".modal-body").css("display","none");
+
+                },
+                complete: function () {
+                    $("#loading").css("display","none");
+                    // $("#loading").remove();
+                },
+                data:{ids:informationPipelineIds,name:name},
+                url: "<%=basePath%>output",
+                success: function(data){
+                    alert(data);
+                    window.location.reload();
+                }});
+        }else {
+            alert("请选择要导出的新闻")
+        }
+    }
+
+
+    function reg(id,column) {
+        var targetUrl = "<%=basePath%>/findErrorLog";
+
+
+        var informationid = $("#informationid").val();
+
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"informationid":id,"column":column},
+            success:function(data){
+                $("#p").text(data);
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+    }
+
+    function findErrorLog1007(id,column) {
+
+
+        var targetUrl = "<%=basePath%>/findErrorLog1007";
+
+
+        var informationid = $("#informationid").val();
+
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"informationid":id,"column":column},
+            success:function(data){
+                alert(data)
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+    }
+    function nextStep() {
 
         var informationPipelineIds = "";
         $('input[name="mycheckbox"]').each(function () {
@@ -580,16 +738,71 @@
                 informationPipelineIds += this.value+" ";
             }
         });
-        if (informationPipelineIds.length>0) {
-            $("#websiteids").val(informationPipelineIds);
-            $("#myform1").submit();
-        }else {
-            alert("请选择要分配的新闻")
-        }
 
+
+
+
+        window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds="+informationPipelineIds;
     }
-    //取消推送
-    function rollbackSendPipeline() {
+    function openDetail(data) {
+
+        window.open("<%=path%>/informationDetail/"+data+"/100002",'_blank');
+    }
+    function openWebsiteAddress(data) {
+        window.open(data);
+    }
+    function downloadFJ(id) {
+        var targetUrl = "<%=basePath%>/downloadFJ";
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"id":id},
+            success:function(data){
+                $("#p6").html(data);
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+    }
+    function downLoadAttachment(id,count) {
+        debugger;
+        var targetUrl = "<%=basePath%>/manCheck/downLoadAttachment";
+        var fjName = "";
+        fjName = $("#fjian"+count).text();
+
+        fjName = fjName.replace(new RegExp("\\.","gm"),"-");
+
+
+        /*       var dian = fjName.lastIndexOf(".");
+
+               var q = fjName.substring(0,dian);
+
+               fjName = q+"-"+fjName.substring(dian+1);
+               if (fjName.indexOf(".")>0){
+                   fjName = fjName.substring(fjName.indexOf(".")+1)
+               }*/
+
+        /*       $.ajax({
+                   type:'post',
+                   url:targetUrl,
+                   cache: false,
+                   data:{"id":id,"fjName":fjName},
+                   success:function(data){
+                       $("#p6").html(data);
+                   },
+                   error:function(){
+                       alert("请求失败")
+                   }
+               })*/
+
+        window.location.href=targetUrl+"/"+id+"/"+fjName;
+    }
+
+
+    function deleteAll() {
         var informationPipelineIds = "";
         $('input[name="mycheckbox"]').each(function () {
             if (this.checked){
@@ -617,16 +830,66 @@
                     // $("#loading").remove();
                 },
                 data:{ids:informationPipelineIds},
-                url: "<%=basePath%>rollbackSendPipeline",
+                url: "<%=basePath%>manCheck/delete",
                 success: function(data){
                     alert(data);
                     window.location.reload();
                 }});
         }else {
-            alert("请选择要取消推送的新闻")
+            alert("请选择要删除的新闻")
         }
     }
+
+    function restart() {
+        var informationPipelineIds = "";
+        $('input[name="mycheckbox"]').each(function () {
+            if (this.checked){
+                informationPipelineIds += this.value+" ";
+            }
+        });
+        //重置的所属库
+        var xwcolumn = "100002";
+        if (informationPipelineIds.length>0){
+            $.ajax({
+                beforeSend: function () {
+                    $("#loading").html("<div class=\"spiner-example\">\n" +
+                        "                            <div class=\"sk-spinner sk-spinner-wave\">\n" +
+                        "                                <div class=\"sk-rect1\"></div>\n" +
+                        "                                <div class=\"sk-rect2\"></div>\n" +
+                        "                                <div class=\"sk-rect3\"></div>\n" +
+                        "                                <div class=\"sk-rect4\"></div>\n" +
+                        "                                <div class=\"sk-rect5\"></div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>");
+                    $("#loading").css("display","block");
+                    $(".modal-body").css("display","none");
+
+                },
+                complete: function () {
+                    $("#loading").css("display","none");
+                    // $("#loading").remove();
+                },
+                data:{ids:informationPipelineIds,xwcolumn:xwcolumn},
+                url: "<%=basePath%>restart",
+                success: function(data){
+                    alert(data);
+                    window.location.reload();
+                }});
+        }else {
+            alert("请选择要重置的新闻")
+        }
+    }
+
+    function openSource(source) {
+        window.open(source,'_blank');
+    }
 </script>
+<!-- 隐藏url列 -->
+<style>
+    .hide_column{
+        display: none;
+    }
+</style>
 </body>
 
 </html>

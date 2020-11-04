@@ -123,4 +123,8 @@ public class TXwWebsite_service {
 
         websiteMapper.updateTitleAndNewsnumStatus(id,title,newsnum);
     }
+
+    public List<TXwWebsite> getTXwWebsiteListWithMonitorDate() {
+        return websiteMapper.getTXwWebsiteListWithMonitorDate();
+    }
 }

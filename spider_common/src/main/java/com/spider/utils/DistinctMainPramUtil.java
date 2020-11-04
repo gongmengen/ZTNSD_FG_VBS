@@ -24,13 +24,13 @@ public class DistinctMainPramUtil {
                     if(start_index_in>-1){
                         //删除前面的东西
                         titles = titles.substring(start_index+before_find_str[kk].length());
-                        for(int nn=0;nn<last_find_str.length;nn++){//删除后面的东西
+/*                        for(int nn=0;nn<last_find_str.length;nn++){//删除后面的东西
                             int start_index_last  = titles.indexOf(last_find_str[nn],start_index);
                             if(start_index_last>-1){
                                 titles = titles.substring(0,start_index_last);
                                 break;
                             }
-                        }
+                        }*/
 
                         titles=titles.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , "%");
                         System.out.println(titles);

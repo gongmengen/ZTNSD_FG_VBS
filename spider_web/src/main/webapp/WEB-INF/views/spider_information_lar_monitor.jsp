@@ -179,6 +179,9 @@
                     </li>
                 </c:if>
                 <li>
+                    <a href="/deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
+                </li>
+                <li>
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 
                 </li>
@@ -401,7 +404,7 @@
                                         <td class="center"> ${websiteList.usertask}</td>
                                         <td class="center"> <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${websiteList.lasttime}" /></td>
                                         <c:choose>
-                                            <c:when test="${websiteList.notUpdateTime > 168}">
+                                            <c:when test="${websiteList.notUpdateTime/24 > websiteList.monitorDate}">
                                                 <td  data-sort="${websiteList.notUpdateTime}" class="center" style="color: red">
                                                         ${websiteList.notUpdateDay}
                                                 </td>

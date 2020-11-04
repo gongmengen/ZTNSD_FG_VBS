@@ -176,7 +176,9 @@
                             </li>
                         </ul>
                     </li>
-                </c:if>
+                </c:if>                <li>
+                <a href="/deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
+            </li>
                 <li>
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 
