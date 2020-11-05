@@ -340,9 +340,11 @@ public class TWxAdapter_service {
             try {
                 String entry = javaScriptUtils.entry(information.getNewscontentnotupdate(), JavaScript_static.LAWSTARLIB_JS + adapter.getReleasedate());
 
+/*
+                //移除发布日期为空时的日志记录
                 if ("".equals(entry)){
                     errorLogs.add(new TblErrorLog(10041,ErrorPram.getErrorPram().get(10041),information.getId(),information.getXwcolumn()));
-                }
+                }*/
                 result.setReleasetime(entry);
             }catch (Exception e){
                 errorLogs.add(new TblErrorLog(1004,ErrorPram.getErrorPram().get(1004),information.getId(),information.getXwcolumn()));
@@ -673,6 +675,9 @@ public class TWxAdapter_service {
         //设置 发布日期、实施日期
         result.setReleasetime(rdt.getRJS5()==null?"":rdt.getRJS5());
         result.setExtend1(rdt.getRJS6()==null?"":rdt.getRJS6());//实施日期
+
+        //查重的日期
+        result.setExtend3(rdt.getRJS5_2()==null?"":rdt.getRJS5_2());
 
         //如果新闻的栏目与rdt返回的不同则标记为 error
         if (StringUtils.isNotBlank(rdt.getDbsType())){

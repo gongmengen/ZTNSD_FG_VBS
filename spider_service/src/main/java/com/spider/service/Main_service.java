@@ -18,8 +18,11 @@ public class Main_service {
     private MainMapper mainMapper;
 
     public int insert(MainWithBLOBs main){
-        return mainMapper.insert(main);
+        //插入之前获取lawlevel
+        return mainMapper.insert(getLawlevel(main));
     }
+
+
 
     public String getMaxRjs8(String username) {
         return mainMapper.findMaxRjs8(username);
@@ -43,6 +46,9 @@ public class Main_service {
         return mainMapper.getListByAppuser(appuser);
     }
 
+    public List<MainWithBLOBs> getMarkListByAppuser(String appuser) {
+        return mainMapper.getMarkListByAppuser(appuser);
+    }
     public boolean deleteByNumbers(String[] id) {
         boolean flag = true;
         for (String number : id) {
@@ -72,5 +78,21 @@ public class Main_service {
         MainExample.Criteria criteria = mainExample.createCriteria();
         criteria.andNumberEqualTo(main.getNumber());
         return mainMapper.updateByExampleSelective(main,mainExample)==1?true:false;
+    }
+
+
+    private MainWithBLOBs getLawlevel(MainWithBLOBs main) {
+
+        //法规级别 人大的文件设置重点，使用人大部门
+        String specail_p_arr [] = new String[]{"人大","人民代表大会","人大常委会","人民代表大会常务委员会"};
+        for(int mm=0;mm<specail_p_arr.length;mm++){
+            if(main.getRjs10().indexOf(specail_p_arr[mm].toLowerCase())>-1){
+                main.setLawlevel(1);
+                break;
+            }
+        }
+        if (main.getRjs12().indexOf("令")>0) main.setLawlevel(1);
+
+        return main;
     }
 }

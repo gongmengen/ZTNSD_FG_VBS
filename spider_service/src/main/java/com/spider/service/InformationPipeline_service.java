@@ -70,7 +70,7 @@ public class InformationPipeline_service {
             //pram
             DistinctMainPramUtil distinctMainPramUtil = new DistinctMainPramUtil();
             String sqlTitle = distinctMainPramUtil.getSQLTitle(informationPipeline.getNewstitle());
-            String[] releaseTime = distinctMainPramUtil.getReleaseTime(informationPipeline.getReleasetime());
+            String[] releaseTime = distinctMainPramUtil.getReleaseTime(informationPipeline.getExtend3());
             String rjs12 = distinctMainPramUtil.getWenHao(informationPipeline.getFilenum());
             String rjs10 = informationPipeline.getDeptcode();
             //condition
