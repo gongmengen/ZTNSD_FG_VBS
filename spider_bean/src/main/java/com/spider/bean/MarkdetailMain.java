@@ -1,9 +1,10 @@
 package com.spider.bean;
 
-import java.util.Comparator;
 import java.util.Date;
 
-public class Main {
+public class MarkdetailMain {
+    private Long id;
+
     private Long number;
 
     private String rjs0;
@@ -54,78 +55,36 @@ public class Main {
 
     private String rjs15;
 
+    private Integer preDistinct;
 
-    //增加 重复判断字段
-    private Integer pre_distinct;
+    private Integer markTitle;
 
-    //附件数
-    private Integer fj_count;
+    private Integer markFilenum;
 
-    //正文字数
-    private long contentSize;
+    private Integer markDeptcode;
 
-    //排序得分
-    private int compare_score;
+    private Integer markDeptname;
 
-    public static final Comparator<Main> MAIN_BY_SCORE = new Comparator<Main>(){
-        public int compare(Main o1, Main o2) {
-            if (o1.getCompare_score()>o2.getCompare_score()){
-                return -1;
-            }else if (o1.getCompare_score()<o2.getCompare_score()){
-                return 1;
-            }else {
-                return 0;
-            }
+    private Integer markRelease;
 
-        }
-    };
+    private Integer markImp;
 
+    private Integer markAttachment;
 
-    public Main(Long number, String rjs0, String rjs4,String rjs5,String rjs6, String rjs10,String rjs12, String rjs1,String keyword) {
-        this.number = number;
-        this.rjs0 = rjs0;
-        this.rjs4 = rjs4;
-        this.rjs5 = rjs5;
-        this.rjs6 = rjs6;
-        this.rjs10 = rjs10;
-        this.rjs12 = rjs12;
-        this.rjs1 = rjs1;
-        this.kword = keyword;
+    private Integer markContent;
+
+    private Integer markKind;
+
+    private Integer markKeyword;
+
+    private Integer markOther;
+
+    public Long getId() {
+        return id;
     }
 
-    public Main() {
-    }
-
-    public int getCompare_score() {
-        return compare_score;
-    }
-
-    public void setCompare_score(int compare_score) {
-        this.compare_score = compare_score;
-    }
-
-    public long getContentSize() {
-        return contentSize;
-    }
-
-    public void setContentSize(long contentSize) {
-        this.contentSize = contentSize;
-    }
-
-    public Integer getFj_count() {
-        return fj_count;
-    }
-
-    public void setFj_count(Integer fj_count) {
-        this.fj_count = fj_count;
-    }
-
-    public Integer getPre_distinct() {
-        return pre_distinct;
-    }
-
-    public void setPre_distinct(Integer pre_distinct) {
-        this.pre_distinct = pre_distinct;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getNumber() {
@@ -312,7 +271,6 @@ public class Main {
         this.truetag1 = truetag1;
     }
 
-
     public String getRjs14() {
         return rjs14;
     }
@@ -327,5 +285,101 @@ public class Main {
 
     public void setRjs15(String rjs15) {
         this.rjs15 = rjs15 == null ? null : rjs15.trim();
+    }
+
+    public Integer getPreDistinct() {
+        return preDistinct;
+    }
+
+    public void setPreDistinct(Integer preDistinct) {
+        this.preDistinct = preDistinct;
+    }
+
+    public Integer getMarkTitle() {
+        return markTitle;
+    }
+
+    public void setMarkTitle(Integer markTitle) {
+        this.markTitle = markTitle;
+    }
+
+    public Integer getMarkFilenum() {
+        return markFilenum;
+    }
+
+    public void setMarkFilenum(Integer markFilenum) {
+        this.markFilenum = markFilenum;
+    }
+
+    public Integer getMarkDeptcode() {
+        return markDeptcode;
+    }
+
+    public void setMarkDeptcode(Integer markDeptcode) {
+        this.markDeptcode = markDeptcode;
+    }
+
+    public Integer getMarkDeptname() {
+        return markDeptname;
+    }
+
+    public void setMarkDeptname(Integer markDeptname) {
+        this.markDeptname = markDeptname;
+    }
+
+    public Integer getMarkRelease() {
+        return markRelease;
+    }
+
+    public void setMarkRelease(Integer markRelease) {
+        this.markRelease = markRelease;
+    }
+
+    public Integer getMarkImp() {
+        return markImp;
+    }
+
+    public void setMarkImp(Integer markImp) {
+        this.markImp = markImp;
+    }
+
+    public Integer getMarkAttachment() {
+        return markAttachment;
+    }
+
+    public void setMarkAttachment(Integer markAttachment) {
+        this.markAttachment = markAttachment;
+    }
+
+    public Integer getMarkContent() {
+        return markContent;
+    }
+
+    public void setMarkContent(Integer markContent) {
+        this.markContent = markContent;
+    }
+
+    public Integer getMarkKind() {
+        return markKind;
+    }
+
+    public void setMarkKind(Integer markKind) {
+        this.markKind = markKind;
+    }
+
+    public Integer getMarkKeyword() {
+        return markKeyword;
+    }
+
+    public void setMarkKeyword(Integer markKeyword) {
+        this.markKeyword = markKeyword;
+    }
+
+    public Integer getMarkOther() {
+        return markOther;
+    }
+
+    public void setMarkOther(Integer markOther) {
+        this.markOther = markOther;
     }
 }

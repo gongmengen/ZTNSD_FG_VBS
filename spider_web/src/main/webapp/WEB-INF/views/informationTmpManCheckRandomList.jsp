@@ -171,6 +171,8 @@
                         <li class="active"><a href="/manCheck/list">临时库列表(中央)</a>
                         <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
                         </li>
+                        <li><a href="/manCheck/markList">临时库列表(已标记/中央)</a></li>
+                        <li><a href="/manCheck/markList_lar">临时库列表(已标记/地方)</a></li>
                     </ul>
                 </li>                <li>
                 <a href="/deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
@@ -488,32 +490,6 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
-        $('.dataTables-example').DataTable({
-                "ordering": false, // 禁止排序
-        });
-        if (!${selectLength eq null}){
-            $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
-        }//默认显示条数
-        //$('.dataTables-example').dataTable( {"language": {"url": "http://localhost:8080/returnSearchJSON"}} );
-
-        //分页数量控制
-
-        $('.dataTables-example').on( 'length.dt', function ( e, settings, len ) {
-            $.ajax({
-                data:{length:len},
-                url: "<%=basePath%>rememberSelectLength"});
-        } ).DataTable();
-
-
-        /*        //隐藏url 列
-                $('.dataTables-example').dataTable( {
-                      "columnDefs" :
-                          [{
-                              className: "hide_column",
-                              "targets": [0]
-                          }]
-                  } );*/
-
         $('.dataTables-example').dataTable();
 
         /* Init DataTables */

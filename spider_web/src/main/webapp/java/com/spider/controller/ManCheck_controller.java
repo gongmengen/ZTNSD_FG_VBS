@@ -51,6 +51,76 @@ public class ManCheck_controller {
     @Autowired
     private MainCHLandLAR_service mainCHLandLAR_service;
 
+
+    //展示所有 zyzd
+    @RequestMapping("markList")
+    public String getInformationPipelinemarkList(@RequestParam(required = false,value = "column")String column,HttpServletRequest request,Model model){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        //获取地方库新闻数据
+        List<MarkdetailMainWithBLOBs> mainList = main_service.getMarkList("zyzd",column);
+
+        //获取不同分类的统计数据
+        String data = main_service.groupColumnStatus("zyzd");
+
+        model.addAttribute("mainList",mainList);
+        model.addAttribute("data",data);
+
+        return "informationTmpManCheckListMark";
+    }
+
+
+    //展示所有 dfzd
+    @RequestMapping("markList_lar")
+    public String getInformationPipelinemarkList_lar(@RequestParam(required = false,value = "column")String column,HttpServletRequest request,Model model){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        //获取地方库新闻数据
+        List<MarkdetailMainWithBLOBs> mainList = main_service.getMarkList("dfzd",column);
+
+        //获取不同分类的统计数据
+        String data = main_service.groupColumnStatus("dfzd");
+
+        model.addAttribute("mainList",mainList);
+        model.addAttribute("data",data);
+
+        return "informationTmpManCheckListMark_lar";
+    }
+
+    //标记
+    @RequestMapping("mark")
+    @ResponseBody
+    public boolean mark(@RequestParam("number")long number,@RequestParam("markcolumn")String markcolumn){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        MainWithBLOBs main = new MainWithBLOBs();
+        main.setNumber(number);
+        main.setAnyou("mark");//标记为删除状态
+        main_service.markUpdate(main,markcolumn);
+
+        //将附件 复制到history 目录下
+        MainWithBLOBs mainByNumber = main_service.getMainByNumber(number);
+        String attachmentpath = TimerParm.fjPath5 + File.separator + mainByNumber.getRjs8().substring(0,mainByNumber.getRjs8().indexOf(".")) ;
+        FileUtil.copy(attachmentpath,TimerParm.fjPath5_history,true);
+
+        //将txt 复制到history 目录下
+        String filepath = TimerParm.txtPath5 + File.separator + mainByNumber.getAppuser()+File.separator+mainByNumber.getRjs8() ;
+        String targetpath = TimerParm.txtPath5_history+ File.separator + mainByNumber.getAppuser();
+
+        File file = new File(targetpath);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        FileUtil.copy(filepath,targetpath,true);
+
+        return true;
+
+    }
+
+
     //逻辑删除
     @RequestMapping("virtualDelete")
     @ResponseBody
@@ -181,6 +251,7 @@ public class ManCheck_controller {
         return main_service.update(main);
 
     }
+
     //修改
     @RequestMapping("update")
 
@@ -190,7 +261,7 @@ public class ManCheck_controller {
 
         //为了获取正文不得不通过  informationPipeline 转换一下
 
-        MainWithBLOBs main = new MainWithBLOBs(Long.parseLong(information.getExtend2()),information.getNewstitle(),information.getDeptcode(),information.getReleasetime(),information.getImptime(),information.getDeptname(),information.getFilenum());
+        MainWithBLOBs main = new MainWithBLOBs(Long.parseLong(information.getExtend2()),information.getNewstitle(),information.getDeptcode(),information.getReleasetime(),information.getImptime(),information.getDeptname(),information.getFilenum(),information.getRjs1(),information.getKeyword());
         if (main_service.update(main)){
             //正文按照页面上 的数据写回到txt中
             String contextPath = TimerParm.txtPath5 + File.separator + information.getExtend3() + File.separator +information.getFilename();
@@ -200,6 +271,30 @@ public class ManCheck_controller {
             FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
 
             response.sendRedirect("detail/"+information.getExtend2());
+
+        }
+
+    }
+
+    //修改
+    @RequestMapping("markUpdate")
+
+    public void markUpdate(InformationPipelineWithBLOBs information, HttpServletResponse response,Model model) throws IOException {
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        //为了获取正文不得不通过  informationPipeline 转换一下
+
+        MainWithBLOBs main = new MainWithBLOBs(Long.parseLong(information.getExtend2()),information.getNewstitle(),information.getDeptcode(),information.getReleasetime(),information.getImptime(),information.getDeptname(),information.getFilenum(),information.getRjs1(),information.getKeyword());
+        if (main_service.update(main)){
+            //正文按照页面上 的数据写回到txt中
+            String contextPath = TimerParm.txtPath5 + File.separator + information.getExtend3() + File.separator +information.getFilename();
+            FileUtil.writeString(information.getNewscontent(),contextPath,"GBK");
+            //正文按照页面上 的数据写回到 hting/txt中(兼容旧法规工具)
+            String contextCopyPath = TimerParm.txtCopyPath5 + File.separator +information.getFilename();
+            FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
+
+            response.sendRedirect("markDetail/"+information.getExtend2());
 
         }
 
@@ -293,16 +388,20 @@ public class ManCheck_controller {
 
         boolean flag = true;
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
-            if (intoCHL(mainWithBLOBs,request)) {
-                String[] numbers = {mainWithBLOBs.getNumber() + ""};
-                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
-                flag = main_service.deleteByNumbers(numbers);
-                //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
-                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
+            if (mainWithBLOBs.getAnyou()==null) {
+                if (intoCHL(mainWithBLOBs, request)) {
+                    String[] numbers = {mainWithBLOBs.getNumber() + ""};
+                    DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                    DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+                    flag = main_service.deleteByNumbers(numbers);
+                    //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+                    DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                    DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
+                } else {
+                    flag = false;
+                }
             }else {
-                flag = false;
+                copyCHL(mainWithBLOBs, request);
             }
         }
 
@@ -324,21 +423,69 @@ public class ManCheck_controller {
 
         boolean flag = true;
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
-            if (intoCHL(mainWithBLOBs,request)) {
-                String[] numbers = {mainWithBLOBs.getNumber() + ""};
-                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
-                flag = main_service.deleteByNumbers(numbers);
-                //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
-                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+            if (mainWithBLOBs.getAnyou()==null) {
+                if (intoCHL(mainWithBLOBs, request)) {
+                    String[] numbers = {mainWithBLOBs.getNumber() + ""};
+                    DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                    DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+                    flag = main_service.deleteByNumbers(numbers);
+                    //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+                    DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                    DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
+                } else {
+                    flag = false;
+                }
             }else {
-                flag = false;
+                copyCHL(mainWithBLOBs, request);
             }
         }
 
         return flag == true?"导出成功":"导出失败";
     }
+
+    //标记后的详情页面
+    @RequestMapping("markDetail/{number}")
+    public String markDetail(@PathVariable(value = "number")String number,Model model){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+
+        //获取地方库新闻数据
+        MainWithBLOBs main = main_service.getMainByNumber(Long.parseLong(number));
+        String content = readTxt(main.getAppuser(),main.getRjs8());
+        String contentHistory = readHistoryTxt(main.getAppuser(),main.getRjs8());
+
+//-------------------------------------------------------------------------------------attachment
+        //附件集合返回对象
+
+        ArrayList<HashMap> attachmentList = new ArrayList<HashMap>();
+
+
+        //获取附件信息
+
+        String attachmentPath = TimerParm.fjPath5+File.separator+(main.getRjs8().substring(0,main.getRjs8().indexOf(".")));
+
+        //文件路径
+        List<File> files = FileUtil.loopFiles(attachmentPath);
+        if (files.size()>0){
+            for (File file : files) {
+                HashMap attachment = new HashMap();
+                attachment.put("filename",file.getName());
+                attachment.put("size",(file.length()/1024)+"kb");
+                attachment.put("status","原始文件");
+
+                attachmentList.add(attachment);
+            }
+        }
+//-------------------------------------------------------------------------------------attachment
+        model.addAttribute("main",main);
+        model.addAttribute("content",content);
+        model.addAttribute("contentHistory",contentHistory);
+        model.addAttribute("attachmentList",attachmentList);
+        model.addAttribute("mainMark",main_service.getMainMarkByNumber(Long.parseLong(number)));
+
+        return "informationTmpManCheckDetail_mark";
+    }
+
     //详情
     @RequestMapping("detail/{number}")
     public String detail(@PathVariable(value = "number")String number,Model model){
@@ -382,6 +529,18 @@ public class ManCheck_controller {
 
     private String readTxt(String appuser,String filename) {
         String contextPath = TimerParm.txtPath5 + File.separator + appuser + File.separator +filename;
+        try {
+            String resu = FileUtil.readString(contextPath,"GBK");
+            return resu;
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
+    private String readHistoryTxt(String appuser,String filename) {
+        String contextPath = TimerParm.txtPath5_history + File.separator + appuser + File.separator +filename;
         try {
             String resu = FileUtil.readString(contextPath,"GBK");
             return resu;
@@ -543,6 +702,108 @@ public class ManCheck_controller {
         return "informationTmpManCheckList_lar";
     }
 
+    public boolean copyCHL(MainWithBLOBs tmpmain,HttpServletRequest request){
+        //--------------------------------------------------------------------------参数
+
+
+        DecimalFormat df = new DecimalFormat("000");
+
+        //文件移动工具
+        NioFileUtil fileUtil = new NioFileUtil();
+
+
+        String txtPath = tmpmain.getRjs8();
+        String dirPath = txtPath.substring(0,txtPath.indexOf("."));// E:\\target\\tmptxt\\zyzd005s074
+        String oldFileName = tmpmain.getRjs8();
+
+        String chlFileNamePrefix = tmpmain.getAppuser().equals("zyzd")?"chl":"lar";
+
+
+        Map<String, Integer> maxRjs8 = getMaxRjs8ForMain(chlFileNamePrefix);//统一导出到aaa 账户
+        int beginNum = maxRjs8.get("beginNum");
+        int endNum = maxRjs8.get("endNum");
+        if(endNum<999) {
+            endNum++;
+        }else {
+            beginNum++;
+            endNum=1;
+        }
+
+        String dirname = df.format(beginNum);
+
+        String chlFileName = chlFileNamePrefix+df.format(beginNum)+"s"+df.format(endNum)+".txt";
+        String chlFileDir = chlFileNamePrefix+df.format(beginNum)+"s"+df.format(endNum);
+
+        Main_CHLandLAR main = new Main_CHLandLAR();
+        main.setRjs0(tmpmain.getRjs0());
+        main.setRjs4(tmpmain.getRjs4());
+        main.setRjs5(tmpmain.getRjs5());
+        main.setRjs6(tmpmain.getRjs6());
+        main.setRjs7(tmpmain.getRjs7());
+        main.setRjs8(chlFileNamePrefix+df.format(beginNum)+"s"+df.format(endNum)+".txt"); //filename 保存文件的文件名
+        main.setRjs9((short)1);
+        main.setRjs10(tmpmain.getRjs10());
+        main.setRjs12(tmpmain.getRjs12());
+        main.setAppuser(tmpmain.getAppuser());
+        main.setLinksource(tmpmain.getLinksource());
+        main.setFjian(tmpmain.getFjian()); //附件名
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        main.setUpdatetime(Integer.parseInt(simpleDateFormat.format(new Date())));//当前日期
+        main.setAppdate(new Date());
+
+        main.setRjs1(tmpmain.getRjs1());
+        main.setKword(tmpmain.getKword());
+        main.setLawlevel(5);
+        main.setTruetag(1);
+        main.setRjs14(tmpmain.getRjs14());
+        main.setRjs15(tmpmain.getRjs15());
+        mainCHLandLAR_service.insert(main);
+
+
+        try {
+
+            //先重命名文件夹
+            NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + dirPath, chlFileDir);//zyzd001s001 == > zyzd
+
+            //附件文件夹移动到。5挂载文件夹下
+            Path start = Paths.get(TimerParm.fjPath5 + File.separator + chlFileDir);
+            Path target = Paths.get(TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix);
+            //移动附件之前先判断目标地址中是否存在重名文件夹 如果存在则先删除掉目标文件夹
+            NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
+            //在移动
+            fileUtil.operateDir(false, start, target, StandardCopyOption.REPLACE_EXISTING);
+            //临时库附件文件夹复制完毕后文件夹名改回复制前的文件夹名
+            NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + chlFileDir, dirPath);//zyzd  == > zyzd001s001
+
+
+            //txt移动到  正式 文件夹下
+            //重命名文件
+
+            NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName, chlFileName);
+
+            File start1 = new File(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +chlFileName);
+            File target2 = new File(TimerParm.txt_chlPath+ File.separator + chlFileNamePrefix+File.separator +dirname);
+            //移动之前先判断目标地址中是否存在重名文件 如果存在则先删除掉目标文件
+            NioFileUtil.deleteIfExists(Paths.get(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName));
+
+            //生成文件夹
+            File chlTxtDir = new File(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname);
+            if (!chlTxtDir.exists()){
+                chlTxtDir.mkdir();
+            }
+            //移动
+            FileUtil.copy(start1,target2,true);
+            //修改回复制前的文件名
+
+            NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +chlFileName, oldFileName);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public boolean intoCHL(MainWithBLOBs tmpmain,HttpServletRequest request){
         //--------------------------------------------------------------------------参数

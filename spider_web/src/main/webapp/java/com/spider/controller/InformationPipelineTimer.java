@@ -326,14 +326,12 @@ public class InformationPipelineTimer {
             for (InformationPipelineWithBLOBs information:informationPipelineList
                     ) {
                 //入临时库
-                intoTMP(information,request);
-            }
-            for (InformationPipelineWithBLOBs information:informationPipelineList
-                    ) {
-                //修改导出状态
-                InformationPipelineWithBLOBs i = new InformationPipelineWithBLOBs();
-                i.setIstatus(1);
-                informationPipeline_service.updateIstatus(i,information.getId());
+                if (intoTMP(information,request)){
+                    //修改导出状态
+                    InformationPipelineWithBLOBs i = new InformationPipelineWithBLOBs();
+                    i.setIstatus(1);
+                    informationPipeline_service.updateIstatus(i,information.getId());
+                }
             }
         }else {
             return "没有需要推送到临时库的数据！";
@@ -499,6 +497,17 @@ public class InformationPipelineTimer {
                 if(informationPipeline_service.checkOverOutPutExistId(information.getInformationId())){
                     throw new OverOutputExistException("该新闻已被导出！    新闻id："+information.getInformationId());
                 }
+
+                //判断非本栏目信息
+                List<TblErrorLog> errorLogList = errorLog_service.getErrorLogListByInformationID(information.getInformationId(), Integer.parseInt(information.getXwcolumn()));
+                for (TblErrorLog errorLog : errorLogList) {
+                    if (errorLog.getErrorcode().equals(1011)){
+                        main.setRjs7(information.getXwcolumn().equals("100002")?"lar":"chl");
+                        break;
+                    }
+                }
+
+
                 main_service.insert(main);
                 /*                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                 DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);*/
@@ -1287,7 +1296,7 @@ public class InformationPipelineTimer {
             }
         }
     //过滤新闻中不存在error——log 的新闻 直接进入临时库
-    public void intoTMP(InformationPipelineWithBLOBs informationPipeline,HttpServletRequest request){
+    public Boolean intoTMP(InformationPipelineWithBLOBs informationPipeline,HttpServletRequest request){
         //--------------------------------------------------------------------------参数
         //导出txt
         String username = informationPipeline.getXwcolumn().equals("100002")?"zyzd":"dfzd";// 中央和地方区分开
@@ -1336,7 +1345,7 @@ public class InformationPipelineTimer {
         main.setAppdate(new Date());
         main.setRjs14(informationPipeline.getRjs14());
         main.setRjs15(informationPipeline.getRjs15());
-        main_service.insert(main);
+
 
 
         try {
@@ -1378,8 +1387,14 @@ public class InformationPipelineTimer {
             fileUtil.moveFile(start3, target3, StandardCopyOption.REPLACE_EXISTING);
             NioFileUtil.reNameFile(TimerParm.txtCopyPath5 + File.separator + oldFileName, username + df.format(beginNum) + "s" + df.format(endNum) + ".txt");
 
-        } catch (IOException e) {
+            //无异常时
+            main_service.insert(main);
+            return Boolean.TRUE;
+        } catch (Exception e) {
             e.printStackTrace();
+
+
+            return Boolean.FALSE;
         }
     }
 

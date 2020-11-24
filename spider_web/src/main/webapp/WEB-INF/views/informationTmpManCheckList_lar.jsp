@@ -171,7 +171,8 @@
                                                 </li>-->
                         <li><a href="/manCheck/list">临时库列表(中央)</a>
                         <li class="active"><a href="/manCheck/list_lar">临时库列表(地方)</a>
-                        </li>
+                        </li>                        <li><a href="/manCheck/markList">临时库列表(已标记/中央)</a>
+                        <li><a href="/manCheck/markList_lar">临时库列表(已标记/地方)</a></li>
                     </ul>
                 </li>
                 <li>
@@ -514,21 +515,28 @@
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
-        $('.dataTables-example').dataTable({
-            "sortOrder": [ 7, 'asc' ],'bStateSave': true,
+        $('.dataTables-example').dataTable();
+
+        /* Init DataTables */
+        var oTable = $('#editable').dataTable();
+
+        /* Apply the jEditable handlers to the table */
+        oTable.$('td').editable('../example_ajax.php', {
+            "callback": function (sValue, y) {
+                var aPos = oTable.fnGetPosition(this);
+                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+            },
+            "submitdata": function (value, settings) {
+                return {
+                    "row_id": this.parentNode.getAttribute('id'),
+                    "column": oTable.fnGetPosition(this)[2]
+                };
+            },
+
+            "width": "90%",
+            "height": "100%"
         });
-        if (!${selectLength eq null}){
-            $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
-        }//默认显示条数
-        //$('.dataTables-example').dataTable( {"language": {"url": "http://localhost:8080/returnSearchJSON"}} );
 
-        //分页数量控制
-
-        $('.dataTables-example').on( 'length.dt', function ( e, settings, len ) {
-            $.ajax({
-                data:{length:len},
-                url: "<%=basePath%>rememberSelectLength"});
-        } ).DataTable();
 
     });
 

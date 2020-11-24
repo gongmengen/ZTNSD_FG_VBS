@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.spider.mapper.MainMapper" >
-  <resultMap id="BaseResultMap" type="com.spider.bean.Main" >
-    <id column="number" property="number" jdbcType="BIGINT" />
+<mapper namespace="com.spider.mapper.MarkdetailMainMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.MarkdetailMain" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="number" property="number" jdbcType="BIGINT" />
     <result column="RJS0" property="rjs0" jdbcType="VARCHAR" />
     <result column="RJS1" property="rjs1" jdbcType="VARCHAR" />
     <result column="RJS4" property="rjs4" jdbcType="VARCHAR" />
@@ -27,8 +28,20 @@
     <result column="truetag_1" property="truetag1" jdbcType="INTEGER" />
     <result column="RJS14" property="rjs14" jdbcType="VARCHAR" />
     <result column="RJS15" property="rjs15" jdbcType="VARCHAR" />
+    <result column="pre_distinct" property="preDistinct" jdbcType="INTEGER" />
+    <result column="mark_title" property="markTitle" jdbcType="INTEGER" />
+    <result column="mark_filenum" property="markFilenum" jdbcType="INTEGER" />
+    <result column="mark_deptcode" property="markDeptcode" jdbcType="INTEGER" />
+    <result column="mark_deptname" property="markDeptname" jdbcType="INTEGER" />
+    <result column="mark_release" property="markRelease" jdbcType="INTEGER" />
+    <result column="mark_imp" property="markImp" jdbcType="INTEGER" />
+    <result column="mark_attachment" property="markAttachment" jdbcType="INTEGER" />
+    <result column="mark_content" property="markContent" jdbcType="INTEGER" />
+    <result column="mark_kind" property="markKind" jdbcType="INTEGER" />
+    <result column="mark_keyword" property="markKeyword" jdbcType="INTEGER" />
+    <result column="mark_other" property="markOther" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.MainWithBLOBs" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.MarkdetailMainWithBLOBs" extends="BaseResultMap" >
     <result column="LinkSource" property="linksource" jdbcType="LONGVARCHAR" />
     <result column="fjian" property="fjian" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -91,14 +104,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword,
-    appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1,
-    RJS14, RJS15
+    id, number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12,
+    kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime,
+    truetag_1, RJS14, RJS15, pre_distinct, mark_title, mark_filenum, mark_deptcode, mark_deptname,
+    mark_release, mark_imp, mark_attachment, mark_content, mark_kind, mark_keyword, mark_other
   </sql>
   <sql id="Blob_Column_List" >
     LinkSource, fjian
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.MainExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.MarkdetailMainExample" >
     select
     <if test="distinct" >
       distinct
@@ -106,7 +120,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from main
+    from markdetail_main
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -114,13 +128,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.MainExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.MarkdetailMainExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from main
+    from markdetail_main
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -133,42 +147,55 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from main
-    where number = #{number,jdbcType=BIGINT}
+    from markdetail_main
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from main
-    where number = #{number,jdbcType=BIGINT}
+    delete from markdetail_main
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.spider.bean.MainExample" >
-    delete from main
+  <delete id="deleteByExample" parameterType="com.spider.bean.MarkdetailMainExample" >
+    delete from markdetail_main
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.spider.bean.MainWithBLOBs" >
-    insert into main (number, RJS0, RJS1,
-    RJS4, RJS5, RJS6, RJS7,
-    RJS8, RJS9, RJS10,
-    RJS11, RJS12, kword,
-    appuser, appdate, truetag,
-    lawlevel, Marked, anyou,
-    rid, RJS13, UpdateTime,
-    truetag_1, RJS14, RJS15,
-    LinkSource, fjian)
-    values (#{number,jdbcType=BIGINT}, #{rjs0,jdbcType=VARCHAR}, #{rjs1,jdbcType=VARCHAR},
-    #{rjs4,jdbcType=VARCHAR}, #{rjs5,jdbcType=VARCHAR}, #{rjs6,jdbcType=VARCHAR}, #{rjs7,jdbcType=VARCHAR},
-    #{rjs8,jdbcType=VARCHAR}, #{rjs9,jdbcType=SMALLINT}, #{rjs10,jdbcType=VARCHAR},
-    #{rjs11,jdbcType=VARCHAR}, #{rjs12,jdbcType=VARCHAR}, #{kword,jdbcType=VARCHAR},
-    #{appuser,jdbcType=VARCHAR}, #{appdate,jdbcType=TIMESTAMP}, #{truetag,jdbcType=INTEGER},
-    #{lawlevel,jdbcType=INTEGER}, #{marked,jdbcType=INTEGER}, #{anyou,jdbcType=VARCHAR},
-    #{rid,jdbcType=DECIMAL}, #{rjs13,jdbcType=INTEGER}, #{updatetime,jdbcType=INTEGER},
-    #{truetag1,jdbcType=INTEGER}, #{rjs14,jdbcType=VARCHAR}, #{rjs15,jdbcType=VARCHAR},
-    #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR})
+  <insert id="insert" parameterType="com.spider.bean.MarkdetailMainWithBLOBs" >
+    insert into markdetail_main (id, number, RJS0,
+    RJS1, RJS4, RJS5, RJS6,
+    RJS7, RJS8, RJS9,
+    RJS10, RJS11, RJS12,
+    kword, appuser, appdate,
+    truetag, lawlevel, Marked,
+    anyou, rid, RJS13,
+    UpdateTime, truetag_1, RJS14,
+    RJS15, pre_distinct, mark_title,
+    mark_filenum, mark_deptcode, mark_deptname,
+    mark_release, mark_imp, mark_attachment,
+    mark_content, mark_kind, mark_keyword,
+    mark_other, LinkSource, fjian
+    )
+    values (#{id,jdbcType=BIGINT}, #{number,jdbcType=BIGINT}, #{rjs0,jdbcType=VARCHAR},
+    #{rjs1,jdbcType=VARCHAR}, #{rjs4,jdbcType=VARCHAR}, #{rjs5,jdbcType=VARCHAR}, #{rjs6,jdbcType=VARCHAR},
+    #{rjs7,jdbcType=VARCHAR}, #{rjs8,jdbcType=VARCHAR}, #{rjs9,jdbcType=SMALLINT},
+    #{rjs10,jdbcType=VARCHAR}, #{rjs11,jdbcType=VARCHAR}, #{rjs12,jdbcType=VARCHAR},
+    #{kword,jdbcType=VARCHAR}, #{appuser,jdbcType=VARCHAR}, #{appdate,jdbcType=TIMESTAMP},
+    #{truetag,jdbcType=INTEGER}, #{lawlevel,jdbcType=INTEGER}, #{marked,jdbcType=INTEGER},
+    #{anyou,jdbcType=VARCHAR}, #{rid,jdbcType=DECIMAL}, #{rjs13,jdbcType=INTEGER},
+    #{updatetime,jdbcType=INTEGER}, #{truetag1,jdbcType=INTEGER}, #{rjs14,jdbcType=VARCHAR},
+    #{rjs15,jdbcType=VARCHAR}, #{preDistinct,jdbcType=INTEGER}, #{markTitle,jdbcType=INTEGER},
+    #{markFilenum,jdbcType=INTEGER}, #{markDeptcode,jdbcType=INTEGER}, #{markDeptname,jdbcType=INTEGER},
+    #{markRelease,jdbcType=INTEGER}, #{markImp,jdbcType=INTEGER}, #{markAttachment,jdbcType=INTEGER},
+    #{markContent,jdbcType=INTEGER}, #{markKind,jdbcType=INTEGER}, #{markKeyword,jdbcType=INTEGER},
+    #{markOther,jdbcType=INTEGER}, #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR}
+    )
   </insert>
-  <insert id="insertSelective" parameterType="com.spider.bean.MainWithBLOBs" >
-    insert into main
+  <insert id="insertSelective" parameterType="com.spider.bean.MarkdetailMainWithBLOBs" >
+    insert into markdetail_main
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
       <if test="number != null" >
         number,
       </if>
@@ -244,6 +271,42 @@
       <if test="rjs15 != null" >
         RJS15,
       </if>
+      <if test="preDistinct != null" >
+        pre_distinct,
+      </if>
+      <if test="markTitle != null" >
+        mark_title,
+      </if>
+      <if test="markFilenum != null" >
+        mark_filenum,
+      </if>
+      <if test="markDeptcode != null" >
+        mark_deptcode,
+      </if>
+      <if test="markDeptname != null" >
+        mark_deptname,
+      </if>
+      <if test="markRelease != null" >
+        mark_release,
+      </if>
+      <if test="markImp != null" >
+        mark_imp,
+      </if>
+      <if test="markAttachment != null" >
+        mark_attachment,
+      </if>
+      <if test="markContent != null" >
+        mark_content,
+      </if>
+      <if test="markKind != null" >
+        mark_kind,
+      </if>
+      <if test="markKeyword != null" >
+        mark_keyword,
+      </if>
+      <if test="markOther != null" >
+        mark_other,
+      </if>
       <if test="linksource != null" >
         LinkSource,
       </if>
@@ -252,6 +315,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="number != null" >
         #{number,jdbcType=BIGINT},
       </if>
@@ -327,6 +393,42 @@
       <if test="rjs15 != null" >
         #{rjs15,jdbcType=VARCHAR},
       </if>
+      <if test="preDistinct != null" >
+        #{preDistinct,jdbcType=INTEGER},
+      </if>
+      <if test="markTitle != null" >
+        #{markTitle,jdbcType=INTEGER},
+      </if>
+      <if test="markFilenum != null" >
+        #{markFilenum,jdbcType=INTEGER},
+      </if>
+      <if test="markDeptcode != null" >
+        #{markDeptcode,jdbcType=INTEGER},
+      </if>
+      <if test="markDeptname != null" >
+        #{markDeptname,jdbcType=INTEGER},
+      </if>
+      <if test="markRelease != null" >
+        #{markRelease,jdbcType=INTEGER},
+      </if>
+      <if test="markImp != null" >
+        #{markImp,jdbcType=INTEGER},
+      </if>
+      <if test="markAttachment != null" >
+        #{markAttachment,jdbcType=INTEGER},
+      </if>
+      <if test="markContent != null" >
+        #{markContent,jdbcType=INTEGER},
+      </if>
+      <if test="markKind != null" >
+        #{markKind,jdbcType=INTEGER},
+      </if>
+      <if test="markKeyword != null" >
+        #{markKeyword,jdbcType=INTEGER},
+      </if>
+      <if test="markOther != null" >
+        #{markOther,jdbcType=INTEGER},
+      </if>
       <if test="linksource != null" >
         #{linksource,jdbcType=LONGVARCHAR},
       </if>
@@ -335,15 +437,18 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.spider.bean.MainExample" resultType="java.lang.Integer" >
-    select count(*) from main
+  <select id="countByExample" parameterType="com.spider.bean.MarkdetailMainExample" resultType="java.lang.Integer" >
+    select count(*) from markdetail_main
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update main
+    update markdetail_main
     <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
       <if test="record.number != null" >
         number = #{record.number,jdbcType=BIGINT},
       </if>
@@ -419,6 +524,42 @@
       <if test="record.rjs15 != null" >
         RJS15 = #{record.rjs15,jdbcType=VARCHAR},
       </if>
+      <if test="record.preDistinct != null" >
+        pre_distinct = #{record.preDistinct,jdbcType=INTEGER},
+      </if>
+      <if test="record.markTitle != null" >
+        mark_title = #{record.markTitle,jdbcType=INTEGER},
+      </if>
+      <if test="record.markFilenum != null" >
+        mark_filenum = #{record.markFilenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.markDeptcode != null" >
+        mark_deptcode = #{record.markDeptcode,jdbcType=INTEGER},
+      </if>
+      <if test="record.markDeptname != null" >
+        mark_deptname = #{record.markDeptname,jdbcType=INTEGER},
+      </if>
+      <if test="record.markRelease != null" >
+        mark_release = #{record.markRelease,jdbcType=INTEGER},
+      </if>
+      <if test="record.markImp != null" >
+        mark_imp = #{record.markImp,jdbcType=INTEGER},
+      </if>
+      <if test="record.markAttachment != null" >
+        mark_attachment = #{record.markAttachment,jdbcType=INTEGER},
+      </if>
+      <if test="record.markContent != null" >
+        mark_content = #{record.markContent,jdbcType=INTEGER},
+      </if>
+      <if test="record.markKind != null" >
+        mark_kind = #{record.markKind,jdbcType=INTEGER},
+      </if>
+      <if test="record.markKeyword != null" >
+        mark_keyword = #{record.markKeyword,jdbcType=INTEGER},
+      </if>
+      <if test="record.markOther != null" >
+        mark_other = #{record.markOther,jdbcType=INTEGER},
+      </if>
       <if test="record.linksource != null" >
         LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
       </if>
@@ -431,8 +572,9 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update main
-    set number = #{record.number,jdbcType=BIGINT},
+    update markdetail_main
+    set id = #{record.id,jdbcType=BIGINT},
+    number = #{record.number,jdbcType=BIGINT},
     RJS0 = #{record.rjs0,jdbcType=VARCHAR},
     RJS1 = #{record.rjs1,jdbcType=VARCHAR},
     RJS4 = #{record.rjs4,jdbcType=VARCHAR},
@@ -457,6 +599,18 @@
     truetag_1 = #{record.truetag1,jdbcType=INTEGER},
     RJS14 = #{record.rjs14,jdbcType=VARCHAR},
     RJS15 = #{record.rjs15,jdbcType=VARCHAR},
+    pre_distinct = #{record.preDistinct,jdbcType=INTEGER},
+    mark_title = #{record.markTitle,jdbcType=INTEGER},
+    mark_filenum = #{record.markFilenum,jdbcType=INTEGER},
+    mark_deptcode = #{record.markDeptcode,jdbcType=INTEGER},
+    mark_deptname = #{record.markDeptname,jdbcType=INTEGER},
+    mark_release = #{record.markRelease,jdbcType=INTEGER},
+    mark_imp = #{record.markImp,jdbcType=INTEGER},
+    mark_attachment = #{record.markAttachment,jdbcType=INTEGER},
+    mark_content = #{record.markContent,jdbcType=INTEGER},
+    mark_kind = #{record.markKind,jdbcType=INTEGER},
+    mark_keyword = #{record.markKeyword,jdbcType=INTEGER},
+    mark_other = #{record.markOther,jdbcType=INTEGER},
     LinkSource = #{record.linksource,jdbcType=LONGVARCHAR},
     fjian = #{record.fjian,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
@@ -464,8 +618,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update main
-    set number = #{record.number,jdbcType=BIGINT},
+    update markdetail_main
+    set id = #{record.id,jdbcType=BIGINT},
+    number = #{record.number,jdbcType=BIGINT},
     RJS0 = #{record.rjs0,jdbcType=VARCHAR},
     RJS1 = #{record.rjs1,jdbcType=VARCHAR},
     RJS4 = #{record.rjs4,jdbcType=VARCHAR},
@@ -489,14 +644,29 @@
     UpdateTime = #{record.updatetime,jdbcType=INTEGER},
     truetag_1 = #{record.truetag1,jdbcType=INTEGER},
     RJS14 = #{record.rjs14,jdbcType=VARCHAR},
-    RJS15 = #{record.rjs15,jdbcType=VARCHAR}
+    RJS15 = #{record.rjs15,jdbcType=VARCHAR},
+    pre_distinct = #{record.preDistinct,jdbcType=INTEGER},
+    mark_title = #{record.markTitle,jdbcType=INTEGER},
+    mark_filenum = #{record.markFilenum,jdbcType=INTEGER},
+    mark_deptcode = #{record.markDeptcode,jdbcType=INTEGER},
+    mark_deptname = #{record.markDeptname,jdbcType=INTEGER},
+    mark_release = #{record.markRelease,jdbcType=INTEGER},
+    mark_imp = #{record.markImp,jdbcType=INTEGER},
+    mark_attachment = #{record.markAttachment,jdbcType=INTEGER},
+    mark_content = #{record.markContent,jdbcType=INTEGER},
+    mark_kind = #{record.markKind,jdbcType=INTEGER},
+    mark_keyword = #{record.markKeyword,jdbcType=INTEGER},
+    mark_other = #{record.markOther,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.MainWithBLOBs" >
-    update main
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.MarkdetailMainWithBLOBs" >
+    update markdetail_main
     <set >
+      <if test="number != null" >
+        number = #{number,jdbcType=BIGINT},
+      </if>
       <if test="rjs0 != null" >
         RJS0 = #{rjs0,jdbcType=VARCHAR},
       </if>
@@ -569,6 +739,42 @@
       <if test="rjs15 != null" >
         RJS15 = #{rjs15,jdbcType=VARCHAR},
       </if>
+      <if test="preDistinct != null" >
+        pre_distinct = #{preDistinct,jdbcType=INTEGER},
+      </if>
+      <if test="markTitle != null" >
+        mark_title = #{markTitle,jdbcType=INTEGER},
+      </if>
+      <if test="markFilenum != null" >
+        mark_filenum = #{markFilenum,jdbcType=INTEGER},
+      </if>
+      <if test="markDeptcode != null" >
+        mark_deptcode = #{markDeptcode,jdbcType=INTEGER},
+      </if>
+      <if test="markDeptname != null" >
+        mark_deptname = #{markDeptname,jdbcType=INTEGER},
+      </if>
+      <if test="markRelease != null" >
+        mark_release = #{markRelease,jdbcType=INTEGER},
+      </if>
+      <if test="markImp != null" >
+        mark_imp = #{markImp,jdbcType=INTEGER},
+      </if>
+      <if test="markAttachment != null" >
+        mark_attachment = #{markAttachment,jdbcType=INTEGER},
+      </if>
+      <if test="markContent != null" >
+        mark_content = #{markContent,jdbcType=INTEGER},
+      </if>
+      <if test="markKind != null" >
+        mark_kind = #{markKind,jdbcType=INTEGER},
+      </if>
+      <if test="markKeyword != null" >
+        mark_keyword = #{markKeyword,jdbcType=INTEGER},
+      </if>
+      <if test="markOther != null" >
+        mark_other = #{markOther,jdbcType=INTEGER},
+      </if>
       <if test="linksource != null" >
         LinkSource = #{linksource,jdbcType=LONGVARCHAR},
       </if>
@@ -576,11 +782,12 @@
         fjian = #{fjian,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where number = #{number,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.MainWithBLOBs" >
-    update main
-    set RJS0 = #{rjs0,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.MarkdetailMainWithBLOBs" >
+    update markdetail_main
+    set number = #{number,jdbcType=BIGINT},
+    RJS0 = #{rjs0,jdbcType=VARCHAR},
     RJS1 = #{rjs1,jdbcType=VARCHAR},
     RJS4 = #{rjs4,jdbcType=VARCHAR},
     RJS5 = #{rjs5,jdbcType=VARCHAR},
@@ -604,52 +811,126 @@
     truetag_1 = #{truetag1,jdbcType=INTEGER},
     RJS14 = #{rjs14,jdbcType=VARCHAR},
     RJS15 = #{rjs15,jdbcType=VARCHAR},
+    pre_distinct = #{preDistinct,jdbcType=INTEGER},
+    mark_title = #{markTitle,jdbcType=INTEGER},
+    mark_filenum = #{markFilenum,jdbcType=INTEGER},
+    mark_deptcode = #{markDeptcode,jdbcType=INTEGER},
+    mark_deptname = #{markDeptname,jdbcType=INTEGER},
+    mark_release = #{markRelease,jdbcType=INTEGER},
+    mark_imp = #{markImp,jdbcType=INTEGER},
+    mark_attachment = #{markAttachment,jdbcType=INTEGER},
+    mark_content = #{markContent,jdbcType=INTEGER},
+    mark_kind = #{markKind,jdbcType=INTEGER},
+    mark_keyword = #{markKeyword,jdbcType=INTEGER},
+    mark_other = #{markOther,jdbcType=INTEGER},
     LinkSource = #{linksource,jdbcType=LONGVARCHAR},
     fjian = #{fjian,jdbcType=LONGVARCHAR}
-    where number = #{number,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.spider.bean.Main" >
-    update main
-    set RJS0 = #{rjs0,jdbcType=VARCHAR},
-      RJS1 = #{rjs1,jdbcType=VARCHAR},
-      RJS4 = #{rjs4,jdbcType=VARCHAR},
-      RJS5 = #{rjs5,jdbcType=VARCHAR},
-      RJS6 = #{rjs6,jdbcType=VARCHAR},
-      RJS7 = #{rjs7,jdbcType=VARCHAR},
-      RJS8 = #{rjs8,jdbcType=VARCHAR},
-      RJS9 = #{rjs9,jdbcType=SMALLINT},
-      RJS10 = #{rjs10,jdbcType=VARCHAR},
-      RJS11 = #{rjs11,jdbcType=VARCHAR},
-      RJS12 = #{rjs12,jdbcType=VARCHAR},
-      kword = #{kword,jdbcType=VARCHAR},
-      appuser = #{appuser,jdbcType=VARCHAR},
-      appdate = #{appdate,jdbcType=TIMESTAMP},
-      truetag = #{truetag,jdbcType=INTEGER},
-      lawlevel = #{lawlevel,jdbcType=INTEGER},
-      Marked = #{marked,jdbcType=INTEGER},
-      anyou = #{anyou,jdbcType=VARCHAR},
-      rid = #{rid,jdbcType=DECIMAL},
-      RJS13 = #{rjs13,jdbcType=INTEGER},
-      UpdateTime = #{updatetime,jdbcType=INTEGER},
-      truetag_1 = #{truetag1,jdbcType=INTEGER},
-      RJS14 = #{rjs14,jdbcType=VARCHAR},
-      RJS15 = #{rjs15,jdbcType=VARCHAR}
-    where number = #{number,jdbcType=BIGINT}
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.MarkdetailMain" >
+    update markdetail_main
+    set number = #{number,jdbcType=BIGINT},
+    RJS0 = #{rjs0,jdbcType=VARCHAR},
+    RJS1 = #{rjs1,jdbcType=VARCHAR},
+    RJS4 = #{rjs4,jdbcType=VARCHAR},
+    RJS5 = #{rjs5,jdbcType=VARCHAR},
+    RJS6 = #{rjs6,jdbcType=VARCHAR},
+    RJS7 = #{rjs7,jdbcType=VARCHAR},
+    RJS8 = #{rjs8,jdbcType=VARCHAR},
+    RJS9 = #{rjs9,jdbcType=SMALLINT},
+    RJS10 = #{rjs10,jdbcType=VARCHAR},
+    RJS11 = #{rjs11,jdbcType=VARCHAR},
+    RJS12 = #{rjs12,jdbcType=VARCHAR},
+    kword = #{kword,jdbcType=VARCHAR},
+    appuser = #{appuser,jdbcType=VARCHAR},
+    appdate = #{appdate,jdbcType=TIMESTAMP},
+    truetag = #{truetag,jdbcType=INTEGER},
+    lawlevel = #{lawlevel,jdbcType=INTEGER},
+    Marked = #{marked,jdbcType=INTEGER},
+    anyou = #{anyou,jdbcType=VARCHAR},
+    rid = #{rid,jdbcType=DECIMAL},
+    RJS13 = #{rjs13,jdbcType=INTEGER},
+    UpdateTime = #{updatetime,jdbcType=INTEGER},
+    truetag_1 = #{truetag1,jdbcType=INTEGER},
+    RJS14 = #{rjs14,jdbcType=VARCHAR},
+    RJS15 = #{rjs15,jdbcType=VARCHAR},
+    pre_distinct = #{preDistinct,jdbcType=INTEGER},
+    mark_title = #{markTitle,jdbcType=INTEGER},
+    mark_filenum = #{markFilenum,jdbcType=INTEGER},
+    mark_deptcode = #{markDeptcode,jdbcType=INTEGER},
+    mark_deptname = #{markDeptname,jdbcType=INTEGER},
+    mark_release = #{markRelease,jdbcType=INTEGER},
+    mark_imp = #{markImp,jdbcType=INTEGER},
+    mark_attachment = #{markAttachment,jdbcType=INTEGER},
+    mark_content = #{markContent,jdbcType=INTEGER},
+    mark_kind = #{markKind,jdbcType=INTEGER},
+    mark_keyword = #{markKeyword,jdbcType=INTEGER},
+    mark_other = #{markOther,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 
   <!-- 自定义sql -->
-  <select id="findMaxRjs8" resultType="String" parameterType="String">
-    select max(RJS8) from MAIN where RJS8 like '%${username}%'
-  </select>
-  <select id="getListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
-    select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian
-    from main
-    WHERE ( appuser = '${appuser}'  and ifnull(truetag_1,0) &lt;&gt; 1)
-  </select>
-  <select id="getMarkListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
-    select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian
-    from main
-    WHERE ( appuser = '${appuser}'  and ifnull(truetag_1,0) &lt;&gt; 1 and anyou is not null)
+  <insert id="copyMainDate" parameterType="java.lang.Long">
+    insert into markdetail_main (
+    number,
+    RJS0,
+    RJS1,
+    RJS4,
+    RJS5,
+    RJS6,
+    RJS7,
+    RJS8,
+    RJS9,
+    RJS10,
+    RJS11,
+    RJS12,
+    kword,
+    appuser,
+    appdate,
+    truetag,
+    lawlevel,
+    Marked,
+    LinkSource,
+    fjian,
+    anyou,
+    rid,
+    RJS13,
+    UpdateTime,
+    truetag_1,
+    RJS14,
+    RJS15,
+    pre_distinct
+
+    ) select * from main where number = #{number}
+
+  </insert>
+
+  <select id="groupColumnStatus" parameterType="String" resultType="String">
+    select GROUP_CONCAT(num SEPARATOR ',')  from(
+
+    select count(*) as num from markdetail_main where mark_title > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_filenum > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_deptcode > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_deptname > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_release > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_imp > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_attachment > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_content > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_kind > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_keyword > 0 and appuser = #{appuser}
+    union all
+    select count(*) as num from markdetail_main where mark_other > 0 and appuser = #{appuser}
+
+    ) as a
   </select>
 
 </mapper>

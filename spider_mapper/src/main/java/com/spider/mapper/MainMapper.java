@@ -41,4 +41,6 @@ public interface MainMapper {
     String findMaxRjs8(@Param(value="username")String username);
 
     List<MainWithBLOBs> getListByAppuser(@Param(value="appuser")String appuser);
+
+    List<MainWithBLOBs> getMarkListByAppuser(@Param(value="appuser")String appuser);
 }

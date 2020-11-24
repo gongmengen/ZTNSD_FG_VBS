@@ -49,7 +49,7 @@ public class InformationPipeline {
 
     private String extend2;//程序中占用  存放带标签的正文
 
-    private String extend3;
+    private String extend3;//程序中占用  存放查重日期
 
     private String rjs14;
 

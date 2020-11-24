@@ -71,5 +71,7 @@ public class Init {
         TimerParm.username_chl = properties.getProperty("username_chl");
         TimerParm.txt_chlPath = properties.getProperty("txt_chlPath");
         TimerParm.fjPath5_chl = properties.getProperty("fjPath5_chl");
+        TimerParm.fjPath5_history = properties.getProperty("fjPath5_history");
+        TimerParm.txtPath5_history = properties.getProperty("txtPath5_history");
     }
 }

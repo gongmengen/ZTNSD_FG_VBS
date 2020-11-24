@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -34,9 +35,9 @@
 
     <link href="<%=basePath%>css/animate.css" rel="stylesheet">
     <link href="<%=basePath%>css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="http://yanshi.sucaihuo.com/modals/40/4078/demo/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
 </head>
-
 <body>
 <div id="wrapper">
     <nav class="navbar-default navbar-static-side" role="navigation">
@@ -49,7 +50,7 @@
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name} </strong></span>
+                                    <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.user.name}</strong></span>
 
                                 </span>
                         </a>
@@ -63,7 +64,7 @@
                             <li><a href="mailbox.html">信箱</a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="login.html">安全退出</a>
+                            <li><a href="<%=basePath%>/outSys">安全退出</a>
                             </li>
                         </ul>
                     </div>
@@ -77,11 +78,11 @@
 
 
 
-                <li class="active">
+                <li >
                     <a href="index.html#"><i class="fa fa-table"></i> <span class="nav-label">适配网站</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
 
-                        <li class="active"><a href="<%=basePath%>websiteList">网站列表(中央)</a>
+                        <li><a href="<%=basePath%>websiteList">网站列表(中央)</a>
                         </li>
                         <li><a href="<%=basePath%>websiteList_lar">网站列表(地方)</a>
                         </li>
@@ -126,9 +127,6 @@
                         <li>
                             <a href="javascript:void(0);" onclick="lawstar_attments_update()">附件</a>
                         </li>
-                        <li>
-                            <a href="javascript:void(0);" onclick="lawstar_common_update()">common.js</a>
-                        </li>
                     </ul>
                 </li>
                 <li>
@@ -143,7 +141,7 @@
                 </li>
                 <c:if test="${sessionScope.user.level < 0}">
                     <li>
-                        <a href="index.html#"><i class="fa fa-comments"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
+                        <a href="index.html#"><i class="fa fa-desktop"></i> <span class="nav-label">网站适配分配管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <!--                        <li><a href="table_basic.html">基本表格</a>
                                                     </li>-->
@@ -165,20 +163,17 @@
                         </ul>
                     </li>
                 </c:if>
-                <c:if test="${sessionScope.user.level < 0}">
-                    <li>
-                        <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <!--                        <li><a href="table_basic.html">基本表格</a>
-                                                    </li>-->
-                            <li><a href="/manCheck/list">临时库列表(中央)</a>
-                            <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
-                            </li>
-                            <li><a href="/manCheck/markList">临时库列表(已标记/中央)</a></li>
-                            <li><a href="/manCheck/markList_lar">临时库列表(已标记/地方)</a></li>
-                        </ul>
-                    </li>
-                </c:if>
+                <li class="active">
+                    <a href="index.html#"><i class="fa fa fa-bar-chart-o"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <!--                        <li><a href="table_basic.html">基本表格</a>
+                                                </li>-->
+                        <li><a href="/manCheck/list">临时库列表(中央)</a>
+                        <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
+                        </li>                        <li  class="active"><a href="/manCheck/markList">临时库列表(已标记/中央)</a>
+                        <li><a href="/manCheck/markList_lar">临时库列表(已标记/地方)</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="/deptcode/index"><i class="fa fa-files-o"></i> <span class="nav-label">部门代码维护</span></a>
                 </li>
@@ -186,9 +181,6 @@
                     <a href="/search/goSearchPage"><i class="fa fa-files-o"></i> <span class="nav-label">搜索</span></a>
 
                 </li>
-
-
-
                 <script type="text/javascript">
                     function lawstar_title_update() {
                         window.location.href="/lawstar_title_update";
@@ -209,9 +201,6 @@
                     function lawstar_attments_update() {
                         window.location.href="/lawstar_attments_update";
                     }
-                    function lawstar_common_update() {
-                        window.location.href="/lawstar_common_update";
-                    }
                 </script>
             </ul>
 
@@ -222,7 +211,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="table_data_tables.html#"><i class="fa fa-bars"></i> </a>
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="<%=basePath%>informationPipeline#"><i class="fa fa-bars"></i> </a>
                     <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                         <div class="form-group">
                             <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
@@ -231,7 +220,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message"><a href="index.html" title="返回首页"><i class="fa fa-home"></i></a>欢迎使用H+后台主题</span>
+                        <span class="m-r-sm text-muted welcome-message"><a href="<%=basePath%>index" title="返回首页"><i class="fa fa-home"></i></a>欢迎使用爬虫规则适配系统</span>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
@@ -311,7 +300,7 @@
 
 
                     <li>
-                        <a href="login.html">
+                        <a href="<%=basePath%>/outSys">
                             <i class="fa fa-sign-out"></i> 退出
                         </a>
                     </li>
@@ -320,45 +309,90 @@
             </nav>
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
+
+
+            <script type="text/javascript">
+
+                function openTimer() {
+                    $.ajax({ url: "<%=basePath%>openTimer", success: function(data){
+                        alert(data)
+                    }});
+                }
+                function closeTimer() {
+                    $.ajax({ url: "<%=basePath%>closeTimer", success: function(data){
+                        alert(data)
+                    }});
+                }
+
+            </script>
             <div class="col-lg-10">
-                <h2>网站列表</h2>
+             <span style="float: right;margin-top: 30px;">
+<%--                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-warning dropdown-toggle">定时器<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0);" onclick="openTimer()">开启定时器</a></li>
+                        <li><a href="javascript:void(0);" onclick="closeTimer()">关闭定时器</a></li>
+                    </ul>
+                </div>--%>
+
+
+
+            </span>
+                <h2>临时库列表（中央）</h2>
                 <ol class="breadcrumb">
                     <li>
-                        <a href="index.html">主页</a>
+                        <a href="<%=basePath%>index">主页</a>
                     </li>
                     <li>
-                        <a>适配网站</a>
+                        <a>人工审核</a>
                     </li>
                     <li>
-                        <strong>网站列表</strong>
+                        <strong>临时库列表（中央）</strong>
                     </li>
                 </ol>
             </div>
             <div class="col-lg-2">
-                <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-warning dropdown-toggle">网站推送<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:void(0);" onclick="sendCHL()"><i class="fa fa-circle" style="color: #00E8D7"></i>&nbsp;&nbsp;正式库推送</a>
 
-                        <li><a href="javascript:void(0);" onclick="sendTMP()"><i class="fa fa-circle" style="color: yellow"></i>&nbsp;&nbsp;临时库推送</a>
-                        </li>
-                        <li><a href="javascript:void(0);" onclick="sendPipeline('all')"><i class="fa fa-circle" style="color: greenyellow"></i>&nbsp;&nbsp;一键推送</a>
-                        </li>
-                        <li><a href="javascript:void(0);" onclick="sendPipeline('twenty')"><i class="fa fa-circle" style="color: greenyellow"></i>&nbsp;&nbsp;仅推送20篇</a>
-                        </li>
-                        <li><a href="javascript:void(0);" onclick="rollbackSendPipeline()"><i class="fa fa-circle" style="color: #8B91A0"></i>&nbsp;&nbsp;取消推送</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
+
         </div>
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
+
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>基本 <small>分类，查找</small></h5>
+                            <h5>柱状图</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="graph_flot.html#">选项1</a>
+                                    </li>
+                                    <li><a href="graph_flot.html#">选项2</a>
+                                    </li>
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <div class="echarts" id="echarts-bar-chart"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -367,72 +401,70 @@
                                     <i class="fa fa-wrench"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="table_data_tables.html#">选项1</a>
-                                    </li>
-                                    <li><a href="table_data_tables.html#">选项2</a>
+                                    <li><a href="#">选项</a>
                                     </li>
                                 </ul>
                                 <a class="close-link">
                                     <i class="fa fa-times"></i>
                                 </a>
                             </div>
-
-
                         </div>
                         <div id="loading"></div>
                         <div class="ibox-content">
-
-                            <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <table class="table table-striped table-bordered table-hover dataTables-example"><!-- 无分页查询功能：table table-bordered -->
                                 <thead>
                                 <tr>
-                                    <th>网站ID</th>
-                                    <th>网站名称</th>
-                                    <th style="display: none">URL</th>
-                                    <th>所属部门</th>
-                                    <th>推送状态</th>
-                                    <th>适配脚本</th>
+                                    <th class="hide_column">隐藏列</th>
+
                                     <th><input type="checkbox" id="checkbox"></th>
+                                    <th>标题信息</th>
+                                    <%--                                    <th>原网站</th>
+                                                                        <th>新闻地址</th>--%>
+                                    <th>标题</th>
+                                    <th>文号</th>
+                                    <th>部门代码</th>
+                                    <th>部门名称</th>
+                                    <th>实施日期</th>
+                                    <th>发布日期</th>
+                                    <th>附件</th>
+                                    <th>正文</th>
+                                    <th>所属分类</th>
+                                    <th>关键字</th>
+                                    <th>其他</th>
+
+
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${websiteList}" var="websiteList">
-                                <tr class="gradeX">
-                                    <td>${websiteList.id}</td>
-<%--                                    <c:forEach items="${informationWebsiteList}" var="informationWebsiteList">
-                                        <c:if test="${websiteList.id == informationWebsiteList.websiteid}">
-                                            <td>${websiteList.websitename}</td>
+                                <c:forEach items="${mainList}" var="main" varStatus="xb">
+                                    <tr class="gradeX">
+                                        <td class="hide_column">${main.linksource}</td>
+                                        <td class="center">
+                                            <input type="checkbox" name="mycheckbox" value="${main.number}">
+                                        </td>
+                                        <td class="center">
+                                            <a href="javascript:void(0);"  target="_blank" onclick="openDetail('${main.number}')">${main.rjs0}</a>
+                                            <button type="button" class="btn btn-primary btn-xs" onclick="openSource('${main.linksource}')">来源</button>
+                                        </td>
+                                            <%--                                        <td class="center"><a href="${websiteList.websiteAddress}" target="_blank">原网站</a> </td>
+                                                                                    <td class="center"><a href="${websiteList.source}" target="_blank">网站来源</a> </td>--%>
+                                        <td class="center"><c:if test="${main.markTitle > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markFilenum > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markDeptcode > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markDeptname > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
 
-                                        </c:if>
-                                        <c:if test="${websiteList.id != informationWebsiteList.websiteid}">
-                                            <td style="color:red;">${websiteList.websitename}</td>
-                                        </c:if>
-                                    </c:forEach>--%>
-                                    <c:if test="${websiteList.istatus == 1}">
-                                        <td>${websiteList.websitename}</td>
-                                    </c:if>
-                                    <c:if test="${websiteList.istatus == 0}">
-                                        <td  style="color:red;">${websiteList.websitename}</td>
-                                    </c:if>
-                                    <td  style="display: none"><a href="${websiteList.websiteaddress}" target="_blank">${websiteList.websiteaddress}</a> </td>
-                                    <td class="center">${websiteList.columnid}</td>
 
-                                    <c:if test="${websiteList.refmain == 1}">
-                                        <td class="center"><i class="fa fa-circle" style="color: greenyellow"></i></td>
-                                    </c:if>
-                                    <c:if test="${websiteList.refmain != 1 &&websiteList.refmain != 2&&websiteList.refmain != 3}">
-                                        <td class="center"><i class="fa fa-circle" style="color: #8B91A0"></i></td>
-                                    </c:if>
-                                    <c:if test="${websiteList.refmain == 2}">
-                                        <td class="center"><i class="fa fa-circle" style="color: #00E8D7"></i></td>
-                                    </c:if>
-                                    <c:if test="${websiteList.refmain == 3}">
-                                        <td class="center"><i class="fa fa-circle" style="color: yellow"></i></td>
-                                    </c:if>
-                                    <td class="center"><a href="<%=basePath%>informationList_chl/${websiteList.id}/0">添加脚本</a> </td>
-                                    <td class="center">
-                                        <input type="checkbox" name="mycheckbox" value="${websiteList.id}">
-                                    </td>
-                                </tr>
+                                        <td class="center"><c:if test="${main.markImp > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markRelease > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markAttachment > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markContent > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markKind > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markKeyword > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+                                        <td class="center"><c:if test="${main.markOther > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
+
+
+
+                                    </tr>
 
                                 </c:forEach>
                                 </tbody>
@@ -457,7 +489,6 @@
 
 
 </div>
-
 <!-- Mainly scripts -->
 <script src="<%=basePath%>js/jquery-2.1.1.min.js"></script>
 <script src="<%=basePath%>js/bootstrap.min.js?v=3.4.0"></script>
@@ -474,21 +505,64 @@
 <script src="<%=basePath%>js/hplus.js?v=2.2.0"></script>
 <script src="<%=basePath%>js/plugins/pace/pace.min.js"></script>
 
+<!-- ECharts -->
+<script src="<%=basePath%>js/plugins/echarts/echarts-all.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="<%=basePath%>js/hplus.js?v=2.2.0"></script>
+<script src="<%=basePath%>js/plugins/pace/pace.min.js"></script>
+
+<!--  echars -->
+<script>
+    $(function () {
+
+
+        var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
+        var baroption = {
+            title : {
+                text: '已标记新闻'
+            },
+            tooltip : {
+                trigger: 'none'
+            },
+            legend: {
+                data:['数量']
+            },
+
+            xAxis : [
+                {
+                    type : 'category',
+                    data : ['标题','文号','部门代码','部门名称','实施日期','发布日期','附件','正文','所属分类','关键字','其他']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'数量',
+                    type:'bar',
+                    data:[${data}],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        barChart.setOption(baroption);
+        barChart.on('click', function (params) {
+            window.location.href="<%=basePath%>manCheck/markList?column="+params.name;
+        });
+    });
+
+</script>
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
-        if (!${selectLength eq null}){
-            $('.dataTables-example').dataTable( {"pageLength": "${selectLength}"} );
-        }//默认显示条数
-        //$('.dataTables-example').dataTable( {"language": {"url": "http://localhost:8080/returnSearchJSON"}} );
-
-        //分页数量控制
-
-        $('.dataTables-example').on( 'length.dt', function ( e, settings, len ) {
-            $.ajax({
-                data:{length:len},
-                url: "<%=basePath%>rememberSelectLength"});
-        } ).DataTable();
         $('.dataTables-example').dataTable();
 
         /* Init DataTables */
@@ -514,15 +588,6 @@
 
     });
 
-    function fnClickAddRow() {
-        $('#editable').dataTable().fnAddData([
-            "Custom row",
-            "New row",
-            "New row",
-            "New row",
-            "New row"]);
-
-    }
 </script>
 <style>
 
@@ -563,8 +628,46 @@
 
 </script>
 
-<!-- 自定义  -->
-<script type="text/javascript">
+
+<script>
+
+
+    function deleteConfirm(deleteID)
+    {
+        $.ajax('<%=basePath%>manCheck/delete', {
+            dataType : 'json',
+            data: {
+                ids:deleteID
+            },
+            success: function(data)
+            {
+                if (data==true)
+                {
+                    alert('删除成功!');
+                    start = $('.dataTables-example').dataTable().fnSettings()._iDisplayStart;
+                    total = $('.dataTables-example').dataTable().fnSettings().fnRecordsDisplay();
+                    window.location.reload();
+                    if((total-start)==1){
+                        if (start > 0) {
+                            $('.dataTables-example').dataTable().fnPageChange( 'previous', true );
+                        }
+                    }
+                }
+                else
+                {
+                    alert('删除发生错误，请联系管理员!');
+                }
+            },
+            error: function()
+            {
+                alert('服务器无响应，请联系管理员!');
+            }
+        });
+
+
+    }
+
+    //debugger;
     $("#checkbox").click(function () {
         if(this.checked){
             $('input[name="mycheckbox"]').each(function () {
@@ -577,48 +680,18 @@
         }
 
     })
-    //临时库推送
-    function sendTMP() {
-        var informationPipelineIds = "";
-        $('input[name="mycheckbox"]').each(function () {
-            if (this.checked){
-                informationPipelineIds += this.value+" ";
-            }
-        });
-        if (informationPipelineIds.length>0){
-            $.ajax({
-                data:{ids:informationPipelineIds},
-                url: "<%=basePath%>sendTMP",
-                success: function(data){
-                    alert(data);
-                    window.location.reload();
-                }});
-        }else {
-            alert("请选择要推送的新闻")
-        }
+
+
+
+    //已导出
+
+    function outPutOver() {
+        window.location.href="<%=basePath%>/outPutOver/100002";
     }
-    //正式库推送
-    function sendCHL() {
-        var informationPipelineIds = "";
-        $('input[name="mycheckbox"]').each(function () {
-            if (this.checked){
-                informationPipelineIds += this.value+" ";
-            }
-        });
-        if (informationPipelineIds.length>0){
-            $.ajax({
-                data:{ids:informationPipelineIds},
-                url: "<%=basePath%>sendCHL",
-                success: function(data){
-                    alert(data);
-                    window.location.reload();
-                }});
-        }else {
-            alert("请选择要推送的新闻")
-        }
-    }
-    //推送
-    function sendPipeline(flag) {
+
+
+    //导出
+    function output(name) {
         var informationPipelineIds = "";
         $('input[name="mycheckbox"]').each(function () {
             if (this.checked){
@@ -645,18 +718,134 @@
                     $("#loading").css("display","none");
                     // $("#loading").remove();
                 },
-                data:{ids:informationPipelineIds,flag:flag},
-                url: "<%=basePath%>sendPipeline",
+                data:{ids:informationPipelineIds,name:name},
+                url: "<%=basePath%>output",
                 success: function(data){
                     alert(data);
                     window.location.reload();
                 }});
         }else {
-            alert("请选择要推送的新闻")
+            alert("请选择要导出的新闻")
         }
     }
-    //取消推送
-    function rollbackSendPipeline() {
+
+
+    function reg(id,column) {
+        var targetUrl = "<%=basePath%>/findErrorLog";
+
+
+        var informationid = $("#informationid").val();
+
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"informationid":id,"column":column},
+            success:function(data){
+                $("#p").text(data);
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+    }
+
+    function findErrorLog1007(id,column) {
+
+
+        var targetUrl = "<%=basePath%>/findErrorLog1007";
+
+
+        var informationid = $("#informationid").val();
+
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"informationid":id,"column":column},
+            success:function(data){
+                alert(data)
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+    }
+    function nextStep() {
+
+        var informationPipelineIds = "";
+        $('input[name="mycheckbox"]').each(function () {
+            if (this.checked){
+                informationPipelineIds += this.value+" ";
+            }
+        });
+
+
+
+
+        window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds="+informationPipelineIds;
+    }
+    function openDetail(data) {
+
+        window.open("<%=path%>/manCheck/markDetail/"+data,'_blank');
+    }
+    function openWebsiteAddress(data) {
+        window.open(data);
+    }
+    function downloadFJ(id) {
+        var targetUrl = "<%=basePath%>/downloadFJ";
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"id":id},
+            success:function(data){
+                $("#p6").html(data);
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+    }
+    function downLoadAttachment(id,count) {
+        debugger;
+        var targetUrl = "<%=basePath%>/manCheck/downLoadAttachment";
+        var fjName = "";
+        fjName = $("#fjian"+count).text();
+
+        fjName = fjName.replace(new RegExp("\\.","gm"),"-");
+
+
+        /*       var dian = fjName.lastIndexOf(".");
+
+               var q = fjName.substring(0,dian);
+
+               fjName = q+"-"+fjName.substring(dian+1);
+               if (fjName.indexOf(".")>0){
+                   fjName = fjName.substring(fjName.indexOf(".")+1)
+               }*/
+
+        /*       $.ajax({
+                   type:'post',
+                   url:targetUrl,
+                   cache: false,
+                   data:{"id":id,"fjName":fjName},
+                   success:function(data){
+                       $("#p6").html(data);
+                   },
+                   error:function(){
+                       alert("请求失败")
+                   }
+               })*/
+
+        window.location.href=targetUrl+"/"+id+"/"+fjName;
+    }
+
+
+    function deleteAll() {
         var informationPipelineIds = "";
         $('input[name="mycheckbox"]').each(function () {
             if (this.checked){
@@ -684,16 +873,72 @@
                     // $("#loading").remove();
                 },
                 data:{ids:informationPipelineIds},
-                url: "<%=basePath%>rollbackSendPipeline",
+                url: "<%=basePath%>manCheck/delete",
                 success: function(data){
                     alert(data);
                     window.location.reload();
                 }});
         }else {
-            alert("请选择要取消推送的新闻")
+            alert("请选择要删除的新闻")
         }
+    }
+
+    function restart() {
+        var informationPipelineIds = "";
+        $('input[name="mycheckbox"]').each(function () {
+            if (this.checked){
+                informationPipelineIds += this.value+" ";
+            }
+        });
+        //重置的所属库
+        var xwcolumn = "100002";
+        if (informationPipelineIds.length>0){
+            $.ajax({
+                beforeSend: function () {
+                    $("#loading").html("<div class=\"spiner-example\">\n" +
+                        "                            <div class=\"sk-spinner sk-spinner-wave\">\n" +
+                        "                                <div class=\"sk-rect1\"></div>\n" +
+                        "                                <div class=\"sk-rect2\"></div>\n" +
+                        "                                <div class=\"sk-rect3\"></div>\n" +
+                        "                                <div class=\"sk-rect4\"></div>\n" +
+                        "                                <div class=\"sk-rect5\"></div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>");
+                    $("#loading").css("display","block");
+                    $(".modal-body").css("display","none");
+
+                },
+                complete: function () {
+                    $("#loading").css("display","none");
+                    // $("#loading").remove();
+                },
+                data:{ids:informationPipelineIds,xwcolumn:xwcolumn},
+                url: "<%=basePath%>restart",
+                success: function(data){
+                    alert(data);
+                    window.location.reload();
+                }});
+        }else {
+            alert("请选择要重置的新闻")
+        }
+    }
+
+    function openSource(source) {
+        window.open(source,'_blank');
     }
 </script>
+<!-- 隐藏url列 -->
+<style>
+    .hide_column{
+        display: none;
+    }
+</style>
+
+
+
+
+
+
 </body>
 
 </html>

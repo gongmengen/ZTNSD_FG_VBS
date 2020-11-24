@@ -175,6 +175,8 @@
                             <li><a href="/manCheck/list">临时库列表(中央)</a>
                             <li><a href="/manCheck/list_lar">临时库列表(地方)</a>
                             </li>
+                            <li><a href="/manCheck/markList">临时库列表(已标记/中央)</a></li>
+                            <li><a href="/manCheck/markList_lar">临时库列表(已标记/地方)</a></li>
                         </ul>
                     </li>
                 </c:if>

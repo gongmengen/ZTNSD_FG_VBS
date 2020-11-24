@@ -1,5 +1,6 @@
 package com.spider.utils;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
@@ -416,9 +417,10 @@ public class HttpsUtils {
 		//处理url
         url = url==null?"":url;
 		String[] attachArr = url.split("##");
-		delDir(new File (localFilePath));
+        //下载之前清空目标文件夹
+        FileUtil.clean(localFilePath);
 		Tools.mkDir(localFilePath);
-		//url_obj.
+
 		
 		for(String attachStr:attachArr) {
 			if(attachStr.trim().length()<=0) continue;

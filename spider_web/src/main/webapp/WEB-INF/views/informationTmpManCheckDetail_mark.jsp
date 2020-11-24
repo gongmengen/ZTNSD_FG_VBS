@@ -326,175 +326,345 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-<%--                <div class="wrapper wrapper-content">
-                    <div class=" animated fadeInRightBig">
+                <%--                <div class="wrapper wrapper-content">
+                                    <div class=" animated fadeInRightBig">
 
-                        <p>    标题：${main.rjs0}</p>
-                        <p>    文号：${main.rjs12}</p>
-                        <p>    发布日期：${main.rjs5}</p>
-                        <p>    正文：</p>
+                                        <p>    标题：${main.rjs0}</p>
+                                        <p>    文号：${main.rjs12}</p>
+                                        <p>    发布日期：${main.rjs5}</p>
+                                        <p>    正文：</p>
 
-                    </div>
-                    <textarea autoHeight="true" readonly="readonly" style="width:100%">${content}</textarea>
-                </div>--%>
-    <div class="ibox float-e-margins" style="padding-top: 10px;margin-bottom: 50px;">
+                                    </div>
+                                    <textarea autoHeight="true" readonly="readonly" style="width:100%">${content}</textarea>
+                                </div>--%>
+                <div class="ibox float-e-margins" style="padding-top: 10px;margin-bottom: 50px;">
 
-        <div class="ibox-content">
-            <form class="form-horizontal m-t" id="commentForm" action="<%=basePath%>manCheck/update" method="post">
-                <input id="extend2" name="extend2" value="${main.number}" type="hidden">
-                <input id="filename" name="filename" value="${main.rjs8}" type="hidden">
-                <input id="extend3" name="extend3" value="${main.appuser}" type="hidden">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">标题：</label>
-                    <div class="col-sm-8">
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t" id="commentForm" action="<%=basePath%>manCheck/markUpdate" method="post">
+                            <input id="extend2" name="extend2" value="${main.number}" type="hidden">
+                            <input id="filename" name="filename" value="${main.rjs8}" type="hidden">
+                            <input id="extend3" name="extend3" value="${main.appuser}" type="hidden">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">标题：</label>
+                                <div class="col-sm-8">
 
-                        <input id="newstitle" name="newstitle"  value="${main.rjs0}" type="text" class="form-control" required="" aria-required="true">
+                                    <textarea style="display: none"  id="changed" class="form-control diff-textarea" rows="6">${main.rjs0}</textarea>
 
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_title"> </label>
+
+                                    <textarea style="display: none"  id="original" class="form-control diff-textarea" rows="6">${mainMark.rjs0}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff2"></div>
+                                    <%--对比结果--%>
+
+                                    <input  oninput="myChange(this)" id="newstitle" name="newstitle" value="${main.rjs0}" type="text" class="form-control" required="" aria-required="true">
+
+
+
+
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+                                    <c:if test="${mainMark.markTitle > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_title" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markTitle == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_title" > </label>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">文号：</label>
+                                <div class="col-sm-8">
+
+
+                                    <textarea style="display: none" id="changed3" class="form-control diff-textarea" rows="6">${main.rjs12}</textarea>
+
+
+                                    <textarea style="display: none" id="original3" class="form-control diff-textarea" rows="6">${mainMark.rjs12}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff3"></div>
+                                    <%--对比结果--%>
+
+                                    <input oninput="myChange(this)" id="filenum" name="filenum"  value="${main.rjs12}" type="text" class="form-control" required="" aria-required="true">
+
+
+
+
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markFilenum > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_filenum" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markFilenum == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_filenum"> </label>
+                                    </c:if>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">部门代码：</label>
+                                <div class="col-sm-8">
+
+                                    <textarea style="display: none" id="changed4" class="form-control diff-textarea" rows="6">${main.rjs4}</textarea>
+
+
+                                    <textarea style="display: none" id="original4" class="form-control diff-textarea" rows="6">${mainMark.rjs4}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff4"></div>
+                                    <%--对比结果--%>
+
+
+                                    <input oninput="myChange(this)" id="deptcode" name="deptcode"  value="${main.rjs4}" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markDeptcode > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_deptcode" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markDeptcode == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_deptcode"> </label>
+                                    </c:if>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">部门名称：</label>
+                                <div class="col-sm-8">
+
+                                    <textarea style="display: none" id="changed5" class="form-control diff-textarea" rows="6">${main.rjs10}</textarea>
+
+
+                                    <textarea style="display: none" id="original5" class="form-control diff-textarea" rows="6">${mainMark.rjs10}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff5"></div>
+                                    <%--对比结果--%>
+
+
+                                    <input oninput="myChange(this)" id="deptname" name="deptname"  value="${main.rjs10}" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markDeptname > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_deptname" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markDeptname == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_deptname"> </label>
+                                    </c:if>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">实时日期：</label>
+                                <div class="col-sm-8">
+
+                                    <textarea style="display: none" id="changed6" class="form-control diff-textarea" rows="6">${main.rjs6}</textarea>
+
+
+                                    <textarea style="display: none" id="original6" class="form-control diff-textarea" rows="6">${mainMark.rjs6}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff6"></div>
+                                    <%--对比结果--%>
+
+
+                                    <input oninput="myChange(this)" id="imptime" name="imptime"  value="${main.rjs6}" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markRelease > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_release" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markRelease == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_release"> </label>
+                                    </c:if>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">发布日期：</label>
+                                <div class="col-sm-8">
+
+                                    <textarea style="display: none" id="changed7" class="form-control diff-textarea" rows="6">${main.rjs5}</textarea>
+
+
+                                    <textarea style="display: none" id="original7" class="form-control diff-textarea" rows="6">${mainMark.rjs5}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff7"></div>
+                                    <%--对比结果--%>
+
+
+                                    <input oninput="myChange(this)" id="releasetime" name="releasetime"  value="${main.rjs5}" type="text" class="form-control" required="" aria-required="true" >
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markImp > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_imp" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markImp == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_imp"> </label>
+                                    </c:if>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">所属分类：</label>
+                                <div class="col-sm-8">
+
+                                    <textarea style="display: none" id="changed11" class="form-control diff-textarea" rows="6">${main.rjs1}</textarea>
+
+
+                                    <textarea style="display: none" id="original11" class="form-control diff-textarea" rows="6">${mainMark.rjs1}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff11"></div>
+                                    <%--对比结果--%>
+
+
+                                    <input oninput="myChange(this)" id="kind" name="kind"  value="${main.rjs1}" type="text" class="form-control" required="" aria-required="true" >
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+                                    <c:if test="${mainMark.markKind > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_kind" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markKind == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_kind"> </label>
+                                    </c:if>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">关键字：</label>
+                                <div class="col-sm-8">
+
+                                    <textarea style="display: none" id="changed12" class="form-control diff-textarea" rows="6">${main.kword}</textarea>
+
+
+                                    <textarea style="display: none" id="original12" class="form-control diff-textarea" rows="6">${mainMark.kword}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff12"></div>
+                                    <%--对比结果--%>
+
+
+                                    <input oninput="myChange(this)" id="keyword" name="keyword"  value="${main.kword}" type="text" class="form-control" required="" aria-required="true" >
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+                                    <c:if test="${mainMark.markKeyword > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_keyword" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markKeyword == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_keyword"> </label>
+                                    </c:if>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">附件：</label>
+                                <div class="col-sm-8">
+                                    <%-- <input type="file" multiple="multiple">--%>
+
+
+                                    <div class="layui-upload">
+                                        <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+                                        <div class="layui-upload-list">
+                                            <table class="layui-table">
+                                                <thead>
+                                                <tr><th>文件名</th>
+                                                    <th>大小</th>
+                                                    <th>状态</th>
+                                                    <th>操作</th>
+                                                </tr></thead>
+                                                <tbody id="demoList"></tbody>
+                                                <c:forEach items="${attachmentList}" var="attachment" varStatus="xb">
+                                                    <tr>
+                                                        <td><input type="text" style="border: none;overflow: hidden;height: 100%;width: 100%;" value="${attachment.filename}"  onBlur="resetFileName('${attachment.filename}',this)"></td>
+                                                        <td>${attachment.size}</td>
+                                                        <td>${attachment.status}</td>
+                                                        <td>
+                                                            <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-delete" onclick="myDelButten('${main.number}',this)">删除</button>
+                                                            <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-download" onclick="myDownloadButten('${main.number}',this)">下载</button>
+                                                        </td>
+                                                    </tr>
+
+                                                </c:forEach>
+                                            </table>
+                                        </div>
+                                        <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                                    </div>
+
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markAttachment > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_attachment" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markAttachment == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_attachment"> </label>
+                                    </c:if>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">正文：</label>
+                                <div class="col-sm-8">
+
+
+                                    <textarea style="display: none" id="changed9" class="form-control diff-textarea" rows="6">${content}</textarea>
+
+
+                                    <textarea style="display: none" id="original9" class="form-control diff-textarea" rows="6">${contentHistory}</textarea>
+
+                                    <%--对比结果--%>
+                                    <div class="diff9"></div>
+
+
+                                    <textarea  oninput="myChange(this)" id="newscontent"   name="newscontent"  style="height: 1000px" class="form-control" required="" aria-required="true">${content}</textarea>
+                                </div>
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markContent > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_content" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markContent == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_content"> </label>
+                                    </c:if>
+                                </div>
+
+                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
+
+                                    <c:if test="${mainMark.markOther > 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_other" checked=""> </label>
+                                    </c:if>
+                                    <c:if test="${mainMark.markOther == 0}">
+                                        <label><input type="checkbox" name="mycheckbox" value="mark_other">其他</label>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="submit" style="float: right;">保存</button>
+                                </div>
+
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">文号：</label>
-                    <div class="col-sm-8">
-                        <input id="filenum" name="filenum"  value="${main.rjs12}" type="text" class="form-control" required="" aria-required="true">
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_filenum"> </label>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">部门代码：</label>
-                    <div class="col-sm-8">
-                        <input id="deptcode" name="deptcode"  value="${main.rjs4}" type="text" class="form-control" required="" aria-required="true">
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_deptcode"> </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">部门名称：</label>
-                    <div class="col-sm-8">
-                        <input id="deptname" name="deptname"  value="${main.rjs10}" type="text" class="form-control" required="" aria-required="true">
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_deptname"> </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">实时日期：</label>
-                    <div class="col-sm-8">
-                        <input id="imptime" name="imptime"  value="${main.rjs6}" type="text" class="form-control" required="" aria-required="true">
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_release"> </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">发布日期：</label>
-                    <div class="col-sm-8">
-                        <input id="releasetime" name="releasetime"  value="${main.rjs5}" type="text" class="form-control" required="" aria-required="true" >
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_imp"> </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">所属分类：</label>
-                    <div class="col-sm-8">
-                        <input id="rjs1" name="rjs1"  value="${main.rjs1}" type="text" class="form-control" required="" aria-required="true" >
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_kind"> </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">关键字：</label>
-                    <div class="col-sm-8">
-                        <input id="keyword" name="keyword"  value="${main.kword}" type="text" class="form-control" required="" aria-required="true" >
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_keyword"> </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">附件：</label>
-                    <div class="col-sm-8">
-                       <%-- <input type="file" multiple="multiple">--%>
-
-
-                           <div class="layui-upload">
-                               <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
-                               <div class="layui-upload-list">
-                                   <table class="layui-table">
-                                       <thead>
-                                       <tr><th>文件名</th>
-                                           <th>大小</th>
-                                           <th>状态</th>
-                                           <th>操作</th>
-                                       </tr></thead>
-                                       <tbody id="demoList"></tbody>
-                                       <c:forEach items="${attachmentList}" var="attachment" varStatus="xb">
-                                           <tr>
-                                               <td><input type="text" style="border: none;overflow: hidden;height: 100%;width: 100%;" value="${attachment.filename}"  onBlur="resetFileName('${attachment.filename}',this)"></td>
-                                               <td>${attachment.size}</td>
-                                               <td>${attachment.status}</td>
-                                               <td>
-                                                   <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-delete" onclick="myDelButten('${main.number}',this)">删除</button>
-                                                   <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-download" onclick="myDownloadButten('${main.number}',this)">下载</button>
-                                               </td>
-                                           </tr>
-
-                                       </c:forEach>
-                                   </table>
-                               </div>
-                               <button type="button" class="layui-btn" id="testListAction">开始上传</button>
-                           </div>
-
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_attachment"> </label>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">正文：</label>
-                    <div class="col-sm-8">
-                        <textarea id="newscontent"   name="newscontent"  style="height: 1000px" class="form-control" required="" aria-required="true">${content}</textarea>
-                    </div>
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_content"> </label>
-                    </div>
-
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_other">其他</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-3">
-                        <button class="btn btn-primary" type="submit" style="float: right;">保存</button>
-                        <button class="btn btn-primary" type="button" style="float: right;margin-right: 10px;" onclick="markInformation('${main.number}')">标记</button>
-                    </div>
-
-                </div>
-            </form>
-
-
-        </div>
-    </div>
             </div>
         </div>
-
-
-
         <div class="footer">
             <div class="pull-right">
                 By：<a href="http://www.zi-han.net" target="_blank">zihan's blog</a>
@@ -525,6 +695,12 @@
 <script src="<%=basePath%>js/plugins/pace/pace.min.js"></script>
 <!-- 文件上传插件 -->
 <script src="http://yanshi.sucaihuo.com/modals/40/4078/demo/js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
+<!-- 文本对比插件 -->
+<script src="http://yanshi.sucaihuo.com/modals/40/4078/demo/js/plugins/diff_match_patch/diff_match_patch.js"></script>
+<script src="<%=basePath%>js/jquery.pretty-text-diff.min.js"></script>
+
+
+
 
 <script>
     $('input[type="file"]').prettyFile();
@@ -719,7 +895,7 @@
         var oldname  =  oldname;
 
         $.ajax({
-                    url: "<%=basePath%>manCheck/resetFileName",
+            url: "<%=basePath%>manCheck/resetFileName",
             data:{"filename":encodeURI(filename),"number":"${main.number}","oldname":encodeURI(oldname)},
             success: function(){
 
@@ -752,13 +928,13 @@
     //物理删除
     function deleteAll(number) {
 
-            $.ajax({
-                data:{ids:number},
-                url: "<%=basePath%>manCheck/delete",
-                success: function(data){
-                    alert(data);
-                    window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds=";
-                }});
+        $.ajax({
+            data:{ids:number},
+            url: "<%=basePath%>manCheck/delete",
+            success: function(data){
+                alert(data);
+                window.location.href="<%=path%>/manCheck/randomTwentyFive?informationIds=";
+            }});
 
     }
 
@@ -782,14 +958,8 @@
                 url: "<%=basePath%>manCheck/mark",
                 success: function(){
                     alert("标记成功！");
-                    //window.location.href=url;
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    alert("标记成功！请检查附件路径:"+xhr.statusText );
-                }
-
-
-            });
+                    window.location.href=url;
+                }});
         }else {
             alert("请选择要标记的信息项")
         }
@@ -809,6 +979,103 @@
     });
 </script>
 
+<script>
+    debugger;
+    function myChange(_this) {
+        var str = $(_this).val();
+        $(_this).prev().prev().prev().val(str);
+
+        var str_class = $(_this).prev("div").attr('class');
+
+
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $(_this).prev().prev().val(),
+            changedContent: $(_this).prev().prev().prev().val(),
+            diffContainer: '.'+str_class
+        });
+    }
+
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        //标题
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original').val(),
+            changedContent: $('#changed').val(),
+            diffContainer: ".diff2",
+        });
+
+        //文号
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original3').val(),
+            changedContent: $('#changed3').val(),
+            diffContainer: ".diff3"
+        });
+
+        //部门代码
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original4').val(),
+            changedContent: $('#changed4').val(),
+            diffContainer: ".diff4"
+        });
+
+        //部门名称
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original5').val(),
+            changedContent: $('#changed5').val(),
+            diffContainer: ".diff5"
+        });
+
+        //实施日期
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original6').val(),
+            changedContent: $('#changed6').val(),
+            diffContainer: ".diff6"
+        });
+
+        //发布日期
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original7').val(),
+            changedContent: $('#changed7').val(),
+            diffContainer: ".diff7"
+        });
+
+/*        //附  件
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original8').val(),
+            changedContent: $('#changed8').val(),
+            diffContainer: ".diff8"
+        });*/
+
+        //正文
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original9').val(),
+            changedContent: $('#changed9').val(),
+            diffContainer: ".diff9"
+        });
+
+        //所属分类
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original11').val(),
+            changedContent: $('#changed11').val(),
+            diffContainer: ".diff11"
+        });
+
+        //关键字
+        $(".col-sm-8").prettyTextDiff({
+            originalContent: $('#original12').val(),
+            changedContent: $('#changed12').val(),
+            diffContainer: ".diff12"
+        });
+
+
+    });
+
+</script>
 
 </body>
 

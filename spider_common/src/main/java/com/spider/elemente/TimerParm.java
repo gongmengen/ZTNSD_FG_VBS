@@ -31,6 +31,30 @@ public class TimerParm {
 
     public static String fjPath5_chl;
 
+    public static String timerurlfortmp;
+
+    public static String txt_chlPath;
+
+    public static String fjPath5_history;
+
+    public static String txtPath5_history;
+
+    public static String getFjPath5_history() {
+        return fjPath5_history;
+    }
+
+    public static void setFjPath5_history(String fjPath5_history) {
+        TimerParm.fjPath5_history = fjPath5_history;
+    }
+
+    public static String getTxtPath5_history() {
+        return txtPath5_history;
+    }
+
+    public static void setTxtPath5_history(String txtPath5_history) {
+        TimerParm.txtPath5_history = txtPath5_history;
+    }
+
     public static String getFjPath5_chl() {
         return fjPath5_chl;
     }
@@ -47,9 +71,6 @@ public class TimerParm {
         TimerParm.timerurlfortmp = timerurlfortmp;
     }
 
-    public static String timerurlfortmp;
-
-    public static String txt_chlPath;
 
     public static String getTxt_chlPath() {
         return txt_chlPath;

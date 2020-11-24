@@ -1,14 +1,15 @@
 package com.spider.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.spider.bean.Main;
-import com.spider.bean.MainExample;
-import com.spider.bean.MainWithBLOBs;
+import com.spider.bean.*;
+import com.spider.elemente.TimerParm;
 import com.spider.mapper.MainMapper;
+import com.spider.mapper.MarkdetailMainMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.*;
 
 @Service
@@ -16,6 +17,9 @@ public class Main_service {
 
     @Autowired
     private MainMapper mainMapper;
+
+    @Autowired
+    private MarkdetailMainMapper markMainMapper;
 
     public int insert(MainWithBLOBs main){
         //插入之前获取lawlevel
@@ -73,6 +77,41 @@ public class Main_service {
         return mains;
     }
 
+    public boolean markUpdate(MainWithBLOBs main,String markcolumn) {
+        //变更为标记状态
+        MainExample mainExample = new MainExample();
+        MainExample.Criteria criteria = mainExample.createCriteria();
+        criteria.andNumberEqualTo(main.getNumber());
+        mainMapper.updateByExampleSelective(main,mainExample);
+
+        //插入标记记录表
+        MarkdetailMainWithBLOBs markdetailMain = new MarkdetailMainWithBLOBs();
+        //如果已经存在
+        MarkdetailMainExample markdetailMainExample = new MarkdetailMainExample();
+        MarkdetailMainExample.Criteria criteria1 = markdetailMainExample.createCriteria();
+        criteria1.andNumberEqualTo(main.getNumber());
+        List<MarkdetailMainWithBLOBs> markdetailMains = markMainMapper.selectByExampleWithBLOBs(markdetailMainExample);
+
+
+        if (markdetailMains.size()>0){
+            //如果已经存在
+            markdetailMain = markdetailMains.get(0);
+            markdetailMain = setMarkColumn(markdetailMain, markcolumn.split(" "));
+        }else {
+            //如果不存在
+            //复制数据
+            markMainMapper.copyMainDate(main.getNumber());
+            //修改标记字段
+            markdetailMain = setMarkColumn(markdetailMain,markcolumn.split(" "));
+            criteria1.andNumberEqualTo(main.getNumber());
+
+
+        }
+
+        markMainMapper.updateByExampleSelective(markdetailMain,markdetailMainExample);
+        return Boolean.TRUE;
+    }
+
     public boolean update(MainWithBLOBs main) {
         MainExample mainExample = new MainExample();
         MainExample.Criteria criteria = mainExample.createCriteria();
@@ -86,13 +125,134 @@ public class Main_service {
         //法规级别 人大的文件设置重点，使用人大部门
         String specail_p_arr [] = new String[]{"人大","人民代表大会","人大常委会","人民代表大会常务委员会"};
         for(int mm=0;mm<specail_p_arr.length;mm++){
-            if(main.getRjs10().indexOf(specail_p_arr[mm].toLowerCase())>-1){
-                main.setLawlevel(1);
-                break;
+            if (main.getRjs10()==null){
+                main.setLawlevel(5);
+            }else {
+                if(main.getRjs10().indexOf(specail_p_arr[mm].toLowerCase())>-1){
+                    main.setLawlevel(1);
+                    break;
+                }
             }
         }
-        if (main.getRjs12().indexOf("令")>0) main.setLawlevel(1);
+        if (main.getRjs12()==null){
+            main.setLawlevel(5);
+        }else {
+            if (main.getRjs12().indexOf("令")>0)main.setLawlevel(1);
+        }
 
         return main;
+    }
+
+    public MarkdetailMainWithBLOBs getMainMarkByNumber(long l) {
+        MarkdetailMainExample example = new MarkdetailMainExample();
+        MarkdetailMainExample.Criteria criteria = example.createCriteria();
+        criteria.andNumberEqualTo(l);
+        List<MarkdetailMainWithBLOBs> markdetailMainWithBLOBs = markMainMapper.selectByExampleWithBLOBs(example);
+        return markdetailMainWithBLOBs.get(0);
+    }
+
+    public List<MarkdetailMainWithBLOBs> getMarkList(String pram,String column) {
+
+        MarkdetailMainExample markdetailMainExample = new MarkdetailMainExample();
+        MarkdetailMainExample.Criteria criteria = markdetailMainExample.createCriteria();
+        criteria.andAppuserEqualTo(pram);
+        if (column!=null) {
+            switch (column) {
+                case "标题":
+                    criteria.andMarkTitleEqualTo(1);
+                    break;
+                case "文号":
+                    criteria.andMarkFilenumEqualTo(1);
+                    break;
+                case "部门代码":
+                    criteria.andMarkDeptcodeEqualTo(1);
+                    break;
+                case "部门名称":
+                    criteria.andMarkDeptnameEqualTo(1);
+                    break;
+                case "实施日期":
+                    criteria.andMarkImpEqualTo(1);
+                    break;
+                case "发布日期":
+                    criteria.andMarkReleaseEqualTo(1);
+                    break;
+                case "附件":
+                    criteria.andMarkAttachmentEqualTo(1);
+                    break;
+                case "正文":
+                    criteria.andMarkContentEqualTo(1);
+                    break;
+                case "所属分类":
+                    criteria.andMarkKindEqualTo(1);
+                    break;
+                case "关键字":
+                    criteria.andMarkKeywordEqualTo(1);
+                    break;
+                case "其他":
+                    criteria.andMarkOtherEqualTo(1);
+                    break;
+            }
+        }
+        return markMainMapper.selectByExampleWithBLOBs(markdetailMainExample);
+    }
+
+    public String groupColumnStatus(String appuser) {
+        return markMainMapper.groupColumnStatus(appuser);
+    }
+
+    //设置标记状态
+    public MarkdetailMainWithBLOBs setMarkColumn(MarkdetailMainWithBLOBs markdetailMain,String[] mainColumns){
+
+        //初始化
+        markdetailMain.setMarkTitle(0);
+        markdetailMain.setMarkFilenum(0);
+        markdetailMain.setMarkDeptcode(0);
+        markdetailMain.setMarkDeptname(0);
+        markdetailMain.setMarkRelease(0);
+        markdetailMain.setMarkImp(0);
+        markdetailMain.setMarkAttachment(0);
+        markdetailMain.setMarkContent(0);
+        markdetailMain.setMarkKind(0);
+        markdetailMain.setMarkKeyword(0);
+        markdetailMain.setMarkOther(0);
+
+        for (String mainColumn : mainColumns) {
+            switch (mainColumn){
+                case "mark_title":
+                    markdetailMain.setMarkTitle(1);
+                    break;
+                case "mark_filenum":
+                    markdetailMain.setMarkFilenum(1);
+                    break;
+                case "mark_deptcode":
+                    markdetailMain.setMarkDeptcode(1);
+                    break;
+                case "mark_deptname":
+                    markdetailMain.setMarkDeptname(1);
+                    break;
+                case "mark_release":
+                    markdetailMain.setMarkRelease(1);
+                    break;
+                case "mark_imp":
+                    markdetailMain.setMarkImp(1);
+                    break;
+                case "mark_attachment":
+                    markdetailMain.setMarkAttachment(1);
+                    break;
+                case "mark_content":
+                    markdetailMain.setMarkContent(1);
+                    break;
+                case "mark_kind":
+                    markdetailMain.setMarkKind(1);
+                    break;
+                case "mark_keyword":
+                    markdetailMain.setMarkKeyword(1);
+                    break;
+                case "mark_other":
+                    markdetailMain.setMarkOther(1);
+                    break;
+            }
+        }
+        return markdetailMain;
     }
 }

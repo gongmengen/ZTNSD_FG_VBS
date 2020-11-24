@@ -685,6 +685,7 @@ public class TWxAdapter_service {
 
             if (!(rdt_type==information.getXwcolumn())){
                 errorLogs.add(new TblErrorLog(1011, ErrorPram.getErrorPram().get(1011),information.getId(),information.getXwcolumn()));
+                //result.setXwcolumn(rdt_type+"");
             }
         }
 
