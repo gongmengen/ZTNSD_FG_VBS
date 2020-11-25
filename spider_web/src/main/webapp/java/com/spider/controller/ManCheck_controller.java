@@ -450,8 +450,8 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取地方库新闻数据
-        MainWithBLOBs main = main_service.getMainByNumber(Long.parseLong(number));
-        String content = readTxt(main.getAppuser(),main.getRjs8());
+        MarkdetailMainWithBLOBs main = main_service.getMainMarkByNumber(Long.parseLong(number));
+
         String contentHistory = readHistoryTxt(main.getAppuser(),main.getRjs8());
 
 //-------------------------------------------------------------------------------------attachment
@@ -477,11 +477,10 @@ public class ManCheck_controller {
             }
         }
 //-------------------------------------------------------------------------------------attachment
-        model.addAttribute("main",main);
-        model.addAttribute("content",content);
+
         model.addAttribute("contentHistory",contentHistory);
         model.addAttribute("attachmentList",attachmentList);
-        model.addAttribute("mainMark",main_service.getMainMarkByNumber(Long.parseLong(number)));
+        model.addAttribute("mainMark",main);
 
         return "informationTmpManCheckDetail_mark";
     }
