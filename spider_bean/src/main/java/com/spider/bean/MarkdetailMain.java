@@ -73,6 +73,16 @@ public class MarkdetailMain {
 
     private Integer markContent;
 
+    private Integer markContentTitle;
+
+    private Integer markContentFilenum;
+
+    private Integer markContentContent;
+
+    private Integer markContentLk;
+
+    private Integer markContentAttachment;
+
     private Integer markKind;
 
     private Integer markKeyword;
@@ -357,6 +367,46 @@ public class MarkdetailMain {
 
     public void setMarkContent(Integer markContent) {
         this.markContent = markContent;
+    }
+
+    public Integer getMarkContentTitle() {
+        return markContentTitle;
+    }
+
+    public void setMarkContentTitle(Integer markContentTitle) {
+        this.markContentTitle = markContentTitle;
+    }
+
+    public Integer getMarkContentFilenum() {
+        return markContentFilenum;
+    }
+
+    public void setMarkContentFilenum(Integer markContentFilenum) {
+        this.markContentFilenum = markContentFilenum;
+    }
+
+    public Integer getMarkContentContent() {
+        return markContentContent;
+    }
+
+    public void setMarkContentContent(Integer markContentContent) {
+        this.markContentContent = markContentContent;
+    }
+
+    public Integer getMarkContentLk() {
+        return markContentLk;
+    }
+
+    public void setMarkContentLk(Integer markContentLk) {
+        this.markContentLk = markContentLk;
+    }
+
+    public Integer getMarkContentAttachment() {
+        return markContentAttachment;
+    }
+
+    public void setMarkContentAttachment(Integer markContentAttachment) {
+        this.markContentAttachment = markContentAttachment;
     }
 
     public Integer getMarkKind() {

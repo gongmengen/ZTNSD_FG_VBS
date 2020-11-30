@@ -203,6 +203,8 @@ public class Main_service {
     //设置标记状态
     public MarkdetailMainWithBLOBs setMarkColumn(MarkdetailMainWithBLOBs markdetailMain,String[] mainColumns){
 
+        //如果标记了正文内部详情自动标记正文
+        boolean markContent = false;
         //初始化
         markdetailMain.setMarkTitle(0);
         markdetailMain.setMarkFilenum(0);
@@ -212,6 +214,11 @@ public class Main_service {
         markdetailMain.setMarkImp(0);
         markdetailMain.setMarkAttachment(0);
         markdetailMain.setMarkContent(0);
+        markdetailMain.setMarkContentTitle(0);
+        markdetailMain.setMarkContentFilenum(0);
+        markdetailMain.setMarkContentContent(0);
+        markdetailMain.setMarkContentLk(0);
+        markdetailMain.setMarkContentAttachment(0);
         markdetailMain.setMarkKind(0);
         markdetailMain.setMarkKeyword(0);
         markdetailMain.setMarkOther(0);
@@ -242,6 +249,26 @@ public class Main_service {
                 case "mark_content":
                     markdetailMain.setMarkContent(1);
                     break;
+                case "mark_content_title":
+                    markdetailMain.setMarkContentTitle(1);
+                    markContent = true;
+                    break;
+                case "mark_content_filenum":
+                    markdetailMain.setMarkContentFilenum(1);
+                    markContent = true;
+                    break;
+                case "mark_content_content":
+                    markdetailMain.setMarkContentContent(1);
+                    markContent = true;
+                    break;
+                case "mark_content_lk":
+                    markdetailMain.setMarkContentLk(1);
+                    markContent = true;
+                    break;
+                case "mark_content_attachment":
+                    markdetailMain.setMarkContentAttachment(1);
+                    markContent = true;
+                    break;
                 case "mark_kind":
                     markdetailMain.setMarkKind(1);
                     break;
@@ -253,6 +280,11 @@ public class Main_service {
                     break;
             }
         }
+
+        if (markContent){
+            markdetailMain.setMarkContent(1);
+        }
+
         return markdetailMain;
     }
 }

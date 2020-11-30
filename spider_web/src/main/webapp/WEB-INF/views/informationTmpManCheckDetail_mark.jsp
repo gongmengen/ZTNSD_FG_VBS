@@ -532,6 +532,60 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                    <div class="checkbox i-checks">
+
+
+                                        <c:if test="${mainMark.markContentTitle > 0}">
+                                            <label style="margin-left: -20px;"><input type="checkbox" name="mycheckbox" value="mark_content_title" checked="">正文标题</label>
+                                        </c:if>
+                                        <c:if test="${mainMark.markContentTitle == 0}">
+                                            <label style="margin-left: -20px;"><input type="checkbox" name="mycheckbox" value="mark_content_title">正文标题</label>
+                                        </c:if>
+
+
+                                        <c:if test="${mainMark.markContentFilenum > 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_filenum" checked="">正文文号</label>
+                                        </c:if>
+                                        <c:if test="${mainMark.markContentFilenum == 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_filenum">正文文号</label>
+                                        </c:if>
+
+                                        <c:if test="${mainMark.markContentContent > 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_content" checked="">正文</label>
+                                        </c:if>
+                                        <c:if test="${mainMark.markContentContent == 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_content">正文</label>
+                                        </c:if>
+
+                                        <c:if test="${mainMark.markContentLk > 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_lk" checked="">正文落款</label>
+                                        </c:if>
+                                        <c:if test="${mainMark.markContentLk == 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_lk">正文落款</label>
+                                        </c:if>
+
+                                        <c:if test="${mainMark.markContentAttachment > 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_attachment" checked="">附件</label>
+                                        </c:if>
+                                        <c:if test="${mainMark.markContentAttachment == 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_attachment">附件</label>
+                                        </c:if>
+
+
+
+                                        <c:if test="${mainMark.markOther > 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_other" checked="">其他</label>
+                                        </c:if>
+                                        <c:if test="${mainMark.markOther == 0}">
+                                            <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_other">其他</label>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">正文：</label>
@@ -546,16 +600,6 @@
                                     </c:if>
                                     <c:if test="${mainMark.markContent == 0}">
                                         <label><input type="checkbox" name="mycheckbox" value="mark_content"> </label>
-                                    </c:if>
-                                </div>
-
-                                <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-
-                                    <c:if test="${mainMark.markOther > 0}">
-                                        <label><input type="checkbox" name="mycheckbox" value="mark_other" checked=""> </label>
-                                    </c:if>
-                                    <c:if test="${mainMark.markOther == 0}">
-                                        <label><input type="checkbox" name="mycheckbox" value="mark_other">其他</label>
                                     </c:if>
                                 </div>
                             </div>

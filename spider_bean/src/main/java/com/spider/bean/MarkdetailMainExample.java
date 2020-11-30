@@ -2355,6 +2355,306 @@ public class MarkdetailMainExample {
             return (Criteria) this;
         }
 
+        public Criteria andMarkContentTitleIsNull() {
+            addCriterion("mark_content_title is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleIsNotNull() {
+            addCriterion("mark_content_title is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleEqualTo(Integer value) {
+            addCriterion("mark_content_title =", value, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleNotEqualTo(Integer value) {
+            addCriterion("mark_content_title <>", value, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleGreaterThan(Integer value) {
+            addCriterion("mark_content_title >", value, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_title >=", value, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleLessThan(Integer value) {
+            addCriterion("mark_content_title <", value, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleLessThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_title <=", value, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleIn(List<Integer> values) {
+            addCriterion("mark_content_title in", values, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleNotIn(List<Integer> values) {
+            addCriterion("mark_content_title not in", values, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_title between", value1, value2, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentTitleNotBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_title not between", value1, value2, "markContentTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumIsNull() {
+            addCriterion("mark_content_filenum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumIsNotNull() {
+            addCriterion("mark_content_filenum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumEqualTo(Integer value) {
+            addCriterion("mark_content_filenum =", value, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumNotEqualTo(Integer value) {
+            addCriterion("mark_content_filenum <>", value, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumGreaterThan(Integer value) {
+            addCriterion("mark_content_filenum >", value, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_filenum >=", value, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumLessThan(Integer value) {
+            addCriterion("mark_content_filenum <", value, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumLessThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_filenum <=", value, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumIn(List<Integer> values) {
+            addCriterion("mark_content_filenum in", values, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumNotIn(List<Integer> values) {
+            addCriterion("mark_content_filenum not in", values, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_filenum between", value1, value2, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentFilenumNotBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_filenum not between", value1, value2, "markContentFilenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentIsNull() {
+            addCriterion("mark_content_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentIsNotNull() {
+            addCriterion("mark_content_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentEqualTo(Integer value) {
+            addCriterion("mark_content_content =", value, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentNotEqualTo(Integer value) {
+            addCriterion("mark_content_content <>", value, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentGreaterThan(Integer value) {
+            addCriterion("mark_content_content >", value, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_content >=", value, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentLessThan(Integer value) {
+            addCriterion("mark_content_content <", value, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentLessThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_content <=", value, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentIn(List<Integer> values) {
+            addCriterion("mark_content_content in", values, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentNotIn(List<Integer> values) {
+            addCriterion("mark_content_content not in", values, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_content between", value1, value2, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentContentNotBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_content not between", value1, value2, "markContentContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkIsNull() {
+            addCriterion("mark_content_lk is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkIsNotNull() {
+            addCriterion("mark_content_lk is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkEqualTo(Integer value) {
+            addCriterion("mark_content_lk =", value, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkNotEqualTo(Integer value) {
+            addCriterion("mark_content_lk <>", value, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkGreaterThan(Integer value) {
+            addCriterion("mark_content_lk >", value, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_lk >=", value, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkLessThan(Integer value) {
+            addCriterion("mark_content_lk <", value, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkLessThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_lk <=", value, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkIn(List<Integer> values) {
+            addCriterion("mark_content_lk in", values, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkNotIn(List<Integer> values) {
+            addCriterion("mark_content_lk not in", values, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_lk between", value1, value2, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentLkNotBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_lk not between", value1, value2, "markContentLk");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentIsNull() {
+            addCriterion("mark_content_attachment is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentIsNotNull() {
+            addCriterion("mark_content_attachment is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentEqualTo(Integer value) {
+            addCriterion("mark_content_attachment =", value, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentNotEqualTo(Integer value) {
+            addCriterion("mark_content_attachment <>", value, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentGreaterThan(Integer value) {
+            addCriterion("mark_content_attachment >", value, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_attachment >=", value, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentLessThan(Integer value) {
+            addCriterion("mark_content_attachment <", value, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentLessThanOrEqualTo(Integer value) {
+            addCriterion("mark_content_attachment <=", value, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentIn(List<Integer> values) {
+            addCriterion("mark_content_attachment in", values, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentNotIn(List<Integer> values) {
+            addCriterion("mark_content_attachment not in", values, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_attachment between", value1, value2, "markContentAttachment");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarkContentAttachmentNotBetween(Integer value1, Integer value2) {
+            addCriterion("mark_content_attachment not between", value1, value2, "markContentAttachment");
+            return (Criteria) this;
+        }
+
         public Criteria andMarkKindIsNull() {
             addCriterion("mark_kind is null");
             return (Criteria) this;

@@ -164,11 +164,34 @@
 
   <!-- 自定义 -->
 
-  <select id="limitList" resultType="com.spider.bean.DepcodeNew">
-    select dep_number as depNumber, dep_name as depName, alis_name as alisName, sort_f as sortF from depcode_new ORDER BY dep_number desc limit #{0},#{1}
+  <select id="getTotalByKeyword" resultType="java.lang.Integer">
+    select count(*) FROM depcode_new
+    WHERE 1=1
+    <if test="keyword != null" >
+      and dep_name LIKE '%${keyword}%'
+    </if>
   </select>
 
-  <select id="getMaxNumber" resultType="Integer">
-    select max(dep_number) from depcode_new where dep_number &lt;99999
+  <select id="limitList" resultType="com.spider.bean.DepcodeNew">
+    select dep_number as depNumber, dep_name as depName, alis_name as alisName, sort_f as sortF from depcode_new
+    WHERE 1=1
+    <if test="keyword != null" >
+      and dep_name LIKE '%${keyword}%'
+    </if>
+    ORDER BY dep_number desc limit #{0},#{1}
   </select>
+
+  <select id="getMaxNumber" resultType="Integer" parameterType="String">
+    select max(dep_number) from depcode_new where  dep_number like '${deptcode}%'
+  </select>
+
+  <select id="getDeptOneLevel" resultType="com.spider.bean.DepcodeNew">
+    select dep_number as depNumber, dep_name as depName, alis_name as alisName, sort_f as sortF from depcode_new where LENGTH(dep_number)=3
+  </select>
+
+  <select id="getDeptTwoLevel" resultType="com.spider.bean.DepcodeNew" parameterType="String">
+    select dep_number as depNumber, dep_name as depName, alis_name as alisName, sort_f as sortF from depcode_new
+    where LENGTH(dep_number)=5 and dep_number like '${deptcode}%'
+  </select>
+
 </mapper>

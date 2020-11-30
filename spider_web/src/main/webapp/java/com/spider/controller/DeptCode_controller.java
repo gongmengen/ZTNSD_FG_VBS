@@ -1,5 +1,6 @@
 package com.spider.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
@@ -23,8 +24,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 /**
@@ -48,18 +52,44 @@ public class DeptCode_controller {
     @Autowired
     private Deptcode_service deptcode_service;
 
+
+    //二级部门
+    @RequestMapping(value="deptcode/deptTwoLevel")
+    @ResponseBody
+    public Object deptTwoLevel(@RequestParam("deptcode")String deptcode) throws JsonProcessingException {
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+
+        Map<String, List<DepcodeNew>> map= deptcode_service.getDeptTwoLevel(deptcode);
+
+
+        return JSONUtil.parse(map);
+    }
+    //一级部门
+    @RequestMapping(value="deptcode/deptOneLevel")
+    @ResponseBody
+    public Object deptOneLevel() throws JsonProcessingException {
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+
+        List<DepcodeNew> resu = deptcode_service.getDeptOneLevel();// 总数量
+
+
+        return JSONUtil.parse(resu);
+    }
+
     //添加
     @RequestMapping("deptcode/insert")
     @ResponseBody
-    public boolean deptcodeInsert(@RequestParam("deptName1")String deptName1,@RequestParam("deptName2")String deptName2){
+    public boolean deptcodeInsert(@RequestParam("newDeptName")String newDeptName,@RequestParam("newDeptcode")String newDeptcode){
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
         //获取表中最大值
-        int number = deptcode_service.getMaxNumber();
+        int number = deptcode_service.getMaxNumber(newDeptcode);
         DepcodeNew depcodeNew = new DepcodeNew();
         depcodeNew.setDepNumber((number+1)+"");
-        depcodeNew.setDepName(deptName1);
-        depcodeNew.setAlisName(deptName2);
+        depcodeNew.setDepName(newDeptName);
+        depcodeNew.setAlisName(newDeptName);
 
         return deptcode_service.insert(depcodeNew);
     }
@@ -100,20 +130,21 @@ public class DeptCode_controller {
     //加载数据
     @RequestMapping(value="deptcodeList",method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public Object deptcodeList(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+    public Object deptcodeList(HttpSession session, HttpServletRequest request, HttpServletResponse response,@RequestParam(required = false)String keyword) throws JsonProcessingException {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
         /**
          * 这几个参数后台直接取，前端不需要传!
          * 开启服务端分页后，datatables 会自动传！
          */
+
         Integer draw = Integer.parseInt(request.getParameter("draw"));//该参数取出来，不做任何操作，再传回去即可
         Integer start = Integer.parseInt(request.getParameter("start"));//配合求当前页，第一次传进来是 0，然后 10，20，30 ……
         Integer pageSize = Integer.parseInt(request.getParameter("length"));//【页大小】
 
-        int total = deptcode_service.getDepcodeCount();// 总数量
+        int total = deptcode_service.getDepcodeCount(keyword);// 总数量
         //自己处理分页逻辑
-        List<DepcodeNew> beans = deptcode_service.getDepcodeList(start,pageSize);
+        List<DepcodeNew> beans = deptcode_service.getDepcodeList(start,pageSize,keyword);
 
         /**
          * 最重要的格式处理！

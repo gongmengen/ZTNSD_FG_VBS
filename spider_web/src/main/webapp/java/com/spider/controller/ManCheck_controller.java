@@ -1,6 +1,7 @@
 package com.spider.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.util.StrUtil;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.*;
@@ -104,7 +105,12 @@ public class ManCheck_controller {
         //将附件 复制到history 目录下
         MainWithBLOBs mainByNumber = main_service.getMainByNumber(number);
         String attachmentpath = TimerParm.fjPath5 + File.separator + mainByNumber.getRjs8().substring(0,mainByNumber.getRjs8().indexOf(".")) ;
-        FileUtil.copy(attachmentpath,TimerParm.fjPath5_history,true);
+
+        try {
+            FileUtil.copy(attachmentpath,TimerParm.fjPath5_history,true);
+        }catch (IORuntimeException e){
+            e.printStackTrace();
+        }
 
         //将txt 复制到history 目录下
         String filepath = TimerParm.txtPath5 + File.separator + mainByNumber.getAppuser()+File.separator+mainByNumber.getRjs8() ;
@@ -114,7 +120,12 @@ public class ManCheck_controller {
         if (!file.exists()){
             file.mkdirs();
         }
-        FileUtil.copy(filepath,targetpath,true);
+
+        try {
+            FileUtil.copy(filepath,targetpath,true);
+        }catch (IORuntimeException e){
+            e.printStackTrace();
+        }
 
         return true;
 

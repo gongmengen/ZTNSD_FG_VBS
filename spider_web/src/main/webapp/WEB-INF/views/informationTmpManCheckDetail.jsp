@@ -464,7 +464,19 @@
                     </div>
                 </div>
 
-
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-8">
+                <div class="checkbox i-checks">
+                    <label style="margin-left: -20px;"><input type="checkbox" name="mycheckbox" value="mark_content_title">正文标题</label>
+                    <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_filenum">正文文号</label>
+                    <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_content">正文</label>
+                    <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_lk">正文落款</label>
+                    <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_content_attachment">附件</label>
+                    <label style="margin-left: 10px;"><input type="checkbox" name="mycheckbox" value="mark_other">其他</label>
+                </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">正文：</label>
                     <div class="col-sm-8">
@@ -474,9 +486,7 @@
                         <label><input type="checkbox" name="mycheckbox" value="mark_content"> </label>
                     </div>
 
-                    <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
-                        <label><input type="checkbox" name="mycheckbox" value="mark_other">其他</label>
-                    </div>
+
                 </div>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-3">

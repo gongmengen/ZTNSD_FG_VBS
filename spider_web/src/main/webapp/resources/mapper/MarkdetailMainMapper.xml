@@ -37,6 +37,11 @@
     <result column="mark_imp" property="markImp" jdbcType="INTEGER" />
     <result column="mark_attachment" property="markAttachment" jdbcType="INTEGER" />
     <result column="mark_content" property="markContent" jdbcType="INTEGER" />
+    <result column="mark_content_title" property="markContentTitle" jdbcType="INTEGER" />
+    <result column="mark_content_filenum" property="markContentFilenum" jdbcType="INTEGER" />
+    <result column="mark_content_content" property="markContentContent" jdbcType="INTEGER" />
+    <result column="mark_content_lk" property="markContentLk" jdbcType="INTEGER" />
+    <result column="mark_content_attachment" property="markContentAttachment" jdbcType="INTEGER" />
     <result column="mark_kind" property="markKind" jdbcType="INTEGER" />
     <result column="mark_keyword" property="markKeyword" jdbcType="INTEGER" />
     <result column="mark_other" property="markOther" jdbcType="INTEGER" />
@@ -107,7 +112,9 @@
     id, number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12,
     kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime,
     truetag_1, RJS14, RJS15, pre_distinct, mark_title, mark_filenum, mark_deptcode, mark_deptname,
-    mark_release, mark_imp, mark_attachment, mark_content, mark_kind, mark_keyword, mark_other
+    mark_release, mark_imp, mark_attachment, mark_content, mark_content_title, mark_content_filenum,
+    mark_content_content, mark_content_lk, mark_content_attachment, mark_kind, mark_keyword,
+    mark_other
   </sql>
   <sql id="Blob_Column_List" >
     LinkSource, fjian
@@ -172,9 +179,10 @@
     RJS15, pre_distinct, mark_title,
     mark_filenum, mark_deptcode, mark_deptname,
     mark_release, mark_imp, mark_attachment,
-    mark_content, mark_kind, mark_keyword,
-    mark_other, LinkSource, fjian
-    )
+    mark_content, mark_content_title, mark_content_filenum,
+    mark_content_content, mark_content_lk, mark_content_attachment,
+    mark_kind, mark_keyword, mark_other,
+    LinkSource, fjian)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=BIGINT}, #{rjs0,jdbcType=VARCHAR},
     #{rjs1,jdbcType=VARCHAR}, #{rjs4,jdbcType=VARCHAR}, #{rjs5,jdbcType=VARCHAR}, #{rjs6,jdbcType=VARCHAR},
     #{rjs7,jdbcType=VARCHAR}, #{rjs8,jdbcType=VARCHAR}, #{rjs9,jdbcType=SMALLINT},
@@ -186,9 +194,10 @@
     #{rjs15,jdbcType=VARCHAR}, #{preDistinct,jdbcType=INTEGER}, #{markTitle,jdbcType=INTEGER},
     #{markFilenum,jdbcType=INTEGER}, #{markDeptcode,jdbcType=INTEGER}, #{markDeptname,jdbcType=INTEGER},
     #{markRelease,jdbcType=INTEGER}, #{markImp,jdbcType=INTEGER}, #{markAttachment,jdbcType=INTEGER},
-    #{markContent,jdbcType=INTEGER}, #{markKind,jdbcType=INTEGER}, #{markKeyword,jdbcType=INTEGER},
-    #{markOther,jdbcType=INTEGER}, #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR}
-    )
+    #{markContent,jdbcType=INTEGER}, #{markContentTitle,jdbcType=INTEGER}, #{markContentFilenum,jdbcType=INTEGER},
+    #{markContentContent,jdbcType=INTEGER}, #{markContentLk,jdbcType=INTEGER}, #{markContentAttachment,jdbcType=INTEGER},
+    #{markKind,jdbcType=INTEGER}, #{markKeyword,jdbcType=INTEGER}, #{markOther,jdbcType=INTEGER},
+    #{linksource,jdbcType=LONGVARCHAR}, #{fjian,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.spider.bean.MarkdetailMainWithBLOBs" >
     insert into markdetail_main
@@ -297,6 +306,21 @@
       </if>
       <if test="markContent != null" >
         mark_content,
+      </if>
+      <if test="markContentTitle != null" >
+        mark_content_title,
+      </if>
+      <if test="markContentFilenum != null" >
+        mark_content_filenum,
+      </if>
+      <if test="markContentContent != null" >
+        mark_content_content,
+      </if>
+      <if test="markContentLk != null" >
+        mark_content_lk,
+      </if>
+      <if test="markContentAttachment != null" >
+        mark_content_attachment,
       </if>
       <if test="markKind != null" >
         mark_kind,
@@ -419,6 +443,21 @@
       </if>
       <if test="markContent != null" >
         #{markContent,jdbcType=INTEGER},
+      </if>
+      <if test="markContentTitle != null" >
+        #{markContentTitle,jdbcType=INTEGER},
+      </if>
+      <if test="markContentFilenum != null" >
+        #{markContentFilenum,jdbcType=INTEGER},
+      </if>
+      <if test="markContentContent != null" >
+        #{markContentContent,jdbcType=INTEGER},
+      </if>
+      <if test="markContentLk != null" >
+        #{markContentLk,jdbcType=INTEGER},
+      </if>
+      <if test="markContentAttachment != null" >
+        #{markContentAttachment,jdbcType=INTEGER},
       </if>
       <if test="markKind != null" >
         #{markKind,jdbcType=INTEGER},
@@ -551,6 +590,21 @@
       <if test="record.markContent != null" >
         mark_content = #{record.markContent,jdbcType=INTEGER},
       </if>
+      <if test="record.markContentTitle != null" >
+        mark_content_title = #{record.markContentTitle,jdbcType=INTEGER},
+      </if>
+      <if test="record.markContentFilenum != null" >
+        mark_content_filenum = #{record.markContentFilenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.markContentContent != null" >
+        mark_content_content = #{record.markContentContent,jdbcType=INTEGER},
+      </if>
+      <if test="record.markContentLk != null" >
+        mark_content_lk = #{record.markContentLk,jdbcType=INTEGER},
+      </if>
+      <if test="record.markContentAttachment != null" >
+        mark_content_attachment = #{record.markContentAttachment,jdbcType=INTEGER},
+      </if>
       <if test="record.markKind != null" >
         mark_kind = #{record.markKind,jdbcType=INTEGER},
       </if>
@@ -608,6 +662,11 @@
     mark_imp = #{record.markImp,jdbcType=INTEGER},
     mark_attachment = #{record.markAttachment,jdbcType=INTEGER},
     mark_content = #{record.markContent,jdbcType=INTEGER},
+    mark_content_title = #{record.markContentTitle,jdbcType=INTEGER},
+    mark_content_filenum = #{record.markContentFilenum,jdbcType=INTEGER},
+    mark_content_content = #{record.markContentContent,jdbcType=INTEGER},
+    mark_content_lk = #{record.markContentLk,jdbcType=INTEGER},
+    mark_content_attachment = #{record.markContentAttachment,jdbcType=INTEGER},
     mark_kind = #{record.markKind,jdbcType=INTEGER},
     mark_keyword = #{record.markKeyword,jdbcType=INTEGER},
     mark_other = #{record.markOther,jdbcType=INTEGER},
@@ -654,6 +713,11 @@
     mark_imp = #{record.markImp,jdbcType=INTEGER},
     mark_attachment = #{record.markAttachment,jdbcType=INTEGER},
     mark_content = #{record.markContent,jdbcType=INTEGER},
+    mark_content_title = #{record.markContentTitle,jdbcType=INTEGER},
+    mark_content_filenum = #{record.markContentFilenum,jdbcType=INTEGER},
+    mark_content_content = #{record.markContentContent,jdbcType=INTEGER},
+    mark_content_lk = #{record.markContentLk,jdbcType=INTEGER},
+    mark_content_attachment = #{record.markContentAttachment,jdbcType=INTEGER},
     mark_kind = #{record.markKind,jdbcType=INTEGER},
     mark_keyword = #{record.markKeyword,jdbcType=INTEGER},
     mark_other = #{record.markOther,jdbcType=INTEGER}
@@ -766,6 +830,21 @@
       <if test="markContent != null" >
         mark_content = #{markContent,jdbcType=INTEGER},
       </if>
+      <if test="markContentTitle != null" >
+        mark_content_title = #{markContentTitle,jdbcType=INTEGER},
+      </if>
+      <if test="markContentFilenum != null" >
+        mark_content_filenum = #{markContentFilenum,jdbcType=INTEGER},
+      </if>
+      <if test="markContentContent != null" >
+        mark_content_content = #{markContentContent,jdbcType=INTEGER},
+      </if>
+      <if test="markContentLk != null" >
+        mark_content_lk = #{markContentLk,jdbcType=INTEGER},
+      </if>
+      <if test="markContentAttachment != null" >
+        mark_content_attachment = #{markContentAttachment,jdbcType=INTEGER},
+      </if>
       <if test="markKind != null" >
         mark_kind = #{markKind,jdbcType=INTEGER},
       </if>
@@ -820,6 +899,11 @@
     mark_imp = #{markImp,jdbcType=INTEGER},
     mark_attachment = #{markAttachment,jdbcType=INTEGER},
     mark_content = #{markContent,jdbcType=INTEGER},
+    mark_content_title = #{markContentTitle,jdbcType=INTEGER},
+    mark_content_filenum = #{markContentFilenum,jdbcType=INTEGER},
+    mark_content_content = #{markContentContent,jdbcType=INTEGER},
+    mark_content_lk = #{markContentLk,jdbcType=INTEGER},
+    mark_content_attachment = #{markContentAttachment,jdbcType=INTEGER},
     mark_kind = #{markKind,jdbcType=INTEGER},
     mark_keyword = #{markKeyword,jdbcType=INTEGER},
     mark_other = #{markOther,jdbcType=INTEGER},
@@ -863,6 +947,11 @@
     mark_imp = #{markImp,jdbcType=INTEGER},
     mark_attachment = #{markAttachment,jdbcType=INTEGER},
     mark_content = #{markContent,jdbcType=INTEGER},
+    mark_content_title = #{markContentTitle,jdbcType=INTEGER},
+    mark_content_filenum = #{markContentFilenum,jdbcType=INTEGER},
+    mark_content_content = #{markContentContent,jdbcType=INTEGER},
+    mark_content_lk = #{markContentLk,jdbcType=INTEGER},
+    mark_content_attachment = #{markContentAttachment,jdbcType=INTEGER},
     mark_kind = #{markKind,jdbcType=INTEGER},
     mark_keyword = #{markKeyword,jdbcType=INTEGER},
     mark_other = #{markOther,jdbcType=INTEGER}
@@ -932,5 +1021,4 @@
 
     ) as a
   </select>
-
 </mapper>
