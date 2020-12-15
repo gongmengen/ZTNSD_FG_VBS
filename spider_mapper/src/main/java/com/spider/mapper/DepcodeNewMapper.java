@@ -22,7 +22,7 @@ public interface DepcodeNewMapper {
     int updateByExample(@Param("record") DepcodeNew record, @Param("example") DepcodeNewExample example);
 
     //自定义sql
-    List<DepcodeNew> limitList(int nowPage, int pageSize, @Param("keyword") String keyword);
+    List<DepcodeNew> limitList(int nowPage, int pageSize, @Param("keyword") String[] keyword);
 
     int getMaxNumber(@Param("deptcode")String newDeptcode);
 
@@ -32,5 +32,5 @@ public interface DepcodeNewMapper {
 
     List<DepcodeNew> getDeptTwoLevel(@Param("deptcode")String deptcode);
 
-    int getTotalByKeyword(@Param("keyword") String keyword);
+    int getTotalByKeyword(@Param("keyword") String[] keyword);
 }

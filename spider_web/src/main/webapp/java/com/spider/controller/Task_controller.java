@@ -8,7 +8,6 @@ import com.spider.service.TXwInformation_service;
 import com.spider.service.TXwWebsite_service;
 import com.spider.service.UserTask_service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +43,7 @@ public class Task_controller {
         //获取可分配用户列表
         List<UserTask> userTaskList = userTask_service.getUserTaskList();
         model.addAttribute("userTaskList",userTaskList);
-        return "taskList_lar";
+        return "_task/_taskList_lar";
     }
     //中央
     @RequestMapping("/list")
@@ -61,7 +60,7 @@ public class Task_controller {
         //获取可分配用户列表
         List<UserTask> userTaskList = userTask_service.getUserTaskList();
         model.addAttribute("userTaskList",userTaskList);
-        return "taskList";
+        return "_task/_taskList";
     }
 //地方
     @RequestMapping("/addLar")

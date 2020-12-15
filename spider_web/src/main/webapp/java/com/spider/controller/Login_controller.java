@@ -58,7 +58,7 @@ public class Login_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
         if (login!=null){
 
-            return "index";
+            return "_index";
         }
         model.addAttribute("status","error");
         return "login";
@@ -70,7 +70,13 @@ public class Login_controller {
     public String index(HttpServletRequest request,Model model){
 /*        HttpSession session = request.getSession();
         model.addAttribute("user",(UserTask)session.getAttribute("user"));*/
-        return "index";
+        return "_index";
+    }
+    @RequestMapping("/_index")
+    public String _index(HttpServletRequest request,Model model){
+/*        HttpSession session = request.getSession();
+        model.addAttribute("user",(UserTask)session.getAttribute("user"));*/
+        return "_index";
     }
     //退出系统
     @RequestMapping("/outSys")

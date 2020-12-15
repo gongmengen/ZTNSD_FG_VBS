@@ -2,7 +2,6 @@ package com.spider.controller;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.util.StrUtil;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.*;
 import com.spider.elemente.TimerParm;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -68,7 +66,7 @@ public class ManCheck_controller {
         model.addAttribute("mainList",mainList);
         model.addAttribute("data",data);
 
-        return "informationTmpManCheckListMark";
+        return "_informationTmpManCheck/_informationTmpManCheckListMark";
     }
 
 
@@ -87,7 +85,7 @@ public class ManCheck_controller {
         model.addAttribute("mainList",mainList);
         model.addAttribute("data",data);
 
-        return "informationTmpManCheckListMark_lar";
+        return "_informationTmpManCheck/_informationTmpManCheckListMark_lar";
     }
 
     //标记
@@ -265,8 +263,8 @@ public class ManCheck_controller {
 
     //修改
     @RequestMapping("update")
-
-    public void update(InformationPipelineWithBLOBs information, HttpServletResponse response,Model model) throws IOException {
+    @ResponseBody
+    public Boolean update(InformationPipelineWithBLOBs information, HttpServletResponse response,Model model) throws IOException {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
@@ -280,11 +278,10 @@ public class ManCheck_controller {
             //正文按照页面上 的数据写回到 hting/txt中(兼容旧法规工具)
             String contextCopyPath = TimerParm.txtCopyPath5 + File.separator +information.getFilename();
             FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
-
-            response.sendRedirect("detail/"+information.getExtend2());
-
+            return Boolean.TRUE;
+        }else {
+            return Boolean.FALSE;
         }
-
     }
 
     //修改
@@ -479,12 +476,16 @@ public class ManCheck_controller {
         List<File> files = FileUtil.loopFiles(attachmentPath);
         if (files.size()>0){
             for (File file : files) {
-                HashMap attachment = new HashMap();
-                attachment.put("filename",file.getName());
-                attachment.put("size",(file.length()/1024)+"kb");
-                attachment.put("status","原始文件");
+                if (file.getName().indexOf(".db")>-1){
+                    continue;
+                }else {
+                    HashMap attachment = new HashMap();
+                    attachment.put("filename", file.getName());
+                    attachment.put("size", (file.length() / 1024) + "kb");
+                    attachment.put("status", "原始文件");
 
-                attachmentList.add(attachment);
+                    attachmentList.add(attachment);
+                }
             }
         }
 //-------------------------------------------------------------------------------------attachment
@@ -493,7 +494,7 @@ public class ManCheck_controller {
         model.addAttribute("attachmentList",attachmentList);
         model.addAttribute("mainMark",main);
 
-        return "informationTmpManCheckDetail_mark";
+        return "_informationTmpManCheck/_informationTmpManCheckDetail_mark";
     }
 
     //详情
@@ -534,7 +535,7 @@ public class ManCheck_controller {
         model.addAttribute("content",content);
         model.addAttribute("attachmentList",attachmentList);
 
-        return "informationTmpManCheckDetail";
+        return "_informationTmpManCheck/_informationTmpManCheckDetail";
     }
 
     private String readTxt(String appuser,String filename) {
@@ -588,7 +589,7 @@ public class ManCheck_controller {
         }
         model.addAttribute("mainList",mainList);
 
-        return "informationTmpManCheckRandomList";
+        return "_informationTmpManCheck/_informationTmpManCheckRandomList";
     }
 
 
@@ -621,7 +622,7 @@ public class ManCheck_controller {
         model.addAttribute("mainList",mainList);
 
 
-        return "informationTmpManCheckRandomList_lar";
+        return "_informationTmpManCheck/_informationTmpManCheckRandomList_lar";
     }
     //删除
     @RequestMapping("delete")
@@ -687,7 +688,7 @@ public class ManCheck_controller {
 
         model.addAttribute("mainList",mainList);
 
-        return "informationTmpManCheckList";
+        return "_informationTmpManCheck/_informationTmpManCheckList";
     }
 
 
@@ -709,7 +710,7 @@ public class ManCheck_controller {
         }
         model.addAttribute("mainList",mainList);
 
-        return "informationTmpManCheckList_lar";
+        return "_informationTmpManCheck/_informationTmpManCheckList_lar";
     }
 
     public boolean copyCHL(MainWithBLOBs tmpmain,HttpServletRequest request){

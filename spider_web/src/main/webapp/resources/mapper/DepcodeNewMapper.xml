@@ -168,7 +168,10 @@
     select count(*) FROM depcode_new
     WHERE 1=1
     <if test="keyword != null" >
-      and dep_name LIKE '%${keyword}%'
+
+      <foreach collection="keyword" item="keyword">
+        and (dep_name LIKE  '%${keyword}%'  or alis_name LIKE  '%${keyword}%')
+      </foreach>
     </if>
   </select>
 
@@ -176,8 +179,13 @@
     select dep_number as depNumber, dep_name as depName, alis_name as alisName, sort_f as sortF from depcode_new
     WHERE 1=1
     <if test="keyword != null" >
-      and dep_name LIKE '%${keyword}%'
+
+      <foreach collection="keyword" item="keyword">
+        and (dep_name LIKE  '%${keyword}%'  or alis_name LIKE  '%${keyword}%')
+      </foreach>
     </if>
+
+
     ORDER BY dep_number desc limit #{0},#{1}
   </select>
 

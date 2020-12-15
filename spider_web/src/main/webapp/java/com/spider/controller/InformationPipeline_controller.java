@@ -1,6 +1,5 @@
 package com.spider.controller;
 
-import com.ifeng.auto.we_provider.common.db.DynamicDataSource;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.*;
 import com.spider.elemente.TimerParm;
@@ -139,9 +138,9 @@ public class InformationPipeline_controller {
 
 
         if (xwColumn==100002){
-            return "informationPipelineOutPutOver_chl";
+            return "_informationPipeline/_informationPipelineOutPutOver_chl";
         }else {
-            return "informationPipelineOutPutOver_lar";
+            return "_informationPipeline/_informationPipelineOutPutOver_lar";
         }
         //return "informationPipelineList";
     }
@@ -342,7 +341,7 @@ public class InformationPipeline_controller {
 
 
 
-        return "informationPipelineListlar";
+        return "_informationPipeline/_informationPipelineListlar";
     }
 
 
@@ -432,7 +431,7 @@ public class InformationPipeline_controller {
 
 
 
-        return "informationPipelineList";
+        return "_informationPipeline/_informationPipelineList";
     }
     //查询temp数据库得到js处理后的新闻数据
     @RequestMapping("/informationDetail/{id}/{flag}")
@@ -454,6 +453,6 @@ public class InformationPipeline_controller {
         //切换会主数据源
         DynamicDataSourceHolder.clearCustomerType();
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
-        return "spiderInformationDetail";
+        return "_adapter/_spiderInformationDetail";
     }
 }

@@ -34,14 +34,20 @@ public class Deptcode_service {
     //获取列表
     public List<DepcodeNew> getDepcodeList(int nowPage, int pageSize, String keyword){
 
-        return depcodeNewMapper.limitList(nowPage,pageSize,keyword);
+        String[] array = null;
+
+        if (StringUtils.isNotBlank(keyword)){
+            array = keyword.split(" ");
+        }
+        return depcodeNewMapper.limitList(nowPage,pageSize,array);
     }
 
     //获取总数
     public int getDepcodeCount(String keyword){
         int total = 0;
         if (StringUtils.isNotBlank(keyword)){
-            total = depcodeNewMapper.getTotalByKeyword(keyword);
+            String[] split = keyword.split(" ");
+            total = depcodeNewMapper.getTotalByKeyword(split);
         }else {
             DepcodeNewExample example = new DepcodeNewExample();
             List<DepcodeNew> depcodeNews = depcodeNewMapper.selectByExample(example);
@@ -61,8 +67,19 @@ public class Deptcode_service {
     public boolean update(DepcodeNew depcodeNew) {
         DepcodeNewExample example = new DepcodeNewExample();
         DepcodeNewExample.Criteria criteria = example.createCriteria();
-        criteria.andDepNumberEqualTo(depcodeNew.getDepNumber());
-        return depcodeNewMapper.updateByExampleSelective(depcodeNew,example)==1?true:false;
+        criteria.andDepNameEqualTo(depcodeNew.getDepName());
+        criteria.andAlisNameEqualTo(depcodeNew.getAlisName());
+        List<DepcodeNew> depcodeNews = depcodeNewMapper.selectByExample(example);
+        if (depcodeNews.size()>0){
+            return false;
+        }else {
+            DepcodeNewExample example1 = new DepcodeNewExample();
+            DepcodeNewExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andDepNumberEqualTo(depcodeNew.getDepNumber());
+
+            return depcodeNewMapper.updateByExampleSelective(depcodeNew,example1)==1;
+        }
+
     }
 
     public int getMaxNumber(String newDeptcode) {
@@ -70,7 +87,17 @@ public class Deptcode_service {
     }
 
     public boolean insert(DepcodeNew depcodeNew) {
-        return depcodeNewMapper.insertSelective(depcodeNew)==1?true:false;
+
+        DepcodeNewExample example = new DepcodeNewExample();
+        DepcodeNewExample.Criteria criteria = example.createCriteria();
+        criteria.andDepNameEqualTo(depcodeNew.getDepName());
+        criteria.andAlisNameEqualTo(depcodeNew.getAlisName());
+        List<DepcodeNew> depcodeNews = depcodeNewMapper.selectByExample(example);
+        if (depcodeNews.size()>0){
+            return false;
+        }else {
+            return  depcodeNewMapper.insertSelective(depcodeNew)==1?true:false;
+        }
     }
 
     public List<DepcodeNew> getDeptOneLevel() {

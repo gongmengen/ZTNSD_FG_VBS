@@ -38,6 +38,6 @@ public class Search_controller {
             xwcolumn = 100003;
         }
         model.addAttribute("xwcolumn",xwcolumn);
-        return "search_result";
+        return "_search/_search_result";
     }
 }

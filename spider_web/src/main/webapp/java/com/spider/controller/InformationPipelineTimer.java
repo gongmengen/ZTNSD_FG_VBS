@@ -1,6 +1,7 @@
 package com.spider.controller;
 
 
+import cn.hutool.core.io.FileUtil;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.lawstar.basic.util.Tools;
 import com.spider.elemente.JavaScript_static;
@@ -509,14 +510,6 @@ public class InformationPipelineTimer {
 
 
                 main_service.insert(main);
-                /*                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);*/
-
-
-                //切换会主数据源
-/*                DynamicDataSourceHolder.clearCustomerType();
-                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);*/
-
             }catch (Exception e){
                 e.printStackTrace();
                 status = false;
@@ -531,8 +524,19 @@ public class InformationPipelineTimer {
 
 
                 try {
-                    //先重命名
-                    NioFileUtil.reNameFile(request.getRealPath(TimerParm.attachmentPATH) + File.separator + information.getFilename().substring(0, information.getFilename().indexOf(".")), name + df.format(beginNum) + "s" + df.format(endNum));
+
+                    File file = new File(request.getRealPath(TimerParm.attachmentPATH) + File.separator + information.getFilename().substring(0, information.getFilename().indexOf(".")));
+                    if (file.exists()){
+                        //先重命名
+                        NioFileUtil.reNameFile(request.getRealPath(TimerParm.attachmentPATH) + File.separator + information.getFilename().substring(0, information.getFilename().indexOf(".")), name + df.format(beginNum) + "s" + df.format(endNum));
+
+                    }else {
+                        file.mkdir();
+                        //先重命名
+                        NioFileUtil.reNameFile(request.getRealPath(TimerParm.attachmentPATH) + File.separator + information.getFilename().substring(0, information.getFilename().indexOf(".")), name + df.format(beginNum) + "s" + df.format(endNum));
+
+                    }
+
                     //附件移动到。5挂载文件夹下
 
                     Path start = Paths.get(request.getRealPath(TimerParm.attachmentPATH) + File.separator + name + df.format(beginNum) + "s" + df.format(endNum));
@@ -540,13 +544,13 @@ public class InformationPipelineTimer {
                     //移动附件之前先判断目标地址中是否存在重名文件夹 如果存在则先删除掉目标文件夹
                     NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5 + File.separator + name + df.format(beginNum) + "s" + df.format(endNum)));
                     //在移动
-                    fileUtil.operateDir(true, start, target, StandardCopyOption.REPLACE_EXISTING);
+                    fileUtil.operateDir(true, start, target);
 
 
                     //txt移动到。5挂载文件夹下
                     Path start1 = Paths.get(request.getRealPath(TimerParm.destDir) + File.separator + dirPath);
                     Path target2 = Paths.get(TimerParm.txtPath5);
-                    fileUtil.operateDir(true, start1, target2, StandardCopyOption.REPLACE_EXISTING);
+                    fileUtil.operateDir(true, start1, target2);
                     //先重命名文件
                     String newfileName = name + df.format(beginNum) + "s" + df.format(endNum) + ".txt";
                     NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + dirPath + File.separator + oldFileName, newfileName);
@@ -554,9 +558,9 @@ public class InformationPipelineTimer {
                     File f = new File(TimerParm.txtPath5 + File.separator + name);
                     if (f.exists()) {
                         //如果已经存在就做文件位移
-                        Path start4 = Paths.get(TimerParm.txtPath5 + File.separator + dirPath + File.separator + newfileName);
-                        Path target4 = Paths.get(TimerParm.txtPath5 + File.separator + name + File.separator + newfileName);
-                        NioFileUtil.moveFile(start4, target4, StandardCopyOption.REPLACE_EXISTING);
+                        File start4 = new File(TimerParm.txtPath5 + File.separator + dirPath + File.separator + newfileName);
+                        File target4 = new File(TimerParm.txtPath5 + File.separator + name + File.separator + newfileName);
+                        FileUtil.move(start4, target4,true);
                         NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtPath5 + File.separator + dirPath));
                     } else {
                         //不存在则将移动过来的文件夹重命名
@@ -566,7 +570,7 @@ public class InformationPipelineTimer {
                     //txtcopy移动到。5挂载文件夹下
                     Path start3 = Paths.get(request.getRealPath(TimerParm.copyDir) + File.separator + information.getFilename());
                     Path target3 = Paths.get(TimerParm.txtCopyPath5 + File.separator + information.getFilename());
-                    fileUtil.moveFile(start3, target3, StandardCopyOption.REPLACE_EXISTING);
+                    fileUtil.moveFile(start3, target3);
                     NioFileUtil.reNameFile(TimerParm.txtCopyPath5 + File.separator + oldFileName, name + df.format(beginNum) + "s" + df.format(endNum) + ".txt");
 
                     filestatus = true;
@@ -1349,22 +1353,31 @@ public class InformationPipelineTimer {
 
 
         try {
-            //先重命名
-            NioFileUtil.reNameFile(request.getRealPath(TimerParm.attachmentPATH) + File.separator + informationPipeline.getFilename().substring(0, informationPipeline.getFilename().indexOf(".")), username + df.format(beginNum) + "s" + df.format(endNum));
+            File file = new File(request.getRealPath(TimerParm.attachmentPATH) + File.separator + informationPipeline.getFilename().substring(0, informationPipeline.getFilename().indexOf(".")));
+            if (file.exists()){
+                //先重命名
+                NioFileUtil.reNameFile(request.getRealPath(TimerParm.attachmentPATH) + File.separator + informationPipeline.getFilename().substring(0, informationPipeline.getFilename().indexOf(".")), username + df.format(beginNum) + "s" + df.format(endNum));
+
+            }else {
+                file.mkdir();
+                //先重命名
+                NioFileUtil.reNameFile(request.getRealPath(TimerParm.attachmentPATH) + File.separator + informationPipeline.getFilename().substring(0, informationPipeline.getFilename().indexOf(".")), username + df.format(beginNum) + "s" + df.format(endNum));
+
+            }
             //附件移动到。5挂载文件夹下
 
             Path start = Paths.get(request.getRealPath(TimerParm.attachmentPATH) + File.separator + username + df.format(beginNum) + "s" + df.format(endNum));
             Path target = Paths.get(TimerParm.fjPath5);
             //移动附件之前先判断目标地址中是否存在重名文件夹 如果存在则先删除掉目标文件夹
-            System.out.println(NioFileUtil.forceDeleteDirectory_linux(TimerParm.fjPath5 + File.separator + username + df.format(beginNum) + "s" + df.format(endNum)));
+            FileUtil.del(TimerParm.fjPath5 + File.separator + username + df.format(beginNum) + "s" + df.format(endNum));
             //在移动
-            fileUtil.operateDir(true, start, target, StandardCopyOption.REPLACE_EXISTING);
+            fileUtil.operateDir(true, start, target);
 
 
             //txt移动到。5挂载文件夹下
             Path start1 = Paths.get(request.getRealPath(TimerParm.destDir) + File.separator + dirPath);
             Path target2 = Paths.get(TimerParm.txtPath5);
-            fileUtil.operateDir(true, start1, target2, StandardCopyOption.REPLACE_EXISTING);
+            fileUtil.operateDir(true, start1, target2);
             //先重命名文件
             String newfileName = username + df.format(beginNum) + "s" + df.format(endNum) + ".txt";
             NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + dirPath + File.separator + oldFileName, newfileName);
@@ -1384,7 +1397,7 @@ public class InformationPipelineTimer {
             //txtcopy移动到。5挂载文件夹下
             Path start3 = Paths.get(request.getRealPath(TimerParm.copyDir) + File.separator + informationPipeline.getFilename());
             Path target3 = Paths.get(TimerParm.txtCopyPath5 + File.separator + informationPipeline.getFilename());
-            fileUtil.moveFile(start3, target3, StandardCopyOption.REPLACE_EXISTING);
+            fileUtil.moveFile(start3, target3);
             NioFileUtil.reNameFile(TimerParm.txtCopyPath5 + File.separator + oldFileName, username + df.format(beginNum) + "s" + df.format(endNum) + ".txt");
 
             //无异常时

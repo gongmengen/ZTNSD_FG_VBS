@@ -3,17 +3,14 @@ package com.spider.controller;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.InformationPipelineWithBLOBs;
 import com.spider.bean.TWxAdapterWithBLOBs;
-import com.spider.bean.TXwInformation;
 import com.spider.bean.TXwInformationWithBLOBs;
 import com.spider.service.TWxAdapter_service;
 import com.spider.service.TXwInformation_service;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.script.ScriptException;
@@ -44,7 +41,7 @@ public class TWxAdapter_controller {
         model.addAttribute("information",information);
         //获取继续验证得条件id
         model.addAttribute("nextRegID",informationList.size()==10?informationList.get(informationList.size()-1).getId():-1);
-        return "pin_board";
+        return "_adapter/_pin_board";
     }
 
     //验证一篇新闻 带重置功能
@@ -63,26 +60,40 @@ public class TWxAdapter_controller {
         InformationPipelineWithBLOBs informationPipelineWithBLOBs = adapter_service.regSingleNews(informationid);
         model.addAttribute("informationPipeline",informationPipelineWithBLOBs);
         // model.addAttribute("websiteid",informationPipelineWithBLOBs.getId());
-        return "informationDetailWithReset";
+        return "_search/_informationDetailWithReset";
     }
     //验证一篇新闻
-    @RequestMapping("regsinglenews/{id}")
+    @RequestMapping("regsinglenews/{informationid}")
 
-    public String regsinglenews(@PathVariable("id")int informationid,Model model,HttpServletRequest request){
-        int xwcolumn = (int) request.getSession().getAttribute("xwcolumn");
-        if (xwcolumn == 100002){
-            DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
-        }else if (xwcolumn == 100003){
-            DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
+    public String regsinglenews(@PathVariable(value = "informationid") String informationid,Model model,HttpServletRequest request){
+        String[] split = informationid.split("@");
+
+        if (split.length>1){
+            if (split[1].equals("100002")){
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+            }else if (split[1].equals("100003")){
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
+            }
+            InformationPipelineWithBLOBs informationPipelineWithBLOBs = adapter_service.regSingleNews(Integer.parseInt(split[0]));
+            model.addAttribute("informationPipeline",informationPipelineWithBLOBs);
         }else {
-            return "error";
+            int xwcolumn = (int) request.getSession().getAttribute("xwcolumn");
+            if (xwcolumn == 100002){
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+            }else if (xwcolumn == 100003){
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
+            }else {
+                return "error";
+            }
+            InformationPipelineWithBLOBs informationPipelineWithBLOBs = adapter_service.regSingleNews(Integer.parseInt(informationid));
+            model.addAttribute("informationPipeline",informationPipelineWithBLOBs);
         }
-        InformationPipelineWithBLOBs informationPipelineWithBLOBs = adapter_service.regSingleNews(informationid);
-        model.addAttribute("informationPipeline",informationPipelineWithBLOBs);
-       // model.addAttribute("websiteid",informationPipelineWithBLOBs.getId());
-        return "informationDetail";
+
+        return "_adapter/_informationDetail";
     }
 
 
@@ -134,7 +145,7 @@ public class TWxAdapter_controller {
         model.addAttribute("information",information);
         //获取继续验证得条件id
         model.addAttribute("nextRegID",informationList.get(informationList.size()-1).getId());
-        return "pin_board";
+        return "_adapter/_pin_board";
     }
 
     //收藏脚本

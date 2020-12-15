@@ -43,7 +43,7 @@ public class TXwInformation_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
         findWebsiteidList(websiteid,pageid,model);
-        return "informationList";
+        return "_adapter/_informationList";
     }
     //地方
     @RequestMapping("informationList_lar/{websiteid}/{pageid}")
@@ -51,7 +51,7 @@ public class TXwInformation_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
         findWebsiteidList(websiteid,pageid,model);
-        return "informationList_lar";
+        return "_adapter/_informationList_lar";
     }
 
     public void findWebsiteidList(int websiteid,int pageid,Model model){
@@ -75,7 +75,7 @@ public class TXwInformation_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
         findInformation(id,model);
 
-        return "title_editor";
+        return "_editor/_title_editor";
     }
 
     //中央
@@ -85,7 +85,7 @@ public class TXwInformation_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
         findInformation(id,model);
 
-        return "title_editor";
+        return "_editor/_title_editor";
     }
 
     public void findInformation(int id,Model model){

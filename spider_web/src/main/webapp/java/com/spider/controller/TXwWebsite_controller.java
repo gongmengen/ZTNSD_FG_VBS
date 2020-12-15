@@ -1,11 +1,9 @@
 package com.spider.controller;
 
-import com.ifeng.auto.we_provider.common.db.DynamicDataSource;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.TXwInformation;
 import com.spider.bean.TXwWebsite;
 import com.spider.bean.UserTask;
-import com.spider.elemente.JavaScript_static;
 import com.spider.service.TXwInformation_service;
 import com.spider.service.TXwWebsite_service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,7 +157,7 @@ public class TXwWebsite_controller {
         model.addAttribute("websiteList",tXwWebsiteList);
         //存储中央、地方标识
         request.getSession().setAttribute("xwcolumn",100003);
-        return "table_data_tables_lar";
+        return "_adapter/_table_data_tables_lar";
     }
     //中央
     @RequestMapping("/websiteList")
@@ -179,7 +177,7 @@ public class TXwWebsite_controller {
 
         //存储中央、地方标识
         request.getSession().setAttribute("xwcolumn",100002);
-        return "table_data_tables";
+        return "_adapter/_table_data_tables";
     }
 
     @RequestMapping("/isApaterWebsiteList")
@@ -192,7 +190,7 @@ public class TXwWebsite_controller {
         List<TXwInformation> websiteidList = information_service.getWebsiteidList();
         setWebsiteIstatus(apaterWebsiteList,websiteidList);
         model.addAttribute("websiteList",apaterWebsiteList);
-        return "isApaterWebsiteList";
+        return "_y_or_n/_isApaterWebsiteList";
     }
     @RequestMapping("/isNotApaterWebsiteList")
     public String isNotApaterWebsiteList(Model model){
@@ -204,17 +202,20 @@ public class TXwWebsite_controller {
         List<TXwInformation> websiteidList = information_service.getWebsiteidList();
         setWebsiteIstatus(notApaterWebsiteList,websiteidList);
         model.addAttribute("websiteList",notApaterWebsiteList);
-        return "isNotApaterWebsiteList";
+        return "_y_or_n/_isNotApaterWebsiteList";
     }
 
     public void setWebsiteIstatus(List<TXwWebsite> tXwWebsiteList,List<TXwInformation> websiteidList){
         for (TXwWebsite tXwWebsite : tXwWebsiteList) {
             boolean flag = false;
             a:for (TXwInformation tXwInformation : websiteidList) {
-                if (tXwWebsite.getId() .equals(tXwInformation.getWebsiteid())){
-                    flag = true;
-                    break a;
+                if (tXwInformation!=null){
+                    if (tXwWebsite.getId() .equals(tXwInformation.getWebsiteid())){
+                        flag = true;
+                        break a;
+                    }
                 }
+
             }
             if (flag){
                 tXwWebsite.setIstatus(1);

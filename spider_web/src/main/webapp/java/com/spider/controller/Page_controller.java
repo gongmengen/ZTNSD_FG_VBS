@@ -1,7 +1,6 @@
 package com.spider.controller;
 
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
-import com.spider.bean.TWxAdapter;
 import com.spider.bean.TWxAdapterWithBLOBs;
 import com.spider.bean.TXwInformationWithBLOBs;
 import com.spider.elemente.JavaScript_static;
@@ -11,10 +10,7 @@ import com.spider.service.TXwWebsite_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,10 +26,21 @@ public class Page_controller {
     private TXwWebsite_service  website_service;
 
 
+    @RequestMapping(value = "page/{page1}/{pageName}", method = RequestMethod.GET)
+    public String toPage(HttpServletRequest request, @PathVariable("pageName") String pageName,@PathVariable("page1") String page1) {
+        return page1+"/"+pageName;
+    }
+
+    @RequestMapping(value = "page/{pageName}", method = RequestMethod.GET)
+    public String toPage(HttpServletRequest request,@PathVariable("pageName") String pageName) {
+        return pageName;
+    }
+
+
     @RequestMapping("/search/goSearchPage")
     public String goSearchPage(){
 
-        return "search_result";
+        return "_search/_search_result";
     }
     @RequestMapping("/rememberSelectLength")
     @ResponseBody
@@ -66,7 +73,7 @@ public class Page_controller {
         switch (page){
             case 1:
                 //标题脚本页
-                pageFor = "title_editor";
+                pageFor = "_editor/_title_editor";
                 //添加通用标题脚本
                 model.addAttribute("lawstar_title", JavaScript_static.LAWSTAR_TITLE);
                 //适配预处理
@@ -90,7 +97,7 @@ public class Page_controller {
                 break;
             case 2:
                 //正文脚本页
-                pageFor = "newsContent_editor";
+                pageFor = "_editor/_newsContent_editor";
                 //添加通用正文脚本
                 model.addAttribute("lawstar_newsContent", JavaScript_static.LAWSTAR_CONTENT);
                 //titleStatus|newsnumStatus状态
@@ -99,7 +106,7 @@ public class Page_controller {
                 break;
             case 3:
                 //发布日期脚本页
-                pageFor = "releaseDate_editor";
+                pageFor = "_editor/_releaseDate_editor";
                 //添加通用发布日期脚本
                 model.addAttribute("lawstar_releaseDate", JavaScript_static.LAWSTAR_APPDATE);
                 //适配预处理
@@ -123,7 +130,7 @@ public class Page_controller {
                 break;
             case 4:
                 //文号脚本页
-                pageFor = "newNum_editor";
+                pageFor = "_editor/_newNum_editor";
                 //添加通用文号脚本
                 model.addAttribute("lawstar_newNum", JavaScript_static.LAWSTAR_WENHAO);
                 //适配预处理
@@ -147,11 +154,11 @@ public class Page_controller {
                 break;
             case 5:
                 //实施日期脚本页
-                pageFor = "implementDate_editor";
+                pageFor = "_editor/_implementDate_editor";
                 break;
             case 6:
                 //附件脚本页
-                pageFor = "attachment_editor";
+                pageFor = "_editor/_attachment_editor";
                 //添加通用附件脚本
                 model.addAttribute("lawstar_attachment", JavaScript_static.LAWSTAR_ATTMENTS);
                 //适配预处理
@@ -175,7 +182,7 @@ public class Page_controller {
                 break;
             case 7:
                 //随机验证十篇新闻
-                pageFor = "pin_board";
+                pageFor = "_editor/_pin_board";
 
                 break;
         }

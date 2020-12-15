@@ -18,7 +18,7 @@ public class AdapterCommon_controller {
     @RequestMapping("/lawstar_title_update")
     public String lawstar_title_update(Model model){
         model.addAttribute("lawstar_title", JavaScript_static.LAWSTAR_TITLE);
-        return "lawstar_title_update";
+        return "_js_update/_lawstar_title_update";
     }
     //标题修改
     @RequestMapping(value = "/lawstar_title_update_upd",method = RequestMethod.POST)
@@ -41,13 +41,13 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_title",JavaScript_static.LAWSTAR_TITLE);
-        return "lawstar_title_update";
+        return "_js_update/_lawstar_title_update";
     }
     //正文加载
     @RequestMapping("/lawstar_content_update")
     public String lawstar_content_update(Model model){
         model.addAttribute("lawstar_newsContent", JavaScript_static.LAWSTAR_CONTENT);
-        return "lawstar_content_update";
+        return "_js_update/_lawstar_content_update";
     }
     //正文修改
     @RequestMapping(value = "/lawstar_content_update_upd",method = RequestMethod.POST)
@@ -71,13 +71,13 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_newsContent",JavaScript_static.LAWSTAR_CONTENT);
-        return "lawstar_content_update";
+        return "_js_update/_lawstar_content_update";
     }
     //发布日期加载
     @RequestMapping("/lawstar_appdate_update")
     public String lawstar_appdate_update(Model model){
         model.addAttribute("lawstar_releaseDate", JavaScript_static.LAWSTAR_APPDATE);
-        return "lawstar_appdate_update";
+        return "_js_update/_lawstar_appdate_update";
     }
     //发布日期修改
     @RequestMapping(value = "/lawstar_appdate_update_upd",method = RequestMethod.POST)
@@ -101,13 +101,13 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_releaseDate",JavaScript_static.LAWSTAR_APPDATE);
-        return "lawstar_appdate_update";
+        return "_js_update/_lawstar_appdate_update";
     }
     //实施日期加载
     @RequestMapping("/lawstar_implmentdate_update")
     public String lawstar_implmentdate_update(Model model){
         model.addAttribute("lawstar_releaseDate", JavaScript_static.LAWSTAR_APPDATE);
-        return "lawstar_implmentdate_update";
+        return "_js_update/_lawstar_implmentdate_update";
     }
     //实施日期修改
     @RequestMapping(value = "/lawstar_implmentdate_update_upd",method = RequestMethod.POST)
@@ -131,13 +131,13 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_releaseDate",JavaScript_static.LAWSTAR_APPDATE);
-        return "lawstar_implmentdate_update";
+        return "_js_update/_lawstar_implmentdate_update";
     }
     //文号加载
     @RequestMapping("/lawstar_wenhao_update")
     public String lawstar_wenhao_update(Model model){
         model.addAttribute("lawstar_newNum", JavaScript_static.LAWSTAR_WENHAO);
-        return "lawstar_wenhao_update";
+        return "_js_update/_lawstar_wenhao_update";
     }
     //文号修改
     @RequestMapping(value = "/lawstar_wenhao_update_upd",method = RequestMethod.POST)
@@ -161,13 +161,13 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_newNum",JavaScript_static.LAWSTAR_WENHAO);
-        return "lawstar_wenhao_update";
+        return "_js_update/_lawstar_wenhao_update";
     }
     //附件加载
     @RequestMapping("/lawstar_attments_update")
     public String lawstar_attments_update(Model model){
         model.addAttribute("lawstar_attachment", JavaScript_static.LAWSTAR_ATTMENTS);
-        return "lawstar_attments_update";
+        return "_js_update/_lawstar_attments_update";
     }
     //附件修改
     /*
@@ -197,13 +197,13 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_attachment",JavaScript_static.LAWSTAR_ATTMENTS);
-        return "lawstar_attments_update";
+        return "_js_update/_lawstar_attments_update";
     }
 
     @RequestMapping("/lawstar_common_update")
     public String lawstar_common_update(Model model){
         model.addAttribute("lawstar_common", JavaScript_static.LAWSTARLIB_JS);
-        return "lawstar_common_update";
+        return "_js_update/_lawstar_common_update";
     }
     @RequestMapping(value = "/lawstar_common_update_upd",method = RequestMethod.POST)
     public String lawstar_common_update_upd(@RequestParam("title") String title,Model model){
@@ -227,6 +227,6 @@ public class AdapterCommon_controller {
             e.printStackTrace();
         }
         model.addAttribute("lawstar_common",JavaScript_static.LAWSTARLIB_JS);
-        return "lawstar_common_update";
+        return "_js_update/_lawstar_common_update";
     }
 }

@@ -5,29 +5,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.DepcodeNew;
-import com.spider.bean.TXwWebsite;
 import com.spider.service.Deptcode_service;
 import com.spider.utils.DataTablePageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.json.JSONObject;
 
@@ -66,6 +56,22 @@ public class DeptCode_controller {
         return JSONUtil.parse(map);
     }
     //一级部门
+
+    @RequestMapping("deptcode/insert")
+    @ResponseBody
+    public boolean deptcodeInsert(@RequestParam("newDeptName")String newDeptName,@RequestParam("alisName")String alisName,@RequestParam("newDeptcode")String newDeptcode){
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+        //获取表中最大值
+        int number = deptcode_service.getMaxNumber(newDeptcode);
+        DepcodeNew depcodeNew = new DepcodeNew();
+        depcodeNew.setDepNumber((number+1)+"");
+        depcodeNew.setDepName(newDeptName);
+        depcodeNew.setAlisName(alisName);
+
+        return deptcode_service.insert(depcodeNew);
+    }
+
     @RequestMapping(value="deptcode/deptOneLevel")
     @ResponseBody
     public Object deptOneLevel() throws JsonProcessingException {
@@ -77,22 +83,7 @@ public class DeptCode_controller {
 
         return JSONUtil.parse(resu);
     }
-
     //添加
-    @RequestMapping("deptcode/insert")
-    @ResponseBody
-    public boolean deptcodeInsert(@RequestParam("newDeptName")String newDeptName,@RequestParam("newDeptcode")String newDeptcode){
-        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
-        //获取表中最大值
-        int number = deptcode_service.getMaxNumber(newDeptcode);
-        DepcodeNew depcodeNew = new DepcodeNew();
-        depcodeNew.setDepNumber((number+1)+"");
-        depcodeNew.setDepName(newDeptName);
-        depcodeNew.setAlisName(newDeptName);
-
-        return deptcode_service.insert(depcodeNew);
-    }
 
     //修改
     @RequestMapping("deptcode/update")
@@ -124,7 +115,7 @@ public class DeptCode_controller {
 
     public String deptcodeIndex(){
 
-        return "deptcodeList";
+        return "_deptcode/_deptcodeList";
     }
 
     //加载数据
