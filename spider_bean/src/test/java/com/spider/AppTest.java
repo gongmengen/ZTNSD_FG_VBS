@@ -15,6 +15,7 @@ public class AppTest
 
         //WQH test001
 
+        //WYJ test001
         AppTest appTest = new AppTest();
         int[] ints = appTest.noStringNum(new int[]{6,10});
         System.out.println(Arrays.toString(ints));
