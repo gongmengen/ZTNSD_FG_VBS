@@ -26,6 +26,8 @@ public interface MainCHLandLARMapper {
 
     List<InformationPipeline> selectByRjs12NotLike_6(@Param(value = "rjs12")String rjs12,@Param(value = "rjs4") String rjs10, @Param(value = "minTime")String minTime, @Param(value = "maxTime")String maxTime);
 
+    List<InformationPipeline> selectByNewsTitleNotLike_6(@Param(value = "newsTitle") String newsTitle, @Param(value = "minTime")String minTime, @Param(value = "maxTime")String maxTime);
     //新增
     void insert(Main_CHLandLAR main);
+
 }

@@ -27,4 +27,8 @@ public interface TblErrorLogMapper {
     int updateByPrimaryKeySelective(TblErrorLog record);
 
     int updateByPrimaryKey(TblErrorLog record);
+
+    String getDealer(Integer errorCode);
+
+    List<String> getDealerByInformationID(Integer informationId);
 }

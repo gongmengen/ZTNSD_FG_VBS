@@ -79,6 +79,8 @@ public class InformationPipeline_service {
             List<InformationPipeline> mainListWithRjs0NotLike = new ArrayList<InformationPipeline>();
             List<InformationPipeline> mainListWithRjs12NotLike = new ArrayList<InformationPipeline>();
 
+            List<InformationPipeline> mainListWithNewsTitleNotLike = new ArrayList<InformationPipeline>();
+
             try {
                 a:
                 while (true) {
@@ -108,6 +110,14 @@ public class InformationPipeline_service {
                             break a;
                         }
                     }
+
+                    if (!"".equals(informationPipeline.getFilenum()) && !"".equals(rjs10)) {
+                        mainListWithNewsTitleNotLike = mainCHLandLARMapper.selectByNewsTitleNotLike_6(informationPipeline.getNewstitle(), releaseTime[0], releaseTime[1]);
+                        if (mainListWithNewsTitleNotLike.size() > 0) {
+                            tblErrorLogs.add(new TblErrorLog(1007, ErrorPram.errorPram.get(1007) + "select * from information_pipeline where newsTitle = '" + informationPipeline.getNewstitle() + "' and createTime &gt;= " + releaseTime[0] + " AND  createTime &lt;=" + releaseTime[1], informationPipeline.getInformationId(), Integer.parseInt(informationPipeline.getXwcolumn())));
+                            break a;
+                        }
+                    }
                     break a;
                 }
             } catch (Exception e) {
@@ -118,6 +128,7 @@ public class InformationPipeline_service {
             resu.addAll(mainListWithRjs12);
             resu.addAll(mainListWithRjs0NotLike);
             resu.addAll(mainListWithRjs12NotLike);
+            resu.addAll(mainListWithNewsTitleNotLike);
 
 
             if (resu != null && resu.size() > 0) {

@@ -31,7 +31,9 @@
     <select id="selectByRjs12NotLike_6" resultType="com.spider.bean.InformationPipeline">
         select * from information_pipeline where deptcode = '${rjs4}' AND filenum = '${rjs12}' and releaseTime &gt;= #{minTime} AND  releaseTime&lt;=#{maxTime}
     </select>
-
+    <select id="selectByNewsTitleNotLike_6" resultType="com.spider.bean.InformationPipeline">
+        select * from information_pipeline where  newsTitle = '${newsTitle}' and releaseTime &gt;= #{minTime} AND  releaseTime&lt;=#{maxTime}
+    </select>
     <!--新增-->
     <insert id="insert" parameterType="com.spider.bean.Main_CHLandLAR" >
         insert into main

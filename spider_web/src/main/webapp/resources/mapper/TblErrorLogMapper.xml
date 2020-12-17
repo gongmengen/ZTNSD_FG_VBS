@@ -240,4 +240,11 @@
       xwColumn = #{xwcolumn,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getDealer" parameterType="int" resultType="String">
+    select dealer from tbl_error  where errorCode = #{errorCode}
+  </select>
+  <select id="getDealerByInformationID" parameterType="int" resultType="String">
+    select distinct b.dealer from tbl_error_log a,tbl_error b where a.errorCode = b.errorCode and a.informationid = #{informationid}
+  </select>
 </mapper>

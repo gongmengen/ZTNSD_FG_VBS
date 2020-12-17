@@ -37,4 +37,27 @@ public class ErrorLog_service {
         criteria.andXwcolumnEqualTo(xwcolumn);
         errorLogMapper.deleteByExample(example);
     }
+
+    public String getDealer(Integer errorCode) {
+
+        return errorLogMapper.getDealer(errorCode);
+    }
+
+    public String getDealerByInformationID(Integer informationId) {
+        String resu = "";
+        List<String> dealerByInformationID = errorLogMapper.getDealerByInformationID(informationId);
+
+        if (dealerByInformationID.size()>1){
+            for (String s : dealerByInformationID) {
+                resu = resu + s +",";
+            }
+            return resu.equals("")?resu:resu.substring(0,resu.length()-1);
+        }else {
+            for (String s : dealerByInformationID) {
+                resu += s;
+            }
+            return resu;
+        }
+
+    }
 }

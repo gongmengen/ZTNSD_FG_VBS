@@ -249,13 +249,13 @@ public class InformationPipeline_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
         List<TblErrorLog> errorLogListByInformationID = errorLog_service.getErrorLogListByInformationID(informationid,column);
-        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+
         StringBuilder resu = new StringBuilder();
         if (errorLogListByInformationID.size()>0) {
             for (TblErrorLog errorlog : errorLogListByInformationID
                     ) {
-                resu.append(errorlog.getErrordetails() + "\r\n");
+
+                resu.append(errorlog.getErrordetails() +"       处理人："+ errorLog_service.getDealer(errorlog.getErrorcode())+"\r\n");
             }
         }
         return resu.toString();
@@ -337,6 +337,22 @@ public class InformationPipeline_controller {
                 }
             }
         }
+        //负责人
+/*        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+        for (InformationPipeline informationPipeline:informationPipelineList
+                ) {
+
+            informationPipeline.setPersonincharge(website_service.getPersonChargeByID(informationPipeline.getImptime()));
+        }*/
+        //处理人
+
+        for (InformationPipeline informationPipeline:informationPipelineList
+                ) {
+
+            informationPipeline.setPersonincharge(errorLog_service.getDealerByInformationID(informationPipeline.getInformationId()));
+        }
+
         model.addAttribute("informationList",informationPipelineList);
 
 
@@ -420,13 +436,25 @@ public class InformationPipeline_controller {
                 }
             }
         }
-        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+
+        //负责人
+/*        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
         for (InformationPipeline informationPipeline:informationPipelineList
                 ) {
 
             informationPipeline.setPersonincharge(website_service.getPersonChargeByID(informationPipeline.getImptime()));
+        }*/
+
+        //处理人
+
+        for (InformationPipeline informationPipeline:informationPipelineList
+                ) {
+
+            informationPipeline.setPersonincharge(errorLog_service.getDealerByInformationID(informationPipeline.getInformationId()));
         }
+
+
         model.addAttribute("informationList",informationPipelineList);
 
 
