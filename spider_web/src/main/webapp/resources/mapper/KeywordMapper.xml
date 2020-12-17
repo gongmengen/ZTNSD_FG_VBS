@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spider.mapper.KeywordMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.Newcode" >
+    <result column="Kword" property="kword" jdbcType="VARCHAR" />
+    <result column="Code" property="code" jdbcType="VARCHAR" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="Chl" property="chl" jdbcType="VARCHAR" />
+    <result column="Lar" property="lar" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <select id="getListNewcode" resultType="com.spider.bean.Newcode" parameterType="String">
+    select code, name,chl,lar,kword from newcode
+  </select>
+  
+  
+    <select id="getNewcode" resultType="com.spider.bean.Newcode" parameterType="String">
+    select kword
+    from newcode
+    WHERE  code = #{code}
+    
+  </select>
+  
+    <update id="updateNewcode" parameterType="com.spider.bean.Newcode" >
+    update newcode
+    set kword = #{kword,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

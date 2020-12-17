@@ -172,6 +172,12 @@
                 <li>
                     <a class="J_menuItem" href="/search/goSearchPage"><i class="fa fa-magic"></i> <span class="nav-label">搜索</span></a>
                 </li>
+                <li>
+               <!--     <a href="/keyWor/list"><i class="fa fa-files-o"></i> <span class="nav-label">关键字维护</span></a>-->
+                    <a class="J_menuItem" href="/keyWor/list"><i class="fa fa-magic"></i> <span class="nav-label">关键字维护</span></a>
+
+                </li>
+
             </ul>
         </div>
     </nav>
