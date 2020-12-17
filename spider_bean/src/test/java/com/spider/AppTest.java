@@ -12,6 +12,9 @@ import java.util.*;
 public class AppTest 
 {
     public static void main(String[] args) {
+
+        //WQH test001
+
         AppTest appTest = new AppTest();
         int[] ints = appTest.noStringNum(new int[]{6,10});
         System.out.println(Arrays.toString(ints));
