@@ -129,4 +129,12 @@ public class TXwInformation_service {
     public List<TXwWebsite> getLastUpdateTime() {
         return informationMapper.getLastUpdateTimeList();
     }
+
+    public TXwInformation findWebsiteBySource(String linksource) {
+        TXwInformationExample example = new TXwInformationExample();
+        TXwInformationExample.Criteria criteria = example.createCriteria();
+        criteria.andSourceEqualTo(linksource);
+        List<TXwInformation> tXwInformations = informationMapper.selectByExample(example);
+        return tXwInformations.size()>0?tXwInformations.get(0):null;
+    }
 }

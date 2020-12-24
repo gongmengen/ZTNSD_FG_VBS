@@ -56,6 +56,7 @@
                                      <button type="button" class="btn btn-primary btn-sm" onclick="output('dfsg')">最新导出</button>
                                  </c:if>
                 <button type="button" class="btn btn-primary btn-sm" onclick="output('dfyz')">导出</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="output('dfzd')">放行</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="outPutOver()">已导出</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="restart()">重置</button>
@@ -352,7 +353,7 @@
                     // $("#loading").remove();
                 },
                 data:{ids:informationPipelineIds},
-                url: "<%=basePath%>imgDownload",
+                url: "<%=basePath%>imgDownload_lar",
                 success: function(data){
                     alert(data);
                     window.location.reload();

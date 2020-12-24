@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.spider.mapper.TblErrorLogMapper" >
-  <resultMap id="BaseResultMap" type="com.spider.bean.TblErrorLog" >
+<mapper namespace="com.spider.mapper.ErrorLogMapper" >
+  <resultMap id="BaseResultMap" type="com.spider.bean.ErrorLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="errorCode" property="errorcode" jdbcType="INTEGER" />
-    <result column="errorDetails" property="errordetails" jdbcType="VARCHAR" />
-    <result column="informationid" property="informationid" jdbcType="INTEGER" />
+    <result column="rjs8" property="rjs8" jdbcType="VARCHAR" />
     <result column="creatTime" property="creattime" jdbcType="TIMESTAMP" />
-    <result column="sendStatus" property="sendstatus" jdbcType="INTEGER" />
-    <result column="xwColumn" property="xwcolumn" jdbcType="INTEGER" />
+    <result column="websiteid" property="websiteid" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.spider.bean.ErrorLog" extends="BaseResultMap" >
+    <result column="errorDetails" property="errordetails" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,15 +70,20 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, errorCode, errorDetails, informationid, creatTime, sendStatus, xwColumn
+    id, errorCode, rjs8, creatTime, websiteid
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.TblErrorLogExample" >
+  <sql id="Blob_Column_List" >
+    errorDetails
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.spider.bean.ErrorLogExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tbl_error_log
+    ,
+    <include refid="Blob_Column_List" />
+    from error_log
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,32 +91,48 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.spider.bean.ErrorLogExample" >
     select
+    <if test="distinct" >
+      distinct
+    </if>
     <include refid="Base_Column_List" />
-    from tbl_error_log
+    from error_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from error_log
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tbl_error_log
+    delete from error_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.spider.bean.TblErrorLogExample" >
-    delete from tbl_error_log
+  <delete id="deleteByExample" parameterType="com.spider.bean.ErrorLogExample" >
+    delete from error_log
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.spider.bean.TblErrorLog" >
-    insert into tbl_error_log (id, errorCode, errorDetails,
-    informationid, creatTime, sendStatus,
-    xwColumn)
-    values (#{id,jdbcType=INTEGER}, #{errorcode,jdbcType=INTEGER}, #{errordetails,jdbcType=VARCHAR},
-    #{informationid,jdbcType=INTEGER}, #{creattime,jdbcType=TIMESTAMP}, #{sendstatus,jdbcType=INTEGER},
-    #{xwcolumn,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.spider.bean.ErrorLog" >
+    insert into error_log (id, errorCode, rjs8, 
+      creatTime, websiteid, errorDetails
+      )
+    values (#{id,jdbcType=INTEGER}, #{errorcode,jdbcType=INTEGER}, #{rjs8,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=TIMESTAMP}, #{websiteid,jdbcType=INTEGER}, #{errordetails,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.spider.bean.TblErrorLog" >
-    insert into tbl_error_log
+  <insert id="insertSelective" parameterType="com.spider.bean.ErrorLog" >
+    insert into error_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -118,20 +140,17 @@
       <if test="errorcode != null" >
         errorCode,
       </if>
-      <if test="errordetails != null" >
-        errorDetails,
-      </if>
-      <if test="informationid != null" >
-        informationid,
+      <if test="rjs8 != null" >
+        rjs8,
       </if>
       <if test="creattime != null" >
         creatTime,
       </if>
-      <if test="sendstatus != null" >
-        sendStatus,
+      <if test="websiteid != null" >
+        websiteid,
       </if>
-      <if test="xwcolumn != null" >
-        xwColumn,
+      <if test="errordetails != null" >
+        errorDetails,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -141,31 +160,28 @@
       <if test="errorcode != null" >
         #{errorcode,jdbcType=INTEGER},
       </if>
-      <if test="errordetails != null" >
-        #{errordetails,jdbcType=VARCHAR},
-      </if>
-      <if test="informationid != null" >
-        #{informationid,jdbcType=INTEGER},
+      <if test="rjs8 != null" >
+        #{rjs8,jdbcType=VARCHAR},
       </if>
       <if test="creattime != null" >
         #{creattime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendstatus != null" >
-        #{sendstatus,jdbcType=INTEGER},
+      <if test="websiteid != null" >
+        #{websiteid,jdbcType=INTEGER},
       </if>
-      <if test="xwcolumn != null" >
-        #{xwcolumn,jdbcType=INTEGER},
+      <if test="errordetails != null" >
+        #{errordetails,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.spider.bean.TblErrorLogExample" resultType="java.lang.Integer" >
-    select count(*) from tbl_error_log
+  <select id="countByExample" parameterType="com.spider.bean.ErrorLogExample" resultType="java.lang.Integer" >
+    select count(*) from error_log
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tbl_error_log
+    update error_log
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -173,84 +189,87 @@
       <if test="record.errorcode != null" >
         errorCode = #{record.errorcode,jdbcType=INTEGER},
       </if>
-      <if test="record.errordetails != null" >
-        errorDetails = #{record.errordetails,jdbcType=VARCHAR},
-      </if>
-      <if test="record.informationid != null" >
-        informationid = #{record.informationid,jdbcType=INTEGER},
+      <if test="record.rjs8 != null" >
+        rjs8 = #{record.rjs8,jdbcType=VARCHAR},
       </if>
       <if test="record.creattime != null" >
         creatTime = #{record.creattime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.sendstatus != null" >
-        sendStatus = #{record.sendstatus,jdbcType=INTEGER},
+      <if test="record.websiteid != null" >
+        websiteid = #{record.websiteid,jdbcType=INTEGER},
       </if>
-      <if test="record.xwcolumn != null" >
-        xwColumn = #{record.xwcolumn,jdbcType=INTEGER},
+      <if test="record.errordetails != null" >
+        errorDetails = #{record.errordetails,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update error_log
+    set id = #{record.id,jdbcType=INTEGER},
+      errorCode = #{record.errorcode,jdbcType=INTEGER},
+      rjs8 = #{record.rjs8,jdbcType=VARCHAR},
+      creatTime = #{record.creattime,jdbcType=TIMESTAMP},
+      websiteid = #{record.websiteid,jdbcType=INTEGER},
+      errorDetails = #{record.errordetails,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tbl_error_log
+    update error_log
     set id = #{record.id,jdbcType=INTEGER},
-    errorCode = #{record.errorcode,jdbcType=INTEGER},
-    errorDetails = #{record.errordetails,jdbcType=VARCHAR},
-    informationid = #{record.informationid,jdbcType=INTEGER},
-    creatTime = #{record.creattime,jdbcType=TIMESTAMP},
-    sendStatus = #{record.sendstatus,jdbcType=INTEGER},
-    xwColumn = #{record.xwcolumn,jdbcType=INTEGER}
+      errorCode = #{record.errorcode,jdbcType=INTEGER},
+      rjs8 = #{record.rjs8,jdbcType=VARCHAR},
+      creatTime = #{record.creattime,jdbcType=TIMESTAMP},
+      websiteid = #{record.websiteid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.TblErrorLog" >
-    update tbl_error_log
+  <update id="updateByPrimaryKeySelective" parameterType="com.spider.bean.ErrorLog" >
+    update error_log
     <set >
       <if test="errorcode != null" >
         errorCode = #{errorcode,jdbcType=INTEGER},
       </if>
-      <if test="errordetails != null" >
-        errorDetails = #{errordetails,jdbcType=VARCHAR},
-      </if>
-      <if test="informationid != null" >
-        informationid = #{informationid,jdbcType=INTEGER},
+      <if test="rjs8 != null" >
+        rjs8 = #{rjs8,jdbcType=VARCHAR},
       </if>
       <if test="creattime != null" >
         creatTime = #{creattime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendstatus != null" >
-        sendStatus = #{sendstatus,jdbcType=INTEGER},
+      <if test="websiteid != null" >
+        websiteid = #{websiteid,jdbcType=INTEGER},
       </if>
-      <if test="xwcolumn != null" >
-        xwColumn = #{xwcolumn,jdbcType=INTEGER},
+      <if test="errordetails != null" >
+        errorDetails = #{errordetails,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.spider.bean.TblErrorLog" >
-    update tbl_error_log
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.spider.bean.ErrorLog" >
+    update error_log
     set errorCode = #{errorcode,jdbcType=INTEGER},
-      errorDetails = #{errordetails,jdbcType=VARCHAR},
-      informationid = #{informationid,jdbcType=INTEGER},
+      rjs8 = #{rjs8,jdbcType=VARCHAR},
       creatTime = #{creattime,jdbcType=TIMESTAMP},
-      sendStatus = #{sendstatus,jdbcType=INTEGER},
-      xwColumn = #{xwcolumn,jdbcType=INTEGER}
+      websiteid = #{websiteid,jdbcType=INTEGER},
+      errorDetails = #{errordetails,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-<!-- 自定义 -->
-  <select id="getDealer" parameterType="int" resultType="String">
-    select dealer from tbl_error  where errorCode = #{errorCode}
-  </select>
-  <select id="getDealerByInformationID" parameterType="int" resultType="String">
-    select distinct b.dealer from tbl_error_log a,tbl_error b where a.errorCode = b.errorCode and a.informationid = #{informationid}
-  </select>
-
-  <select id="getErrorLogListByInformationID" resultType="com.spider.bean.TblErrorLog">
-    select a.* from tbl_error_log a,tbl_error b
-    where a.errorCode = b.errorCode and a.informationid = #{0} and a.xwColumn = #{1} and b.levels =1
-  </select>
-
+  <update id="updateByPrimaryKey" parameterType="com.spider.bean.ErrorLog" >
+    update error_log
+    set errorCode = #{errorcode,jdbcType=INTEGER},
+      rjs8 = #{rjs8,jdbcType=VARCHAR},
+      creatTime = #{creattime,jdbcType=TIMESTAMP},
+      websiteid = #{websiteid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--  自定义 -->
+  <insert id="insertByTmpErrorLog" parameterType="java.util.Map" >
+insert into error_log (errorCode,errorDetails,creatTime,rjs8,websiteid)
+select errorCode,errorDetails,creatTime,#{rjs8},#{websiteid} from tmp.tbl_error_log where informationid = #{informationid}
+  </insert>
 </mapper>

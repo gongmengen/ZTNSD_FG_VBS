@@ -31,4 +31,7 @@ public interface TblErrorLogMapper {
     String getDealer(Integer errorCode);
 
     List<String> getDealerByInformationID(Integer informationId);
+
+    //自定义
+    List<TblErrorLog> getErrorLogListByInformationID(int informationid, int column);
 }

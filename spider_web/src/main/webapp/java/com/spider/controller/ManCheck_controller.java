@@ -50,6 +50,11 @@ public class ManCheck_controller {
     @Autowired
     private MainCHLandLAR_service mainCHLandLAR_service;
 
+    @Autowired
+    private TXwInformation_service information_service;
+
+    @Autowired
+    private ErrorLog_service errorLog_service;
 
     //展示所有 zyzd
     @RequestMapping("markList")
@@ -387,7 +392,7 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
         String[] id = ids.trim().split(" ");
-        //获取地方库新闻数据
+        //获取临时库新闻数据
         List<MainWithBLOBs> tmpMainList = main_service.getMainByNumbers(id);
 
         //导出到chl
@@ -396,8 +401,8 @@ public class ManCheck_controller {
 
         boolean flag = true;
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
-            if (mainWithBLOBs.getAnyou()==null) {
-                if (intoCHL(mainWithBLOBs, request)) {
+            if (StringUtils.isBlank(mainWithBLOBs.getAnyou())) {
+                if (intoCHL(mainWithBLOBs, request,"chl")) {
                     String[] numbers = {mainWithBLOBs.getNumber() + ""};
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                     DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
@@ -413,8 +418,10 @@ public class ManCheck_controller {
             }
         }
 
+
         return flag == true?"导出成功":"导出失败";
     }
+
     //人工审查的新闻可以从 tmp临时库  导入到  lar正式库
     @RequestMapping("output_lar")
     @ResponseBody
@@ -432,14 +439,14 @@ public class ManCheck_controller {
         boolean flag = true;
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
             if (mainWithBLOBs.getAnyou()==null) {
-                if (intoCHL(mainWithBLOBs, request)) {
+                if (intoCHL(mainWithBLOBs, request,"lar")) {
                     String[] numbers = {mainWithBLOBs.getNumber() + ""};
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                     DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
                     flag = main_service.deleteByNumbers(numbers);
                     //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
-                    DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
+                    DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
                 } else {
                     flag = false;
                 }
@@ -816,7 +823,7 @@ public class ManCheck_controller {
         }
     }
 
-    public boolean intoCHL(MainWithBLOBs tmpmain,HttpServletRequest request){
+    public boolean intoCHL(MainWithBLOBs tmpmain,HttpServletRequest request,String cloumn){
         //--------------------------------------------------------------------------参数
 
 
@@ -872,7 +879,11 @@ public class ManCheck_controller {
         main.setTruetag(1);
         main.setRjs14(tmpmain.getRjs14());
         main.setRjs15(tmpmain.getRjs15());
+
         mainCHLandLAR_service.insert(main);
+
+        errorLogIntoChl(main,cloumn);
+
 
 
         try {
@@ -993,4 +1004,29 @@ public class ManCheck_controller {
 
     }
 
+
+    private void errorLogIntoChl(Main_CHLandLAR main, String cloumn) {
+        //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+        DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+        HashMap<String,String> map = new HashMap<String,String>();
+        TXwInformation information =  information_service.findWebsiteBySource(main.getLinksource());
+        if (information!=null){
+            map.put("websiteid",information.getWebsiteid().toString());
+            map.put("informationid",information.getId().toString());
+            map.put("rjs8",main.getRjs8());
+            if (cloumn.equals("chl")){
+                //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
+            }else {
+                //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
+            }
+            errorLog_service.insertByTmpErrorLog(map);
+
+        }
+
+    }
 }

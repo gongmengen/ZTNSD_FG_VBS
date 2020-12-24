@@ -56,6 +56,7 @@
                                      <button type="button" class="btn btn-primary btn-sm" onclick="output('zysg')">最新导出</button>
                                  </c:if>
                 <button type="button" class="btn btn-primary btn-sm" onclick="output('zyyz')">导出</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="output('zyzd')">放行</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="outPutOver()">已导出</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="deleteAll()">删除</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="restart()">重置</button>
