@@ -684,6 +684,22 @@ public class ManCheck_controller {
         //获取地方库新闻数据
         List<MainWithBLOBs> mainList = main_service.getListByAppuser("zyzd");
         for (MainWithBLOBs mainWithBLOBs : mainList) {
+
+            DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT);
+            TXwInformation information =  information_service.findWebsiteBySource(mainWithBLOBs.getLinksource());
+            if (information!=null){
+                mainWithBLOBs.setAppuser(information.getId().toString());
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+                List<TblErrorLog> errorLogListByInformationID = errorLog_service.getErrorLogListByInformationID(information.getId(), 100002);
+                if (errorLogListByInformationID!=null){
+                    mainWithBLOBs.setTruetag1(errorLogListByInformationID.size());
+                }
+            }
+
+
+
             if (StringUtils.isNotBlank(mainWithBLOBs.getFjian())) {
                 String[] fj = mainWithBLOBs.getFjian().split("\\|");
                 mainWithBLOBs.setFj_count(fj.length);
@@ -708,6 +724,21 @@ public class ManCheck_controller {
         //获取地方库新闻数据
         List<MainWithBLOBs> mainList = main_service.getListByAppuser("dfzd");
         for (MainWithBLOBs mainWithBLOBs : mainList) {
+
+            DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+            DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_DEFAULT_LAR);
+            TXwInformation information =  information_service.findWebsiteBySource(mainWithBLOBs.getLinksource());
+            if (information!=null){
+                mainWithBLOBs.setAppuser(information.getId().toString());
+                DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+                DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
+                List<TblErrorLog> errorLogListByInformationID = errorLog_service.getErrorLogListByInformationID(information.getId(), 100003);
+                if (errorLogListByInformationID!=null){
+                    mainWithBLOBs.setTruetag1(errorLogListByInformationID.size());
+                }
+            }
+
+
             if (StringUtils.isNotBlank(mainWithBLOBs.getFjian())) {
                 String[] fj = mainWithBLOBs.getFjian().split("\\|");
                 mainWithBLOBs.setFj_count(fj.length);

@@ -120,6 +120,25 @@
                                 <td class="center">
                                         ${main.rjs0}
                                     <button type="button" class="btn btn-primary btn-xs" onclick="openSource('${main.linksource}')">来源</button>
+                                            <c:if test="${main.truetag1 > 0}"><span class="badge badge-danger"  data-toggle="modal"  data-target="#myModal5"  onclick="reg(${main.appuser},'100002')">${main.truetag1}</span></c:if>
+                                            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                            <h4 class="modal-title">错误日志</h4>
+
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <textarea id="p" style="height: 300px;width: 840px"></textarea>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                 </td>
                                     <%--                                        <td class="center"><a href="${websiteList.websiteAddress}" target="_blank">原网站</a> </td>
                                                                             <td class="center"><a href="${websiteList.source}" target="_blank">网站来源</a> </td>--%>
@@ -308,6 +327,23 @@
 
     function openSource(source) {
         window.open(source,'_blank');
+    }
+
+    function reg(id,column) {
+        var targetUrl = "<%=basePath%>/findErrorLog";
+
+        $.ajax({
+            type:'post',
+            url:targetUrl,
+            cache: false,
+            data:{"informationid":id,"column":column},
+            success:function(data){
+                $("#p").text(data);
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
     }
 </script>
 <!-- 隐藏url列 -->

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -108,6 +109,7 @@
                             <th>标题信息</th>
                             <%--                                    <th>原网站</th>
                                                                 <th>新闻地址</th>--%>
+                            <th>标记日期</th>
                             <th>标题</th>
                             <th>文号</th>
                             <th>部门代码</th>
@@ -136,6 +138,7 @@
                                 </td>
                                     <%--                                        <td class="center"><a href="${websiteList.websiteAddress}" target="_blank">原网站</a> </td>
                                                                             <td class="center"><a href="${websiteList.source}" target="_blank">网站来源</a> </td>--%>
+                                <td class="center"><fmt:formatDate value="${main.appdate}" pattern="yyyy-MM-dd HH:mm" ></fmt:formatDate></td>
                                 <td class="center"><c:if test="${main.markTitle > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
                                 <td class="center"><c:if test="${main.markFilenum > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>
                                 <td class="center"><c:if test="${main.markDeptcode > 0}"><span style="color: red" class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if></td>

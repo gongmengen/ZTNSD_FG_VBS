@@ -668,6 +668,8 @@ public class InformationPipelineTimer {
                     }
                 }
 
+            }else {
+                return "未发现可下载链接！";
             }
 
 
