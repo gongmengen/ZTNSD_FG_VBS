@@ -5,6 +5,7 @@ import com.spider.bean.Main_CHLandLAR;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MainCHLandLARMapper {
 
@@ -30,4 +31,13 @@ public interface MainCHLandLARMapper {
     //新增
     void insert(Main_CHLandLAR main);
 
+    List<Main_CHLandLAR> findAll();
+
+    Main_CHLandLAR selectByPrimaryKey(@Param(value = "rid")long l);
+
+    boolean update(Main_CHLandLAR main);
+
+    boolean updateFjian(Main_CHLandLAR main);
+
+    List<Main_CHLandLAR> search(@Param(value = "params")Map<String, String> params);
 }
