@@ -178,7 +178,7 @@
 
                 </li>
                 <li>
-                    <a class="J_menuItem" href="/main/list"><i class="fa fa-magic"></i> <span class="nav-label">正式库数据编辑</span></a>
+                    <a class="J_menuItem" href="/main/list"><i class="fa fa-magic"></i> <span class="nav-label">二次校验查询</span></a>
                 </li>
             </ul>
         </div>

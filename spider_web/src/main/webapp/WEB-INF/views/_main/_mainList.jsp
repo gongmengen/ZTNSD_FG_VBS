@@ -45,7 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>正式库数据编辑 - 正式库数据列表</title>
+    <title>二次校验查询 - 正式库数据列表</title>
     <link rel="shortcut icon" href="<%=basePath%>favicon.ico">
     <link href="<%=basePath%>h+_ui/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
     <link href="<%=basePath%>h+_ui/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
@@ -69,9 +69,22 @@
 
 <body class="gray-bg">
 <div class="row wrapper border-bottom white-bg page-heading">
-
+    <div class="col-lg-10">
+        <h2>二次校验查询</h2>
+    </div>
+    <div class="col-lg-2">
+             <span style="float: right;margin-top: 30px;">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5" onclick="reg(${websiteList.informationId},${websiteList.xwcolumn})">
+        自定义查询
+    </button>
+    <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
                         <div class="modal-dialog modal-lg">
+
                             <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">自定义查询</h4>
+                            </div>
 <form class="layui-form" action="<%=basePath%>main/search" method="post" target="_self">
                                 <div class="modal-body">
                                     <div class="layui-form-item">
@@ -181,7 +194,9 @@
                         </div>
 
 
-
+</div>
+                 </span>
+                 </div>
 </div>
 <div class="wrapper wrapper-content">
     <div class="row">
