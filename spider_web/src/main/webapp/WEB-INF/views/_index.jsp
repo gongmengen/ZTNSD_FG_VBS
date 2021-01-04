@@ -177,7 +177,9 @@
                     <a class="J_menuItem" href="/keyWor/list"><i class="fa fa-magic"></i> <span class="nav-label">关键字维护</span></a>
 
                 </li>
-
+                <li>
+                    <a class="J_menuItem" href="/main/list"><i class="fa fa-magic"></i> <span class="nav-label">二次校验查询</span></a>
+                </li>
             </ul>
         </div>
     </nav>

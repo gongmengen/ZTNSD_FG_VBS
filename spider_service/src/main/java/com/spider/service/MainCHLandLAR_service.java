@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MainCHLandLAR_service {
@@ -30,5 +31,27 @@ public class MainCHLandLAR_service {
 
     public void insert(Main_CHLandLAR main) {
         mainCHLandLARMapper.insert(main);
+    }
+
+    public List<Main_CHLandLAR> findAll() {
+        return mainCHLandLARMapper.findAll();
+    }
+
+    public Main_CHLandLAR selectByPrimaryKey(long l) {
+        return mainCHLandLARMapper.selectByPrimaryKey(l);
+    }
+
+    public boolean update(Main_CHLandLAR main) {
+        return mainCHLandLARMapper.update(main);
+    }
+
+    public boolean updateFjian(Main_CHLandLAR main) {
+        return mainCHLandLARMapper.updateFjian(main);
+    }
+
+    public List<Main_CHLandLAR> search(Map<String, String> params) {
+        String releaseDate = params.get("releaseDate").replaceAll("-","");
+        params.put("releaseDate",releaseDate);
+        return mainCHLandLARMapper.search(params);
     }
 }

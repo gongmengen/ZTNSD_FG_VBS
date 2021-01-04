@@ -54,6 +54,24 @@ public class Main_CHLandLAR {
 
     private String rjs15;
 
+    public Main_CHLandLAR(){
+
+    }
+
+    public Main_CHLandLAR(long l, String newstitle, String deptcode, String releasetime, String imptime, String deptname, String filenum, String rjs1, String keyword) {
+
+        this.rid = (int)l;
+        this.rjs0 = newstitle;
+        this.rjs4 = deptcode;
+        this.rjs5 = releasetime;
+        this.rjs6 = imptime;
+        this.rjs10 = deptname;
+        this.rjs12 = filenum;
+        this.rjs1 = rjs1;
+        this.kword = keyword;
+
+    }
+
     public String getRjs14() {
         return rjs14;
     }
