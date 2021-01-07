@@ -227,9 +227,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <div class="checkbox">
+                                    <label style="margin-left: -20px;"><input type="radio" name="myradio" id="myradio0" value="0" onclick="javascript:checkMo(0);">排版模式</label>
+                                    <label style="margin-left: 10px;"> <input type="radio" name="myradio" id="myradio1" value="1" onclick="javascript:checkMo(1);">编辑模式</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">正文：</label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8" id="newscontent22">
+                                ${contentBuffer}
+                            </div>
+                            <div class="col-sm-8" id="newscontent11">
                                 <textarea id="newscontent"   name="newscontent"  style="height: 1000px" class="form-control" required="" aria-required="true">${content}</textarea>
                             </div>
                             <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
@@ -328,9 +340,10 @@
 
     //以下为官方示例
     $().ready(function () {
+ 
         // validate the comment form when it is submitted
         $("#commentForm").validate();
-
+        checkMo(0);
         // validate signup form on keyup and submit
         $("#signupForm").validate({
             rules: {
@@ -380,9 +393,13 @@
             }
         });
 
-    });
-</script>
 
+    });
+
+</script>
+<script type="text/javascript">
+
+</script>
 
 <!-- layui -->
 <script>
@@ -396,7 +413,7 @@
             ,uploadListIns = upload.render({
             elem: '#testList'
             ,url: '<%=basePath%>manCheck/upload' //改成您自己的上传接口
-            ,data: {'number':'${main.number}'}
+            ,data: {'number':'${mainMark.number}'}
             ,accept: 'file'
             ,multiple: true
             ,auto: false
@@ -435,7 +452,7 @@
                     var tr = demoListView.find('tr#upload-'+ index)
                         ,tds = tr.children();
                     tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                    tds.eq(3).html('<button class="layui-btn layui-btn-xs layui-btn-danger my-delete" onclick="myDelButten(\'${main.number}\',this)">删除</button> <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-download" onclick="myDownloadButten(\'${main.number}\',this)">下载</button>'); //如果还想删除则调用删除接口
+                    tds.eq(3).html('<button class="layui-btn layui-btn-xs layui-btn-danger my-delete" onclick="myDelButten(\'${mainMark.number}\',this)">删除</button> <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-download" onclick="myDownloadButten(\'${mainMark.number}\',this)">下载</button>'); //如果还想删除则调用删除接口
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }
                 this.error(index, upload);
@@ -598,7 +615,22 @@
 
 
     }
-
+    
+    
+    function checkMo(flag) {
+    //	alert(123);
+        var s=flag;
+    	$("#myradio"+flag).attr("checked",true)
+    	if(s==1){
+    	$("#newscontent11").show();
+    	$("#newscontent22").hide();
+    	}else{
+    	$("#newscontent11").hide();
+    	$("#newscontent22").show(); //文本
+    	}
+       // return reg.test(htmlStr);
+        
+    }
 </script>
 
 <!-- iCheck -->

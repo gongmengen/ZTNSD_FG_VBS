@@ -7,6 +7,7 @@ import com.spider.bean.*;
 import com.spider.elemente.TimerParm;
 import com.spider.service.*;
 import com.spider.utils.NioFileUtil;
+import com.spider.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,8 @@ public class ManCheck_controller {
     @Autowired
     private ErrorLog_service errorLog_service;
 
+    @Autowired
+    private InformationPipelineTimer informationPipelineTimer;
     //展示所有 zyzd
     @RequestMapping("markList")
     public String getInformationPipelinemarkList(@RequestParam(required = false,value = "column")String column,HttpServletRequest request,Model model){
@@ -279,10 +282,13 @@ public class ManCheck_controller {
         if (main_service.update(main)){
             //正文按照页面上 的数据写回到txt中
             String contextPath = TimerParm.txtPath5 + File.separator + information.getExtend3() + File.separator +information.getFilename();
-            FileUtil.writeString(information.getNewscontent(),contextPath,"GBK");
+            //FileUtil.writeString(information.getNewscontent(),contextPath,"GBK");
+            writeTxt(contextPath,information.getNewscontent().replaceAll("\n", "\r\n"));
+            System.out.println("s="+information.getNewscontent());
             //正文按照页面上 的数据写回到 hting/txt中(兼容旧法规工具)
             String contextCopyPath = TimerParm.txtCopyPath5 + File.separator +information.getFilename();
-            FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
+            //FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
+            writeTxt(contextCopyPath,information.getNewscontent().replaceAll("\n", "\r\n"));
             return Boolean.TRUE;
         }else {
             return Boolean.FALSE;
@@ -468,6 +474,8 @@ public class ManCheck_controller {
         MarkdetailMainWithBLOBs main = main_service.getMainMarkByNumber(Long.parseLong(number));
 
         String contentHistory = readHistoryTxt(main.getAppuser(),main.getRjs8());
+        StringBuffer contentbuffer = new StringBuffer(contentHistory);
+        StringBuffer contentBuffer=StringUtil.txtFormat(contentbuffer);
 
 //-------------------------------------------------------------------------------------attachment
         //附件集合返回对象
@@ -498,6 +506,7 @@ public class ManCheck_controller {
 //-------------------------------------------------------------------------------------attachment
 
         model.addAttribute("contentHistory",contentHistory);
+        model.addAttribute("contentBuffer",contentBuffer);
         model.addAttribute("attachmentList",attachmentList);
         model.addAttribute("mainMark",main);
 
@@ -513,7 +522,8 @@ public class ManCheck_controller {
         //获取地方库新闻数据
         MainWithBLOBs main = main_service.getMainByNumber(Long.parseLong(number));
         String content = readTxt(main.getAppuser(),main.getRjs8());
-
+        StringBuffer contentbuffer = new StringBuffer(content);
+        StringBuffer contentBuffer=StringUtil.txtFormat(contentbuffer);
 
 //-------------------------------------------------------------------------------------attachment
         //附件集合返回对象
@@ -529,17 +539,22 @@ public class ManCheck_controller {
         List<File> files = FileUtil.loopFiles(attachmentPath);
         if (files.size()>0){
             for (File file : files) {
+                if (file.getName().indexOf(".db")>-1){
+                    continue;
+                }else {
                 HashMap attachment = new HashMap();
                 attachment.put("filename",file.getName());
                 attachment.put("size",(file.length()/1024)+"kb");
                 attachment.put("status","原始文件");
 
                 attachmentList.add(attachment);
+                }
             }
         }
 //-------------------------------------------------------------------------------------attachment
         model.addAttribute("main",main);
         model.addAttribute("content",content);
+        model.addAttribute("contentBuffer",contentBuffer);
         model.addAttribute("attachmentList",attachmentList);
 
         return "_informationTmpManCheck/_informationTmpManCheckDetail";
@@ -896,7 +911,7 @@ public class ManCheck_controller {
         main.setRjs9((short)1);
         main.setRjs10(tmpmain.getRjs10());
         main.setRjs12(tmpmain.getRjs12());
-        main.setAppuser(tmpmain.getTruetag1()==null?tmpmain.getAppuser()+"1":tmpmain.getTruetag1()==9?tmpmain.getAppuser()+"9":tmpmain.getAppuser()+"1");
+        main.setAppuser(tmpmain.getAppuser());
         main.setLinksource(tmpmain.getLinksource());
         main.setFjian(tmpmain.getFjian()); //附件名
 
@@ -1060,4 +1075,27 @@ public class ManCheck_controller {
         }
 
     }
+    
+    //写出txt文件
+    public void writeTxt(String filePath,String executString){
+
+
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath),"GBK"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            writer.write(executString);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
 }

@@ -331,13 +331,24 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
+                                <div class="checkbox">
+                                    <label style="margin-left: -20px;"><input type="radio" name="myradio" id="myradio0" value="0" onclick="javascript:checkMo(0);">排版模式</label>
+                                    <label style="margin-left: 10px;"> <input type="radio" name="myradio" id="myradio1" value="1" onclick="javascript:checkMo(1);">编辑模式</label>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">正文：</label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8" id="newscontent11">
 
                                 <textarea  oninput="myChange(this)" id="newscontent"   name="newscontent"  style="height: 1000px" class="form-control" required="" aria-required="true">${contentHistory}</textarea>
+                            </div>
+                             <div class="col-sm-8" id="newscontent22">
+                                ${contentBuffer}
                             </div>
                             <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
 
@@ -436,6 +447,7 @@
 
     //以下为官方示例
     $().ready(function () {
+    	checkMo(0);
         // validate the comment form when it is submitted
         $("#commentForm").validate();
 
@@ -630,6 +642,20 @@
             }});
 
     }
+    function checkMo(flag) {
+        //	alert(123);
+            var s=flag;
+        	$("#myradio"+flag).attr("checked",true)
+        	if(s==1){
+        	$("#newscontent11").show();
+        	$("#newscontent22").hide();
+        	}else{
+        	$("#newscontent11").hide();
+        	$("#newscontent22").show(); //文本
+        	}
+           // return reg.test(htmlStr);
+            
+        }
 </script>
 
 <!-- iCheck -->
