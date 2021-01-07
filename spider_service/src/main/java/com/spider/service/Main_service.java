@@ -113,6 +113,9 @@ public class Main_service {
     }
 
     public boolean update(MainWithBLOBs main) {
+        //修改以后通过该字段确认修改
+        main.setTruetag1(9);
+
         MainExample mainExample = new MainExample();
         MainExample.Criteria criteria = mainExample.createCriteria();
         criteria.andNumberEqualTo(main.getNumber());

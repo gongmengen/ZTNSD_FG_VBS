@@ -191,11 +191,11 @@
     <select id="findAll"  resultType="com.spider.bean.Main_CHLandLAR">
         SELECT *
         FROM `main` AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(rid) FROM `main`)-(SELECT MIN(rid) FROM `main`))+(SELECT MIN(rid) FROM `main`)) AS id) AS t2
-        WHERE t1.rid >= t2.id and appdate > #{1} and rjs9 = 9
+        WHERE t1.rid >= t2.id and appdate > #{1} and appuser = 'zyzd1'
         ORDER BY t1.rid LIMIT #{0}
     </select>
     <select id="findAllCount" parameterType="String" resultType="java.lang.Integer">
-        select count(*) from main where rjs9 = 9 and appdate > #{date}
+        select count(*) from main where appuser = 'zyzd1' and appdate > #{date}
     </select>
     <!-- 正式库main表数据维护 -->
     <select id="selectByPrimaryKey" parameterType="long" resultType="com.spider.bean.Main_CHLandLAR">
@@ -296,13 +296,13 @@
 
     <select id="search" parameterType="Map" resultType="com.spider.bean.Main_CHLandLAR">
         select * from main
-        where rjs9 = 9
+        where appuser = 'zyzd1'
         <if test="params.title != null and params.title != ''.toString()">
             and  rjs0 like '%${params.title}%'
         </if>
 
         <if test="params.releaseDate != null and params.releaseDate != ''.toString()" >
-            and rjs5 > #{params.releaseDate}
+            and rjs5 &gt; #{params.releaseDateStart} and rjs5 &lt; #{params.releaseDateEnd}
         </if>
 
         <if test="params.dept != null and params.dept != ''.toString()" >
@@ -318,7 +318,7 @@
         </if>
 
         <if test="params.appdate != null and params.appdate != ''.toString()" >
-            and  appdate > #{params.appdate}
+            and  appdate &gt; #{params.appdateStart} and appdate &lt; #{params.appdateEnd}
         </if>
 
 

@@ -45,7 +45,7 @@ public class MainCHLandLAR_service {
 
         Integer count = mainCHLandLARMapper.findAllCount(now);
 
-        return mainCHLandLARMapper.findAll((int)(count*0.2),now);
+        return mainCHLandLARMapper.findAll(count>10?(int)(count*0.2):count,now);
     }
 
     public Main_CHLandLAR selectByPrimaryKey(long l) {
@@ -66,11 +66,25 @@ public class MainCHLandLAR_service {
     }
 
     public List<Main_CHLandLAR> search(Map<String, String> params) {
-        String releaseDate = params.get("releaseDate").replaceAll("-","");
-        params.put("releaseDate",releaseDate);
+        if (StringUtils.isNotBlank(params.get("releaseDate"))){
+            String releaseDate = params.get("releaseDate").replaceAll("-","");
+            String[] date = releaseDate.split("  ");
+            params.put("releaseDate",releaseDate);
+            params.put("releaseDateStart",date[0]);
+            params.put("releaseDateEnd",date[1]);
+        }
+
+        if (StringUtils.isNotBlank(params.get("appdate"))){
+            String appdate = params.get("appdate");
+            String[] date = appdate.split(" - ");
+            params.put("appdate",appdate);
+            params.put("appdateStart",date[0]);
+            params.put("appdateEnd",date[1]);
+        }
 
         List<Main_CHLandLAR> resu = mainCHLandLARMapper.search(params);
 
+        if(StringUtils.isNotBlank(params.get("slide"))){
             double i = (double) Integer.parseInt(params.get("slide"))/100;
             if (resu.size()>25){
                 Collections.shuffle(resu);
@@ -79,6 +93,9 @@ public class MainCHLandLAR_service {
             }else {
                 return resu;
             }
+        }else {
+            return resu;
+        }
 
     }
 

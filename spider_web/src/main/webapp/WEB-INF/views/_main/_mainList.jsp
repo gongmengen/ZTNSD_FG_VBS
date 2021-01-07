@@ -74,7 +74,45 @@
     </div>
     <div class="col-lg-2">
              <span style="float: right;margin-top: 30px;">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5" onclick="reg(${websiteList.informationId},${websiteList.xwcolumn})">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+        随机抽查
+    </button>
+    <div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog"  aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">随机抽查</h4>
+                            </div>
+<form class="layui-form" action="<%=basePath%>main/search" method="post" target="_self">
+                                <div class="modal-body">
+                                    <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 100px">入库日期：</label>
+                                        <div class="layui-input-block"  style="width: 50%;display: block;float: left;margin-left: 0px;">
+
+                                                <input style="width: 75%;display: inline-block;" type="text" name="appdate" required placeholder="请输入入库时间" class="layui-input" id="test3" value="${params.get('appdate')}">
+
+                                        </div>
+                                    </div>
+
+                                    <div id="slideTest2" class="demo-slider"></div>
+                                    <input type="hidden" id="slide" name="slide" value="20">
+                                </div>
+
+                                <div class="modal-footer" style="text-align: center;">
+                                      <button class="layui-btn" lay-submit lay-filter="form">查询</button>
+
+                                </div>
+</form>
+                            </div>
+                        </div>
+
+
+</div>
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5">
         自定义查询
     </button>
     <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -183,9 +221,6 @@
                                     </div>
                                     </div>
 
-
-                                    <div id="slideTest2" class="demo-slider"></div>
-                                    <input type="hidden" id="slide" name="slide" value="20">
                                 </div>
 
                                 <div class="modal-footer" style="text-align: center;">
@@ -402,6 +437,7 @@
         //执行一个laydate实例
         laydate.render({
             elem: '#test1' //指定元素
+            ,range: true
         });
     });
 
@@ -411,6 +447,18 @@
         //执行一个laydate实例
         laydate.render({
             elem: '#test2' //指定元素
+            ,range: true
+        });
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test3' //指定元素
+            ,range: true
         });
     });
 

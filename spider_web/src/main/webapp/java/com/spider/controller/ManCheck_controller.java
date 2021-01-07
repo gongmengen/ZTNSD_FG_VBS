@@ -896,7 +896,7 @@ public class ManCheck_controller {
         main.setRjs9((short)1);
         main.setRjs10(tmpmain.getRjs10());
         main.setRjs12(tmpmain.getRjs12());
-        main.setAppuser(tmpmain.getAppuser());
+        main.setAppuser(tmpmain.getTruetag1()==null?tmpmain.getAppuser()+"1":tmpmain.getTruetag1()==9?tmpmain.getAppuser()+"9":tmpmain.getAppuser()+"1");
         main.setLinksource(tmpmain.getLinksource());
         main.setFjian(tmpmain.getFjian()); //附件名
 

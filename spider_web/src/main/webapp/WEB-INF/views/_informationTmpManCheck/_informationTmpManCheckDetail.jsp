@@ -396,7 +396,7 @@
             ,uploadListIns = upload.render({
             elem: '#testList'
             ,url: '<%=basePath%>manCheck/upload' //改成您自己的上传接口
-            ,data: {'number':'${mainMark.number}'}
+            ,data: {'number':'${main.number}'}
             ,accept: 'file'
             ,multiple: true
             ,auto: false
@@ -435,7 +435,7 @@
                     var tr = demoListView.find('tr#upload-'+ index)
                         ,tds = tr.children();
                     tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                    tds.eq(3).html('<button class="layui-btn layui-btn-xs layui-btn-danger my-delete" onclick="myDelButten(\'${mainMark.number}\',this)">删除</button> <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-download" onclick="myDownloadButten(\'${mainMark.number}\',this)">下载</button>'); //如果还想删除则调用删除接口
+                    tds.eq(3).html('<button class="layui-btn layui-btn-xs layui-btn-danger my-delete" onclick="myDelButten(\'${main.number}\',this)">删除</button> <button type="button" class="layui-btn layui-btn-xs layui-btn-danger my-download" onclick="myDownloadButten(\'${main.number}\',this)">下载</button>'); //如果还想删除则调用删除接口
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }
                 this.error(index, upload);
