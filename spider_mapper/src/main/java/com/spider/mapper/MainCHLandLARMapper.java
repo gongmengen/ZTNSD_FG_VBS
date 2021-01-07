@@ -4,6 +4,7 @@ import com.spider.bean.InformationPipeline;
 import com.spider.bean.Main_CHLandLAR;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public interface MainCHLandLARMapper {
     //新增
     void insert(Main_CHLandLAR main);
 
-    List<Main_CHLandLAR> findAll();
+    List<Main_CHLandLAR> findAll(int count,String date);
 
     Main_CHLandLAR selectByPrimaryKey(@Param(value = "rid")long l);
 
@@ -40,4 +41,6 @@ public interface MainCHLandLARMapper {
     boolean updateFjian(Main_CHLandLAR main);
 
     List<Main_CHLandLAR> search(@Param(value = "params")Map<String, String> params);
+
+    Integer findAllCount(@Param(value = "date")String date);
 }

@@ -1,12 +1,15 @@
 package com.spider.service;
 
+import cn.hutool.core.date.DateUtil;
 import com.spider.bean.Main_CHLandLAR;
 import com.spider.mapper.MainCHLandLARMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.locks.Condition;
 
 @Service
 public class MainCHLandLAR_service {
@@ -34,7 +37,15 @@ public class MainCHLandLAR_service {
     }
 
     public List<Main_CHLandLAR> findAll() {
-        return mainCHLandLARMapper.findAll();
+
+        Date date = new Date();
+        String now = DateUtil.format(date, "yyyy-MM-dd HH:mm:ss");
+        int lastYear = DateUtil.year(date)-1;
+        now = lastYear + now.substring(4);
+
+        Integer count = mainCHLandLARMapper.findAllCount(now);
+
+        return mainCHLandLARMapper.findAll((int)(count*0.2),now);
     }
 
     public Main_CHLandLAR selectByPrimaryKey(long l) {
@@ -42,6 +53,11 @@ public class MainCHLandLAR_service {
     }
 
     public boolean update(Main_CHLandLAR main) {
+        main.setRjs9((short) 9);
+        Date date = new Date();
+        main.setAppdate(date);
+        main.setUpdatetime(Integer.parseInt(DateUtil.format(date,new SimpleDateFormat("yyyyMMdd"))));
+
         return mainCHLandLARMapper.update(main);
     }
 
@@ -52,6 +68,18 @@ public class MainCHLandLAR_service {
     public List<Main_CHLandLAR> search(Map<String, String> params) {
         String releaseDate = params.get("releaseDate").replaceAll("-","");
         params.put("releaseDate",releaseDate);
-        return mainCHLandLARMapper.search(params);
+
+        List<Main_CHLandLAR> resu = mainCHLandLARMapper.search(params);
+
+            double i = (double) Integer.parseInt(params.get("slide"))/100;
+            if (resu.size()>25){
+                Collections.shuffle(resu);
+
+                return resu.subList(0, (int) (resu.size() * i));
+            }else {
+                return resu;
+            }
+
     }
+
 }

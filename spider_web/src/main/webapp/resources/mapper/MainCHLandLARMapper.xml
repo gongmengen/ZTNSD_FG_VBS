@@ -188,8 +188,14 @@
     </insert>
 
     <!-- 正式库main表数据维护 -->
-    <select id="findAll" resultType="com.spider.bean.Main_CHLandLAR">
-        select * from main where appdate > '2020-12-20 14:31:46' limit 0,10
+    <select id="findAll"  resultType="com.spider.bean.Main_CHLandLAR">
+        SELECT *
+        FROM `main` AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(rid) FROM `main`)-(SELECT MIN(rid) FROM `main`))+(SELECT MIN(rid) FROM `main`)) AS id) AS t2
+        WHERE t1.rid >= t2.id and appdate > #{1} and rjs9 = 9
+        ORDER BY t1.rid LIMIT #{0}
+    </select>
+    <select id="findAllCount" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from main where rjs9 = 9 and appdate > #{date}
     </select>
     <!-- 正式库main表数据维护 -->
     <select id="selectByPrimaryKey" parameterType="long" resultType="com.spider.bean.Main_CHLandLAR">
@@ -290,7 +296,7 @@
 
     <select id="search" parameterType="Map" resultType="com.spider.bean.Main_CHLandLAR">
         select * from main
-        where 1=1
+        where rjs9 = 9
         <if test="params.title != null and params.title != ''.toString()">
             and  rjs0 like '%${params.title}%'
         </if>

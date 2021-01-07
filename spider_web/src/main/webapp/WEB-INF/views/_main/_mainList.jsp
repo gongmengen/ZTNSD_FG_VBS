@@ -143,14 +143,14 @@
                                         <c:if test="${params.get('noImpDate') == null}"><input type="checkbox" name="noImpDate" title="无实施日期"></c:if>
                                         <c:if test="${params.get('noImpDate') != null}"><input type="checkbox" name="noImpDate" title="无实施日期" checked></c:if>
 
-                                        <c:if test="${params.get('noContent') == null}"><input type="checkbox" name="noContent" title="正文缺失"></c:if>
+<%--                                        <c:if test="${params.get('noContent') == null}"><input type="checkbox" name="noContent" title="正文缺失"></c:if>
                                         <c:if test="${params.get('noContent') != null}"><input type="checkbox" name="noContent" title="正文缺失" checked></c:if>
 
                                         <c:if test="${params.get('noFile') == null}"><input type="checkbox" name="noFile" title="附件缺失"></c:if>
                                         <c:if test="${params.get('noFile') != null}"><input type="checkbox" name="noFile" title="附件缺失" checked></c:if>
 
                                         <c:if test="${params.get('noFileNum') == null}"><input type="checkbox" name="noFileNum" title="文号不完整"></c:if>
-                                        <c:if test="${params.get('noFileNum') != null}"><input type="checkbox" name="noFileNum" title="文号不完整" checked></c:if>
+                                        <c:if test="${params.get('noFileNum') != null}"><input type="checkbox" name="noFileNum" title="文号不完整" checked></c:if>--%>
 
 
                                     </div>
@@ -182,6 +182,10 @@
 
                                     </div>
                                     </div>
+
+
+                                    <div id="slideTest2" class="demo-slider"></div>
+                                    <input type="hidden" id="slide" name="slide" value="20">
                                 </div>
 
                                 <div class="modal-footer" style="text-align: center;">
@@ -410,6 +414,25 @@
         });
     });
 
+    //滑块
+    layui.use('slider', function(){
+        var $ = layui.$
+            ,slider = layui.slider;
+
+        //定义初始值
+        slider.render({
+            elem: '#slideTest2'
+            ,value: ${params.get('slide')==null?20:params.get('slide')} //初始值
+            ,setTips: function(value){ //自定义提示文本
+                return value + '%';
+            }
+            ,change: function(value){
+                console.log(value) //动态获取滑块数值
+                $('#slide').val(value.replace('%',''))
+            }
+        });
+
+    });
     function addCondition(_this) {
         console.log($(_this).prev().val());
         var kind = "";
@@ -448,6 +471,7 @@
         }
         $(this).parent().remove();
     })
+
 </script>
 
 </html>
