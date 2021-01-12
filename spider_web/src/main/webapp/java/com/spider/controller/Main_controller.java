@@ -11,6 +11,7 @@ import com.spider.service.ErrorLog_service;
 import com.spider.service.MainCHLandLAR_service;
 import com.spider.service.Main_service;
 import com.spider.service.TXwInformation_service;
+import com.spider.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,7 +90,8 @@ public class Main_controller {
         //获取地方库新闻数据
         Main_CHLandLAR main = mainCHLandLAR_service.selectByPrimaryKey(Long.parseLong(rid));
         String content = readTxt("chl",main.getRjs8());
-
+        StringBuffer contentbuffer = new StringBuffer(content);
+        StringBuffer contentBuffer= StringUtil.txtFormat(contentbuffer);
 
 //-------------------------------------------------------------------------------------attachment
         //附件集合返回对象
@@ -116,6 +118,7 @@ public class Main_controller {
 //-------------------------------------------------------------------------------------attachment
         model.addAttribute("main",main);
         model.addAttribute("content",content);
+        model.addAttribute("contentBuffer",contentBuffer);
         model.addAttribute("attachmentList",attachmentList);
 
         return "_main/_mainDetail";
@@ -244,7 +247,7 @@ public class Main_controller {
             //正文按照页面上 的数据写回到txt中
 
             String contextPath = TimerParm.txt_chlPath + File.separator + "chl" + File.separator +information.getFilename().substring(3,6)+File.separator +information.getFilename();
-            FileUtil.writeString(information.getNewscontent(),contextPath,"GBK");
+            FileUtil.writeString(information.getNewscontent().replaceAll("\n", "\r\n"),contextPath,"GBK");
 
             return Boolean.TRUE;
         }else {

@@ -82,7 +82,17 @@
                     <p><a href="<%=basePath%>nextPage/2/${informationPipeline.informationId}" style="font-size: 25px;" target="_self">⚙</a>     正文：</p>
 
                 </div>
-                <textarea autoHeight="true" readonly="readonly" style="width:100%">${informationPipeline.newscontent}</textarea>
+                <div class="checkbox">
+                    <label style="margin-left: -20px;"><input type="radio" name="myradio" id="myradio0" value="0" onclick="javascript:checkMo(0);">排版模式</label>
+                    <label style="margin-left: 10px;"> <input type="radio" name="myradio" id="myradio1" value="1" onclick="javascript:checkMo(1);">编辑模式</label>
+                </div>
+                <div id="newscontent22">
+                    ${contentBuffer}
+                </div>
+                <div id="newscontent11">
+                    <textarea readonly="readonly" style="width:100%;height: 1000px;">${informationPipeline.newscontent}</textarea>
+                </div>
+
                 <%--                    <div class="middle-box text-center animated fadeInRightBig">
                                         <textarea>
                                             ${informationPipeline.newscontent}
@@ -117,20 +127,23 @@
 <!-- Page-Level Scripts -->
 <script>
     $(function(){
-        $.fn.autoHeight = function(){
-            function autoHeight(elem){
-                elem.style.height = 'auto';
-                elem.scrollTop = 0; //防抖动
-                elem.style.height = elem.scrollHeight + 'px';
-            }
-            this.each(function(){
-                autoHeight(this);
-                $(this).on('keyup', function(){
-                    autoHeight(this);
-                });
-            });
-        }
-        $('textarea[autoHeight]').autoHeight();
+        checkMo(0);
     })
+
+
+    function checkMo(flag) {
+        //	alert(123);
+        var s=flag;
+        $("#myradio"+flag).attr("checked",true)
+        if(s==1){
+            $("#newscontent11").show();
+            $("#newscontent22").hide();
+        }else{
+            $("#newscontent11").hide();
+            $("#newscontent22").show(); //文本
+        }
+        // return reg.test(htmlStr);
+
+    }
 </script>
 </html>

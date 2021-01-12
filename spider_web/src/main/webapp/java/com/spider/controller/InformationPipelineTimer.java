@@ -928,11 +928,11 @@ public class InformationPipelineTimer {
             if (maxTxtName != null) {
                 maxTxtName = maxTxtName.replaceAll(username, "");
                 maxTxtName = maxTxtName.replaceAll(".txt", "");
-                if (maxTxtName.matches("\\d{3}s\\d{3}")) {
+                if (maxTxtName.matches("\\d+s\\d+")) {
                     String[] arr = maxTxtName.split("s");
-                    int tempNum = Integer.valueOf(arr[0] + arr[1]);
-                    beginNum = tempNum / 1000;
-                    endNum = tempNum % 1000;
+
+                    beginNum = Integer.parseInt(arr[0]);
+                    endNum = Integer.parseInt(arr[1]);
                 }
             }
         }

@@ -4,6 +4,7 @@ import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.*;
 import com.spider.elemente.TimerParm;
 import com.spider.service.*;
+import com.spider.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -469,8 +470,12 @@ public class InformationPipeline_controller {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);//切换数据源，设置后 就OK了。可以随时切换过来（在controller层切换）
         //返回imformationPipeline
-        InformationPipeline informationPipeline = informationPipelineService.findInformationPipelineById(id,xwcolumn);
+        InformationPipelineWithBLOBs informationPipeline = informationPipelineService.findInformationPipelineById(id,xwcolumn);
+
+        StringBuffer contentbuffer = new StringBuffer(informationPipeline.getNewscontent().replaceAll("\n","\r\n"));
+        StringBuffer contentBuffer= StringUtil.txtFormat(contentbuffer);
         model.addAttribute("informationPipeline",informationPipeline);
+        model.addAttribute("contentBuffer",contentBuffer);
 
         //获取websiteid
         String websiteids = userTask_service.getUserTaskWebsiteids(user.getName());

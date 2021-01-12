@@ -264,7 +264,7 @@
                     // $("#loading").remove();
                 },
                 data:{ids:informationPipelineIds},
-                url: "<%=basePath%>/manCheck/output",
+                url: "<%=basePath%>/manCheck/output_lar",
                 success: function(data){
                     alert(data);
                     window.location.reload();
