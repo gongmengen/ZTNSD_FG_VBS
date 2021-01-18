@@ -643,10 +643,11 @@
 select concat('${username}',replace(code,substring(code,length(code)-2),''),'s',substring(code,length(code)-2),'.txt')
 from (
 
-select  MAX(CAST(e AS UNSIGNED)) AS code from (select replace(c,'.txt','') as e from (select substring(a,4) as c from(select replace(RJS8,'s','') as a from MAIN where RJS8 like '%${username}%') as b) as d) as f
-
+select  IF(length(code)=4, concat('00',code), IF(length(code)=5, concat('0',code),code)) as code  from(
+select  MAX(CAST(e AS UNSIGNED)) AS code from (select replace(c,'.txt','') as e from (select substring(a,length('${username}')+1) as c from(select replace(RJS8,'s','') as a from MAIN where rjs8 like '%${username}%') as b) as d) as f
 ) as g
 
+) as h
   </select>
   <select id="getListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
     select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian , RJS14 ,RJS15

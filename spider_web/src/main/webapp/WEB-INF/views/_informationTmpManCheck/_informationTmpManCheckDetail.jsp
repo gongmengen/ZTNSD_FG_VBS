@@ -90,7 +90,7 @@
             <div class="ibox float-e-margins" style="padding-top: 10px;margin-bottom: 50px;">
 
                 <div class="ibox-content">
-                    <form class="form-horizontal m-t" onsubmit="return PostData()">
+                    <form id="signupForm" class="form-horizontal m-t" onsubmit="return PostData()">
                         <input id="extend2" name="extend2" value="${main.number}" type="hidden">
                         <input id="filename" name="filename" value="${main.rjs8}" type="hidden">
                         <input id="extend3" name="extend3" value="${main.appuser}" type="hidden">
@@ -98,7 +98,7 @@
                             <label class="col-sm-3 control-label">标题：</label>
                             <div class="col-sm-8">
 
-                                <input id="newstitle" name="newstitle"  value="${main.rjs0}" type="text" class="form-control" required="" aria-required="true">
+                                <input id="newstitle" name="newstitle"  value="${main.rjs0}" type="text" class="form-control">
 
                             </div>
                             <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
@@ -108,7 +108,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">文号：</label>
                             <div class="col-sm-8">
-                                <input id="filenum" name="filenum"  value="${main.rjs12}" type="text" class="form-control" required="" aria-required="true">
+                                <input id="filenum" name="filenum"  value="${main.rjs12}" type="text" class="form-control"  aria-required="true">
                             </div>
                             <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
                                 <label><input type="checkbox" name="mycheckbox" value="mark_filenum"> </label>
@@ -137,7 +137,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">实时日期：</label>
                             <div class="col-sm-8">
-                                <input id="imptime" name="imptime"  value="${main.rjs6}" type="text" class="form-control" required="" aria-required="true">
+                                <input id="imptime" name="imptime"  value="${main.rjs6}" type="text" class="form-control">
                             </div>
                             <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
                                 <label><input type="checkbox" name="mycheckbox" value="mark_release"> </label>
@@ -147,7 +147,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">发布日期：</label>
                             <div class="col-sm-8">
-                                <input id="releasetime" name="releasetime"  value="${main.rjs5}" type="text" class="form-control" required="" aria-required="true" >
+                                <input id="releasetime" name="releasetime"  value="${main.rjs5}" type="text" class="form-control">
                             </div>
                             <div class="checkbox i-checks" style="float: right;margin-right: 60px;">
                                 <label><input type="checkbox" name="mycheckbox" value="mark_imp"> </label>
@@ -301,97 +301,78 @@
 <!-- layui -->
 <script src="<%=basePath%>js/plugins/layui/layui.js" charset="utf-8"></script>
 
-<script>
-    $(function(){
-        $.fn.autoHeight = function(){
-            function autoHeight(elem){
-                elem.style.height = 'auto';
-                elem.scrollTop = 0; //防抖动
-                elem.style.height = elem.scrollHeight + 'px';
-            }
-            this.each(function(){
-                autoHeight(this);
-                $(this).on('keyup', function(){
-                    autoHeight(this);
-                });
-            });
-        }
-        $('textarea[autoHeight]').autoHeight();
-    })
-</script>
 <!-- jQuery Validation plugin javascript-->
-<script src="<%=basePath%>js/plugins/validate/jquery.validate.min.js"></script>
-<script src="<%=basePath%>js/plugins/validate/messages_zh.min.js"></script>
+<%--<script src="<%=basePath%>js/plugins/validate/jquery.validate.min.js"></script>
+<script src="<%=basePath%>js/plugins/validate/messages_zh.min.js"></script>--%>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 <script>
-    //以下为修改jQuery Validation插件兼容Bootstrap的方法，没有直接写在插件中是为了便于插件升级
-    $.validator.setDefaults({
-        highlight: function (element) {
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-        },
-        success: function (element) {
-            element.closest('.form-group').removeClass('has-error').addClass('has-success');
-        },
-        errorElement: "span",
-        errorClass: "help-block m-b-none",
-        validClass: "help-block m-b-none"
 
-
-    });
 
     //以下为官方示例
     $().ready(function () {
- 
-        // validate the comment form when it is submitted
-        $("#commentForm").validate();
         checkMo(0);
+        // validate the comment form when it is submitted
+
         // validate signup form on keyup and submit
-        $("#signupForm").validate({
+        var validator = $("#signupForm").validate({
             rules: {
-                firstname: "required",
-                lastname: "required",
-                username: {
-                    required: true,
-                    minlength: 2
+                newstitle:{
+                    required:true
                 },
-                password: {
-                    required: true,
-                    minlength: 5
+                deptcode:{
+                    required:true
                 },
-                confirm_password: {
-                    required: true,
-                    minlength: 5,
-                    equalTo: "#password"
+                deptname:{
+                    required:true
                 },
-                email: {
-                    required: true,
-                    email: true
+                rjs1:{
+                    required:true
                 },
-                topic: {
-                    required: "#newsletter:checked",
-                    minlength: 2
+                keyword:{
+                    required:true
                 },
-                agree: "required"
+                imptime: {
+                    required:true,
+                    regDate:true
+                },
+                releasetime: {
+                    required:true,
+                    regDate:true
+                }
             },
-            messages: {
-                firstname: "请输入你的姓",
-                lastname: "请输入您的名字",
-                username: {
-                    required: "请输入您的用户名",
-                    minlength: "用户名必须两个字符以上"
-                },
-                password: {
-                    required: "请输入您的密码",
-                    minlength: "密码必须5个字符以上"
-                },
-                confirm_password: {
-                    required: "请再次输入密码",
-                    minlength: "密码必须5个字符以上",
-                    equalTo: "两次输入的密码不一致"
-                },
-                email: "请输入您的E-mail",
-                agree: "必须同意协议后才能注册"
-            }
+            messages:
+                {
+                    newstitle:{
+                        required:"标题不能为空"
+                    },
+
+                    deptcode:{
+                        required:"部门代码不能为空"
+                    },
+                    deptname:{
+                        required:"部门名称不能为空"
+                    },
+                    rjs1:{
+                        required:"所属分类不能为空"
+                    },
+                    keyword:{
+                        required:"关键字不能为空"
+                    },
+                    imptime:
+                        {
+                            required: "实施日期不能为空"
+                        },
+                    releasetime:
+                        {
+                            required: "发布日期不能为空"
+                        }
+                }
         });
+
+        jQuery.validator.addMethod("regDate", function (value,element) {
+            var postcode=/^[0-9]{4}|[0-9]{8}$/;
+            return this.optional(element)||(postcode.test(value));
+        },"日期格式不规范！（请至少输入4位确定一个年份）");
 
 
     });
@@ -554,30 +535,30 @@
         var keyword = $('#keyword').val();
         var newscontent = $('#newscontent').val();
 
+        if($("#signupForm").valid()){
+            $.ajax({
+                type: "POST",
+                url: "<%=basePath%>manCheck/update",
+                data : {
+                    extend2:extend2,
+                    filename:filename,
+                    extend3:extend3,
+                    newstitle:newstitle,
+                    filenum:filenum,
+                    deptcode:deptcode,
+                    deptname:deptname,
+                    imptime:imptime,
+                    releasetime:releasetime,
+                    rjs1:rjs1,
+                    keyword:keyword,
+                    newscontent:newscontent
+                },
+                success: function(msg) {
+                    alert("保存成功！")
+                }
+            });
+        }
 
-
-
-        $.ajax({
-            type: "POST",
-            url: "<%=basePath%>manCheck/update",
-            data : {
-                extend2:extend2,
-                filename:filename,
-                extend3:extend3,
-                newstitle:newstitle,
-                filenum:filenum,
-                deptcode:deptcode,
-                deptname:deptname,
-                imptime:imptime,
-                releasetime:releasetime,
-                rjs1:rjs1,
-                keyword:keyword,
-                newscontent:newscontent
-            },
-            success: function(msg) {
-                alert("保存成功！")
-            }
-        });
         return false;
     }
 

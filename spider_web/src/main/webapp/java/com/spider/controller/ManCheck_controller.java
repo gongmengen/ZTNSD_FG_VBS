@@ -910,8 +910,9 @@ public class ManCheck_controller {
         main.setRjs8(chlFileNamePrefix+df.format(beginNum)+"s"+df.format(endNum)+".txt"); //filename 保存文件的文件名
         main.setRjs9((short)1);
         main.setRjs10(tmpmain.getRjs10());
+        main.setRjs11("");
         main.setRjs12(tmpmain.getRjs12());
-        main.setAppuser(tmpmain.getAppuser());
+        main.setAppuser(tmpmain.getTruetag1()==null?tmpmain.getAppuser()+"1":tmpmain.getTruetag1()==9?tmpmain.getAppuser()+"9":tmpmain.getAppuser()+"1");
         main.setLinksource(tmpmain.getLinksource());
         main.setFjian(tmpmain.getFjian()); //附件名
 
@@ -1019,8 +1020,12 @@ public class ManCheck_controller {
             int score = 0;
             //1、优先抽查以下部门代码/1 /2 /3 /6 /7 ;
             for (String deptCode : deptCodes) {
-                if (mainWithBLOB.getRjs4().equals(deptCode)){
-                    score += 1;
+                if (StringUtils.isNotBlank(mainWithBLOB.getRjs4())){
+                    if (mainWithBLOB.getRjs4().equals(deptCode)){
+                        score += 1;
+                    }
+                }else {
+                    break;
                 }
             }
             //2、没有附件的数据。
