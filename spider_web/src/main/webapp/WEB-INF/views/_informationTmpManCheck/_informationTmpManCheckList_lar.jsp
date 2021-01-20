@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>网站列表（中央）</title>
+    <title>临时库列表（地方）</title>
     <link rel="shortcut icon" href="<%=basePath%>favicon.ico">
     <link href="<%=basePath%>h+_ui/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
     <link href="<%=basePath%>h+_ui/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
@@ -89,10 +89,12 @@
                 </div>
                 <div id="loading"></div>
                 <div class="ibox-content">
+                    <input id="myInput" type="search" class="form-control input-sm" style="width: 10%;float: right" placeholder="查询：" oninput="searchData(this)">
+
+
                     <table class="table table-striped table-bordered table-hover dataTables-example"><!-- 无分页查询功能：table table-bordered -->
                         <thead>
                         <tr>
-                            <th class="hide_column">隐藏列</th>
 
                             <th><input type="checkbox" id="checkbox"></th>
                             <th>标题</th>
@@ -110,57 +112,25 @@
 
                         </tr>
                         </thead>
-                        <tbody>
-                        <c:forEach items="${mainList}" var="main" varStatus="xb">
-                            <tr class="gradeX">
-                                <td class="hide_column">${main.linksource}</td>
-                                <td class="center">
-                                    <input type="checkbox" name="mycheckbox" value="${main.number}">
-                                </td>
-                                <td class="center">
-                                        ${main.rjs0}
-                                    <button type="button" class="btn btn-primary btn-xs" onclick="openSource('${main.linksource}')">来源</button>
-                                            <c:if test="${main.truetag1 > 0}"><span class="badge badge-danger"  data-toggle="modal"  data-target="#myModal5"  onclick="reg(${main.appuser},'100003')">${main.truetag1}</span></c:if>
+                        <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title">错误日志</h4>
 
-                                            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                            <h4 class="modal-title">错误日志</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <textarea id="p" style="height: 300px;width: 840px"></textarea>
+                                    </div>
 
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <textarea id="p" style="height: 300px;width: 840px"></textarea>
-                                                        </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                </td>
-                                    <%--                                        <td class="center"><a href="${websiteList.websiteAddress}" target="_blank">原网站</a> </td>
-                                                                            <td class="center"><a href="${websiteList.source}" target="_blank">网站来源</a> </td>--%>
-                                <td class="center">${main.rjs5}</td>
-                                <td class="center">${main.rjs12}</td>
-                                <td class="center">${main.rjs4}</td>
-                                <td class="center">${main.rjs10}</td>
-                                <td class="center">${main.rjs14}</td>
-                                <td class="center">${main.rjs15}</td>
-
-                                <td class="center"><fmt:formatDate value="${main.appdate}" pattern="yyyy-MM-dd HH:mm" ></fmt:formatDate></td>
-                                <td class="center">${main.fj_count}</td>
-
-                                <td class="center">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="deleteConfirm('${main.number}')">删除</button>
-                                </td>
-
-                            </tr>
-
-                        </c:forEach>
-                        </tbody>
                     </table>
 
                 </div>
@@ -186,34 +156,68 @@
 <!-- Custom and plugin javascript -->
 <script src="<%=basePath%>js/hplus.js?v=2.2.0"></script>
 <script src="<%=basePath%>js/plugins/pace/pace.min.js"></script>
+<!-- moment -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <!-- Page-Level Scripts -->
 <script>
+
+    function dateFormat(date) {
+        if (!$.isEmptyObject(date) || date == '' || date == null) {
+            return '空';
+        }
+        return moment(date).format('YYYY-MM-DD HH:mm');
+    }
+
     $(document).ready(function () {
-        $('.dataTables-example').dataTable();
 
-        /* Init DataTables */
-        var oTable = $('#editable').dataTable();
+        var table = $('.dataTables-example').DataTable({//绑定要遍历数据的 table 的 id
 
-        /* Apply the jEditable handlers to the table */
-        oTable.$('td').editable('../example_ajax.php', {
-            "callback": function (sValue, y) {
-                var aPos = oTable.fnGetPosition(this);
-                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+            pageLength : 25,/* 页大小，同时当前页每次加 10，不明白为什么每次增加 10 */
+
+            serverSide : true,/* 启用服务端分页，如果前端分页，这里为 false */
+            searching : false,
+
+            ajax : {
+                url : "<%=basePath%>manCheck/list_lar",
+                type : "post",
+                data : {},
+                dataFilter : function(json){
+                    return json;
+                }
             },
-            "submitdata": function (value, settings) {
-                return {
-                    "row_id": this.parentNode.getAttribute('id'),
-                    "column": oTable.fnGetPosition(this)[2]
-                };
-            },
 
-            "width": "90%",
-            "height": "100%"
+            /* 中间遍历的数据 */
+            columns : [
+
+                {data:"number",render:function(data){return ("<input type=\"checkbox\" name=\"mycheckbox\" value=\""+data+"\">");}},
+                {data:"rjs0",render:function(data, type, full){
+
+                    if (full.truetag1 > 0){
+                        return data+
+                            "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"openSource('"+full.linksource+"')\">来源</button>"
+                            +"<span class=\"badge badge-danger\"  data-toggle=\"modal\"  data-target=\"#myModal5\"  onclick=\"reg('"+full.appuser+"','100003')\">"+full.truetag1+"</span>";
+                    }else {
+                        return data+
+                            "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"openSource('"+full.linksource+"')\">来源</button>";
+                    }
+
+
+                }},
+                {data:"rjs5",render:function(data){return (data);}},
+                {data:"rjs12",render:function(data){return (data);}},
+                {data:"rjs4",render:function(data){return (data);}},
+                {data:"rjs10",render:function(data){return (data);}},
+                {data:"rjs14",render:function(data){return (data);}},
+                {data:"rjs15",render:function(data){return (data);}},
+                {data:"appdate",render:function(data){return (dateFormat(data));}},
+                {data:"fj_count",render:function(data){return (data);}},
+                {data:"number",render:function(data){return ("<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm('"+data+"')\">删除</button>");}}
+            ]
         });
 
-
-
     });
+
+
 
 </script>
 
@@ -350,4 +354,60 @@
         display: none;
     }
 </style>
+
+<script>
+    function searchData(_this) {
+        //try
+        $('.dataTables-example').dataTable().fnDestroy();
+
+        var keyword = $('#myInput').val();
+        keyword = keyword.replaceAll("\'","");
+        console.log(keyword);
+
+        $('.dataTables-example').DataTable({//绑定要遍历数据的 table 的 id
+
+            pageLength : 25,/* 页大小，同时当前页每次加 10，不明白为什么每次增加 10 */
+
+            serverSide : true,/* 启用服务端分页，如果前端分页，这里为 false */
+            searching : false,
+            ajax : {
+                url : "<%=basePath%>manCheck/list_lar",
+                type : "post",
+                data : {"keyword":keyword},
+                dataFilter : function(json){
+                    return json;
+                }
+            },
+
+            /* 中间遍历的数据 */
+            columns : [
+
+                {data:"number",render:function(data){return ("<input type=\"checkbox\" name=\"mycheckbox\" value=\""+data+"\">");}},
+                {data:"rjs0",render:function(data, type, full){
+
+                    if (full.truetag1 > 0){
+                        return data+
+                            "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"openSource('"+full.linksource+"')\">来源</button>"
+                            +"<span class=\"badge badge-danger\"  data-toggle=\"modal\"  data-target=\"#myModal5\"  onclick=\"reg('"+full.appuser+"','100003')\">"+full.truetag1+"</span>";
+                    }else {
+                        return data+
+                            "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"openSource('"+full.linksource+"')\">来源</button>";
+                    }
+
+
+                }},
+                {data:"rjs5",render:function(data){return (data);}},
+                {data:"rjs12",render:function(data){return (data);}},
+                {data:"rjs4",render:function(data){return (data);}},
+                {data:"rjs10",render:function(data){return (data);}},
+                {data:"rjs14",render:function(data){return (data);}},
+                {data:"rjs15",render:function(data){return (data);}},
+                {data:"appdate",render:function(data){return (dateFormat(data));}},
+                {data:"fj_count",render:function(data){return (data);}},
+                {data:"number",render:function(data){return ("<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm('"+data+"')\">删除</button>");}}
+            ]
+        });
+
+    }
+</script>
 </html>

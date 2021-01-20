@@ -40,7 +40,9 @@ public interface MainMapper {
 
     String findMaxRjs8(@Param(value="username")String username);
 
-    List<MainWithBLOBs> getListByAppuser(@Param(value="appuser")String appuser);
+    List<MainWithBLOBs> getListByAppuser(@Param(value = "appuser")String appuser,@Param(value = "keyword")String keyword,@Param(value = "url")String url);
 
     List<MainWithBLOBs> getMarkListByAppuser(@Param(value="appuser")String appuser);
+
+    List<MainWithBLOBs> getLimitListByAppuser(@Param(value = "start") Integer start, @Param(value = "pageSize") Integer pageSize,@Param(value = "appuser") String zyzd,@Param(value = "keyword")String keyword,@Param(value = "url")String url);
 }

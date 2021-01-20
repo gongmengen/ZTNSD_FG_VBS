@@ -32,7 +32,7 @@ public class DistinctMainPramUtil {
                             }
                         }*/
 
-                        titles=titles.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , "%");
+                        titles=titles.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×  ]" , "%");
                         System.out.println(titles);
                         break;
                     }
@@ -54,7 +54,7 @@ public class DistinctMainPramUtil {
         }
 
 
-        titles_like=titles_like.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , "%");
+        titles_like=titles_like.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×  ]" , "%");
 
         String sql=" '" +titles_like+"%'";
         sql = "LIKE "+sql;

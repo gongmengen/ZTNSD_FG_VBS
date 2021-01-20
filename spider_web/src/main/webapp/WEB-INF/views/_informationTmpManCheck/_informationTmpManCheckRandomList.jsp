@@ -280,7 +280,8 @@
 
     function openDetail(data) {
 
-        window.location.href="<%=path%>/manCheck/detail/"+data;
+        window.open("<%=path%>/manCheck/detail/"+data,'_blank');
+
     }
     function manCheckDownloadFJ(id) {
 

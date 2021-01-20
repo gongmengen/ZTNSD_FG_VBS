@@ -89,7 +89,7 @@ public class Main_controller {
 
         //获取地方库新闻数据
         Main_CHLandLAR main = mainCHLandLAR_service.selectByPrimaryKey(Long.parseLong(rid));
-        String content = readTxt("chl",main.getRjs8());
+        String content = readTxt("chl",main.getRjs8()).replaceAll("\n","\r\n");
         StringBuffer contentbuffer = new StringBuffer(content);
         StringBuffer contentBuffer= StringUtil.txtFormat(contentbuffer);
 

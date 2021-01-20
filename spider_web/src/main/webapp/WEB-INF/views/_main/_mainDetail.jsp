@@ -140,7 +140,7 @@
                             <label class="col-sm-3 control-label">所属分类：</label>
                             <div class="col-sm-8">
 
-                                <input id="kind" name="kind"  value="${main.rjs1}" type="text" class="form-control">
+                                <input id="rjs1" name="rjs1"  value="${main.rjs1}" type="text" class="form-control">
                             </div>
                         </div>
 
@@ -304,7 +304,7 @@
                 deptname:{
                     required:true
                 },
-                kind:{
+                rjs1:{
                     required:true
                 },
                 keyword:{
@@ -331,7 +331,7 @@
                     deptname:{
                         required:"部门名称不能为空"
                     },
-                    kind:{
+                    rjs1:{
                         required:"所属分类不能为空"
                     },
                     keyword:{

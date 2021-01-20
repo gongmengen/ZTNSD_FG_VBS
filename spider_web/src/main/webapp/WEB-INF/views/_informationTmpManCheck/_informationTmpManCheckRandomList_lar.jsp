@@ -237,12 +237,23 @@
 
     //导出
     function output() {
+        var count = 0;
+        var flag = true;
         var informationPipelineIds = "";
         $('input[name="mycheckbox"]').each(function () {
             if (this.checked){
+                count = ++count;
+                if (count>2){
+                    flag = false;
+                }
                 informationPipelineIds += this.value+" ";
             }
         });
+
+        if(!flag){
+            alert("导入数量超过限制！")
+            return;
+        }
         if (informationPipelineIds.length>0){
             $.ajax({
                 beforeSend: function () {
@@ -279,8 +290,8 @@
     }
 
     function openDetail(data) {
+        window.open("<%=path%>/manCheck/detail/"+data,'_blank');
 
-        window.location.href="<%=path%>/manCheck/detail/"+data;
     }
     function manCheckDownloadFJ(id) {
 

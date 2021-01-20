@@ -121,7 +121,7 @@ public class DeptCode_controller {
     //加载数据
     @RequestMapping(value="deptcodeList",method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public Object deptcodeList(HttpSession session, HttpServletRequest request, HttpServletResponse response,@RequestParam(required = false)String keyword) throws JsonProcessingException {
+    public Object deptcodeList(HttpSession session, HttpServletRequest request, HttpServletResponse response,@RequestParam(required = false)String keyword) {
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
         /**
@@ -152,7 +152,12 @@ public class DeptCode_controller {
          */
         ObjectMapper MAPPER = new ObjectMapper();
 
-        String jsonString = MAPPER.writeValueAsString(pages);
+        String jsonString = null;
+        try {
+            jsonString = MAPPER.writeValueAsString(pages);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         Object stringToValue = JSONObject.stringToValue(jsonString);
         return stringToValue;
     }

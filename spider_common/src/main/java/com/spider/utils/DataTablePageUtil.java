@@ -1,8 +1,12 @@
 package com.spider.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spider.bean.MainWithBLOBs;
+
 import java.io.Serializable;
 import java.util.List;
-
+import org.json.JSONObject;
 /**
  * <p>
  * DataTablePageUtil
@@ -71,5 +75,30 @@ public class DataTablePageUtil<T> implements Serializable {
 
     public void setData(List<T> data) {
         this.data = data;
+    }
+
+    public Object parseDataTableValue(Integer draw, List<MainWithBLOBs> mainList, int total) {
+        /**
+         * 最重要的格式处理！
+         * 工具类，处理成 datatable 规定的格式返回，才能正常显示！
+         */
+        DataTablePageUtil<MainWithBLOBs> pages = new DataTablePageUtil<>();
+        pages.setRecordsTotal(total);
+        pages.setRecordsFiltered(total);
+        pages.setDraw(draw);
+        pages.setData(mainList);
+
+        /**
+         * 集合对象转成json数据返回
+         */
+        ObjectMapper MAPPER = new ObjectMapper();
+
+        String jsonString = null;
+        try {
+            jsonString = MAPPER.writeValueAsString(pages);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return JSONObject.stringToValue(jsonString.replaceAll("%(?![0-9a-fA-F]{2})", "%25"));
     }
 }

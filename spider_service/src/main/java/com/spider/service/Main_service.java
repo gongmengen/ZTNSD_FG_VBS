@@ -1,16 +1,14 @@
 package com.spider.service;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ReUtil;
 import com.spider.bean.*;
-import com.spider.elemente.TimerParm;
 import com.spider.mapper.MainMapper;
 import com.spider.mapper.MarkdetailMainMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Service
 public class Main_service {
@@ -46,8 +44,8 @@ public class Main_service {
         return mainMapper.selectByExampleWithBLOBs(mainExample);
     }
 
-    public List<MainWithBLOBs> getListByAppuser(String appuser) {
-        return mainMapper.getListByAppuser(appuser);
+    public List<MainWithBLOBs> getListByAppuser(String appuser,String keyword,String url) {
+        return mainMapper.getListByAppuser(appuser,keyword,url);
     }
 
     public List<MainWithBLOBs> getMarkListByAppuser(String appuser) {
@@ -289,5 +287,23 @@ public class Main_service {
         }
 
         return markdetailMain;
+    }
+
+    public Map getLimitListByAppuser(Integer start, Integer pageSize, String zyzd, String keyword) {
+        List<MainWithBLOBs> mainList;
+        List<MainWithBLOBs> total;
+        if (ReUtil.isMatch("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]",keyword)){
+            mainList = mainMapper.getLimitListByAppuser(start,pageSize,zyzd,null,keyword);
+            total  = mainMapper.getListByAppuser(zyzd,null,keyword);
+        }else {
+            mainList = mainMapper.getLimitListByAppuser(start, pageSize, zyzd, keyword, null);
+            total  = mainMapper.getListByAppuser(zyzd,keyword,null);
+        }
+
+
+        Map resu = new HashMap();
+        resu.put("mainList",mainList);
+        resu.put("total",total.size());
+        return resu;
     }
 }

@@ -154,9 +154,9 @@
                 <li>
                     <a href="#"><i class="fa fa-cutlery"></i> <span class="nav-label">人工审核</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a class="J_menuItem" href="/manCheck/list">临时库列表(中央)</a>
+                        <li><a class="J_menuItem" href="page/_informationTmpManCheck/_informationTmpManCheckList">临时库列表(中央)</a>
                         </li>
-                        <li><a class="J_menuItem" href="/manCheck/list_lar">临时库列表(地方)</a>
+                        <li><a class="J_menuItem" href="page/_informationTmpManCheck/_informationTmpManCheckList_lar">临时库列表(地方)</a>
                         </li>
                         <li><a class="J_menuItem" href="/manCheck/markList">临时库列表(已标记/中央)</a>
                         </li>

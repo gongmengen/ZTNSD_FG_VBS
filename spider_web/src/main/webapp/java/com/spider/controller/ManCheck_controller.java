@@ -2,13 +2,17 @@ package com.spider.controller;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifeng.auto.we_provider.common.db.DynamicDataSourceHolder;
 import com.spider.bean.*;
 import com.spider.elemente.TimerParm;
 import com.spider.service.*;
+import com.spider.utils.DataTablePageUtil;
 import com.spider.utils.NioFileUtil;
 import com.spider.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,8 +61,7 @@ public class ManCheck_controller {
     @Autowired
     private ErrorLog_service errorLog_service;
 
-    @Autowired
-    private InformationPipelineTimer informationPipelineTimer;
+
     //展示所有 zyzd
     @RequestMapping("markList")
     public String getInformationPipelinemarkList(@RequestParam(required = false,value = "column")String column,HttpServletRequest request,Model model){
@@ -348,6 +351,7 @@ public class ManCheck_controller {
 
         try {
             response.addHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fjName, "utf-8") + "\"");
+            //response.addHeader("Content-Type",getContentType(fjName));//改变响应头 失败！
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -591,7 +595,7 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取中央库新闻数据
-        List<MainWithBLOBs> mainList = main_service.getListByAppuser("zyzd");
+        List<MainWithBLOBs> mainList = main_service.getListByAppuser("zyzd",null,null);
 
         for (MainWithBLOBs mainWithBLOBs : mainList) {
             mainWithBLOBs.setContentSize(readTxt(mainWithBLOBs.getAppuser(),mainWithBLOBs.getRjs8()).length());
@@ -623,7 +627,7 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
         //获取地方库新闻数据
-        List<MainWithBLOBs> mainList = main_service.getListByAppuser("dfzd");
+        List<MainWithBLOBs> mainList = main_service.getListByAppuser("dfzd",null,null);
 
         for (MainWithBLOBs mainWithBLOBs : mainList) {
             mainWithBLOBs.setContentSize(readTxt(mainWithBLOBs.getAppuser(),mainWithBLOBs.getRjs8()).length());
@@ -675,13 +679,7 @@ public class ManCheck_controller {
                     e.printStackTrace();
                 }
 
-
             }
-
-
-
-
-
             return true;
         }else {
 
@@ -692,12 +690,22 @@ public class ManCheck_controller {
 
     //展示所有 zyzd
     @RequestMapping("list")
-    public String getInformationPipelineList(HttpServletRequest request,Model model){
+    @ResponseBody
+    public Object getInformationPipelineList(@RequestParam(required = false)String keyword,HttpServletRequest request,Model model){
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
-        //获取地方库新闻数据
-        List<MainWithBLOBs> mainList = main_service.getListByAppuser("zyzd");
+        DataTablePageUtil dataTablePageUtil = new DataTablePageUtil();
+        Integer draw = Integer.parseInt(request.getParameter("draw"));//该参数取出来，不做任何操作，再传回去即可
+        Integer start = Integer.parseInt(request.getParameter("start"));//配合求当前页，第一次传进来是 0，然后 10，20，30 ……
+        Integer pageSize = Integer.parseInt(request.getParameter("length"));//【页大小】
+
+
+        Map resu = main_service.getLimitListByAppuser(start,pageSize,"zyzd",keyword);
+
+        List<MainWithBLOBs> mainList = (List<MainWithBLOBs>) resu.get("mainList");
+        int total = (int) resu.get("total");
+
         for (MainWithBLOBs mainWithBLOBs : mainList) {
 
             DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
@@ -722,22 +730,32 @@ public class ManCheck_controller {
                 mainWithBLOBs.setFj_count(0);
             }
         }
+        Object stringToValue = dataTablePageUtil.parseDataTableValue(draw, mainList, total);
 
 
-        model.addAttribute("mainList",mainList);
-
-        return "_informationTmpManCheck/_informationTmpManCheckList";
+        return stringToValue;
     }
+
+
 
 
     //展示所有 dfzd
     @RequestMapping("list_lar")
-    public String getInformationPipelineListlar(HttpServletRequest request,Model model){
+    @ResponseBody
+    public Object getInformationPipelineListlar(@RequestParam(required = false)String keyword,HttpServletRequest request,Model model){
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
 
+        DataTablePageUtil dataTablePageUtil = new DataTablePageUtil();
+        Integer draw = Integer.parseInt(request.getParameter("draw"));//该参数取出来，不做任何操作，再传回去即可
+        Integer start = Integer.parseInt(request.getParameter("start"));//配合求当前页，第一次传进来是 0，然后 10，20，30 ……
+        Integer pageSize = Integer.parseInt(request.getParameter("length"));//【页大小】
+
         //获取地方库新闻数据
-        List<MainWithBLOBs> mainList = main_service.getListByAppuser("dfzd");
+        Map resu = main_service.getLimitListByAppuser(start,pageSize,"dfzd",keyword);
+
+        List<MainWithBLOBs> mainList = (List<MainWithBLOBs>) resu.get("mainList");
+        int total = (int) resu.get("total");
         for (MainWithBLOBs mainWithBLOBs : mainList) {
 
             DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
@@ -761,9 +779,11 @@ public class ManCheck_controller {
                 mainWithBLOBs.setFj_count(0);
             }
         }
-        model.addAttribute("mainList",mainList);
 
-        return "_informationTmpManCheck/_informationTmpManCheckList_lar";
+        Object stringToValue = dataTablePageUtil.parseDataTableValue(draw, mainList, total);
+
+
+        return stringToValue;
     }
 
     public boolean copyCHL(MainWithBLOBs tmpmain,HttpServletRequest request){
@@ -1102,5 +1122,38 @@ public class ManCheck_controller {
         }
 
     }
-    
+
+    public  String getContentType(String fileName){
+        //文件名后缀
+        String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+        if(".bmp".equalsIgnoreCase(fileExtension)) {
+            return "image/bmp";
+        }
+        if(".gif".equalsIgnoreCase(fileExtension)) {
+            return "image/gif";
+        }
+        if(".jpeg".equalsIgnoreCase(fileExtension) || ".jpg".equalsIgnoreCase(fileExtension)  || ".png".equalsIgnoreCase(fileExtension) ){
+            return "image/jpeg";
+        }
+        if(".html".equalsIgnoreCase(fileExtension)){
+            return "text/html";
+        }
+        if(".txt".equalsIgnoreCase(fileExtension)){
+            return "text/plain";
+        }
+        if(".vsd".equalsIgnoreCase(fileExtension)){
+            return "application/vnd.visio";
+        }
+        if(".ppt".equalsIgnoreCase(fileExtension) || "pptx".equalsIgnoreCase(fileExtension)) {
+            return "application/vnd.ms-powerpoint";
+        }
+        if(".doc".equalsIgnoreCase(fileExtension) || "docx".equalsIgnoreCase(fileExtension)) {
+            return "application/msword";
+        }
+        if(".xml".equalsIgnoreCase(fileExtension)) {
+            return "text/xml";
+        }
+        return "image/jpeg";
+    }
+
 }

@@ -640,24 +640,40 @@
   <!-- 自定义sql -->
   <select id="findMaxRjs8" resultType="String" parameterType="String">
 
-select concat('${username}',replace(code,substring(code,length(code)-2),''),'s',substring(code,length(code)-2),'.txt')
+select concat('${username}',substring(code,1,length(code)-3),'s',substring(code,length(code)-2),'.txt')
 from (
-
 select  IF(length(code)=4, concat('00',code), IF(length(code)=5, concat('0',code),code)) as code  from(
-select  MAX(CAST(e AS UNSIGNED)) AS code from (select replace(c,'.txt','') as e from (select substring(a,length('${username}')+1) as c from(select replace(RJS8,'s','') as a from MAIN where rjs8 like '%${username}%') as b) as d) as f
+select  MAX(CAST(e AS UNSIGNED)) AS code from (select replace(c,'.txt','') as e from (select replace(a,'s','') as c from(select substring(rjs8,length('${username}')+1) as a from MAIN where rjs8 like '%${username}%') as b) as d) as f
 ) as g
-
 ) as h
+
   </select>
   <select id="getListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
     select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian , RJS14 ,RJS15
     from main
     WHERE ( appuser = '${appuser}'  and ifnull(truetag_1,0) &lt;&gt; 1)
+    <if test="keyword != null">
+      AND RJS0 LIKE '%${keyword}%'
+    </if>
+    <if test="url != null">
+      AND LinkSource LIKE '%${url}%'
+    </if>
   </select>
   <select id="getMarkListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
     select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian
     from main
     WHERE ( appuser = '${appuser}'  and ifnull(truetag_1,0) &lt;&gt; 1 and anyou is not null)
   </select>
-
+  <select id="getLimitListByAppuser" resultType="com.spider.bean.MainWithBLOBs" parameterType="String">
+    select number, RJS0, RJS1, RJS4, RJS5, RJS6, RJS7, RJS8, RJS9, RJS10, RJS11, RJS12, kword, appuser, appdate, truetag, lawlevel, Marked, anyou, rid, RJS13, UpdateTime, truetag_1 , LinkSource, fjian , RJS14 ,RJS15
+    from main
+    WHERE ( appuser = '${appuser}'  and ifnull(truetag_1,0) &lt;&gt; 1)
+    <if test="keyword != null">
+      AND RJS0 LIKE '%${keyword}%'
+    </if>
+    <if test="url != null">
+      AND LinkSource LIKE '%${url}%'
+    </if>
+    limit #{start},#{pageSize}
+  </select>
 </mapper>

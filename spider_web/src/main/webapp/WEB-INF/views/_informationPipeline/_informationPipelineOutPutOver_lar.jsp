@@ -376,7 +376,7 @@
             }
         });
         //重置的所属库
-        var xwcolumn = "100002";
+        var xwcolumn = "100003";
         if (informationPipelineIds.length>0){
             $.ajax({
                 beforeSend: function () {
