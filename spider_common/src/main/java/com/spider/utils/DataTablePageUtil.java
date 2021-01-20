@@ -77,16 +77,16 @@ public class DataTablePageUtil<T> implements Serializable {
         this.data = data;
     }
 
-    public Object parseDataTableValue(Integer draw, List<MainWithBLOBs> mainList, int total) {
+    public Object parseDataTableValue(Integer draw, List<T> list, int total) {
         /**
          * 最重要的格式处理！
          * 工具类，处理成 datatable 规定的格式返回，才能正常显示！
          */
-        DataTablePageUtil<MainWithBLOBs> pages = new DataTablePageUtil<>();
+        DataTablePageUtil<T> pages = new DataTablePageUtil();
         pages.setRecordsTotal(total);
         pages.setRecordsFiltered(total);
         pages.setDraw(draw);
-        pages.setData(mainList);
+        pages.setData(list);
 
         /**
          * 集合对象转成json数据返回

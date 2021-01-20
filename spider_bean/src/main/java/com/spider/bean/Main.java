@@ -54,6 +54,16 @@ public class Main {
 
     private String rjs15;
 
+    //DataTables 插件渲染long数据bug 无奈转为string
+    private String nunbers;
+
+    public String getNunbers() {
+        return nunbers;
+    }
+
+    public void setNunbers(String nunbers) {
+        this.nunbers = nunbers;
+    }
 
     //增加 重复判断字段
     private Integer pre_distinct;

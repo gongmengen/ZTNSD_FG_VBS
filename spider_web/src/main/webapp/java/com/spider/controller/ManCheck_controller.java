@@ -729,6 +729,8 @@ public class ManCheck_controller {
             }else {
                 mainWithBLOBs.setFj_count(0);
             }
+
+            mainWithBLOBs.setNunbers(mainWithBLOBs.getNumber().toString());
         }
         Object stringToValue = dataTablePageUtil.parseDataTableValue(draw, mainList, total);
 
@@ -778,6 +780,7 @@ public class ManCheck_controller {
             }else {
                 mainWithBLOBs.setFj_count(0);
             }
+            mainWithBLOBs.setNunbers(mainWithBLOBs.getNumber().toString());
         }
 
         Object stringToValue = dataTablePageUtil.parseDataTableValue(draw, mainList, total);

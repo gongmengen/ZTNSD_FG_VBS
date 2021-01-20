@@ -189,7 +189,7 @@
             /* 中间遍历的数据 */
             columns : [
 
-                {data:"number",render:function(data){return ("<input type=\"checkbox\" name=\"mycheckbox\" value=\""+data+"\">");}},
+                {data:"nunbers",render:function(data){return ("<input type=\"checkbox\" name=\"mycheckbox\" value=\""+data+"\">");}},
                 {data:"rjs0",render:function(data, type, full){
 
                     if (full.truetag1 > 0){
@@ -211,7 +211,7 @@
                 {data:"rjs15",render:function(data){return (data);}},
                 {data:"appdate",render:function(data){return (dateFormat(data));}},
                 {data:"fj_count",render:function(data){return (data);}},
-                {data:"number",render:function(data){return ("<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm('"+data+"')\">删除</button>");}}
+                {data:"nunbers",render:function(data){return ("<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm('"+data+"')\">删除</button>");}}
             ]
         });
 
@@ -382,7 +382,7 @@
             /* 中间遍历的数据 */
             columns : [
 
-                {data:"number",render:function(data){return ("<input type=\"checkbox\" name=\"mycheckbox\" value=\""+data+"\">");}},
+                {data:"nunbers",render:function(data){return ("<input type=\"checkbox\" name=\"mycheckbox\" value=\""+data+"\">");}},
                 {data:"rjs0",render:function(data, type, full){
 
                     if (full.truetag1 > 0){
@@ -404,7 +404,7 @@
                 {data:"rjs15",render:function(data){return (data);}},
                 {data:"appdate",render:function(data){return (dateFormat(data));}},
                 {data:"fj_count",render:function(data){return (data);}},
-                {data:"number",render:function(data){return ("<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm('"+data+"')\">删除</button>");}}
+                {data:"nunbers",render:function(data){return ("<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"deleteConfirm('"+data+"')\">删除</button>");}}
             ]
         });
 

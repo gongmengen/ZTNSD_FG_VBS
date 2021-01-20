@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <title>爬虫规则适配系统</title>
+    <title>法规管理后台</title>
 
 
     <!--[if lt IE 8]>
@@ -191,11 +191,8 @@
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
                     <i class="fa fa-bars"></i> </a>
-                    <!-- <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
-                        <div class="form-group">
-                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
-                        </div>
-                    </form> -->
+
+                    <font style="display: block;float: left;font-size: -webkit-xxx-large;margin-left: 60%;">法规管理后台</font>
                 </div>
 
             </nav>
