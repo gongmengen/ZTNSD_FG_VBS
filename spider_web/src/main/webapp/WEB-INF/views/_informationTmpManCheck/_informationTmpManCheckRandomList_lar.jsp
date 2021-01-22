@@ -341,7 +341,7 @@
                    }
                })*/
 
-        window.location.href=targetUrl+"/"+id+"/"+fjName;
+        window.open(targetUrl+"/"+id+"/"+fjName,"_blank");
     }
 </script>
 <!-- 隐藏url列 -->

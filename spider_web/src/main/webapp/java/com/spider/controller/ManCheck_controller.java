@@ -287,7 +287,7 @@ public class ManCheck_controller {
             String contextPath = TimerParm.txtPath5 + File.separator + information.getExtend3() + File.separator +information.getFilename();
             //FileUtil.writeString(information.getNewscontent(),contextPath,"GBK");
             writeTxt(contextPath,information.getNewscontent().replaceAll("\n", "\r\n"));
-            System.out.println("s="+information.getNewscontent());
+
             //正文按照页面上 的数据写回到 hting/txt中(兼容旧法规工具)
             String contextCopyPath = TimerParm.txtCopyPath5 + File.separator +information.getFilename();
             //FileUtil.writeString(information.getNewscontent(),contextCopyPath,"GBK");
@@ -350,8 +350,13 @@ public class ManCheck_controller {
         response.setContentType("bin");
 
         try {
-            response.addHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fjName, "utf-8") + "\"");
-            //response.addHeader("Content-Type",getContentType(fjName));//改变响应头 失败！
+
+
+
+            //response.addHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fjName, "utf-8") + "\"");
+
+            response.setHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fjName, "utf-8"));
+            response.setContentType(getContentType(fjName));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -399,6 +404,8 @@ public class ManCheck_controller {
     @RequestMapping("output")
     @ResponseBody
     public String output(@RequestParam("ids")String ids,HttpServletRequest request){
+
+
         DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
         String[] id = ids.trim().split(" ");
@@ -410,22 +417,37 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
 
         boolean flag = true;
+        Map<String, Integer> maxRjs8 = getMaxRjs8ForMain("chl");//本次导出起始位置
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
-            if (StringUtils.isBlank(mainWithBLOBs.getAnyou())) {
-                if (intoCHL(mainWithBLOBs, request,"chl")) {
+            //if (StringUtils.isBlank(mainWithBLOBs.getAnyou())) {
+
+                int beginNum = maxRjs8.get("beginNum");
+                int endNum = maxRjs8.get("endNum");
+                if(endNum<999) {
+                    endNum = ++endNum;
+                }else {
+                    beginNum = ++beginNum;
+                    endNum=1;
+                }
+
+                maxRjs8.put("beginNum",beginNum);
+                maxRjs8.put("endNum",endNum);
+                if (intoCHL(mainWithBLOBs, request,maxRjs8)) {
+
                     String[] numbers = {mainWithBLOBs.getNumber() + ""};
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                     DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
                     flag = main_service.deleteByNumbers(numbers);
                     //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
+
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                     DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_CHL);
                 } else {
                     flag = false;
                 }
-            }else {
+/*            }else {
                 copyCHL(mainWithBLOBs, request);
-            }
+            }*/
         }
 
 
@@ -447,22 +469,37 @@ public class ManCheck_controller {
         DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
 
         boolean flag = true;
+        Map<String, Integer> maxRjs8 = getMaxRjs8ForMain("lar");//本次导出起始位置
         for (MainWithBLOBs mainWithBLOBs : tmpMainList) {
-            if (mainWithBLOBs.getAnyou()==null) {
-                if (intoCHL(mainWithBLOBs, request,"lar")) {
-                    String[] numbers = {mainWithBLOBs.getNumber() + ""};
+            //if (mainWithBLOBs.getAnyou()==null) { //为了标记模块对比使用
+
+                int beginNum = maxRjs8.get("beginNum");
+                int endNum = maxRjs8.get("endNum");
+                if(endNum<999) {
+                    endNum = ++endNum;
+                }else {
+                    beginNum = ++beginNum;
+                    endNum=1;
+                }
+
+                maxRjs8.put("beginNum",beginNum);
+                maxRjs8.put("endNum",endNum);
+
+                if (intoCHL(mainWithBLOBs, request,maxRjs8)) {
+
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                     DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_B);
-                    flag = main_service.deleteByNumbers(numbers);
+                    flag = main_service.deleteNumber(mainWithBLOBs.getNumber().toString());
+
                     //此处需要换回正式库数据源 后期考虑 添加和删除分开处理
                     DynamicDataSourceHolder.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
                     DynamicDataSourceHolder.setCustomerType(DynamicDataSourceHolder.DATA_SOURCE_LAR);
                 } else {
                     flag = false;
                 }
-            }else {
+/*            }else {
                 copyCHL(mainWithBLOBs, request);
-            }
+            }*/
         }
 
         return flag == true?"导出成功":"导出失败";
@@ -570,7 +607,7 @@ public class ManCheck_controller {
             String resu = FileUtil.readString(contextPath,"GBK");
             return resu;
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("本次随机抽取存在无正文新闻！");
             return "";
         }
 
@@ -831,7 +868,7 @@ public class ManCheck_controller {
         main.setRjs9((short)1);
         main.setRjs10(tmpmain.getRjs10());
         main.setRjs12(tmpmain.getRjs12());
-        main.setAppuser(tmpmain.getAppuser());
+        main.setAppuser(tmpmain.getTruetag1()==null?tmpmain.getAppuser()+"1":tmpmain.getTruetag1()==9?tmpmain.getAppuser()+"9":tmpmain.getAppuser()+"1");
         main.setLinksource(tmpmain.getLinksource());
         main.setFjian(tmpmain.getFjian()); //附件名
 
@@ -851,50 +888,57 @@ public class ManCheck_controller {
         try {
 
             //先重命名文件夹
-            NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + dirPath, chlFileDir);//zyzd001s001 == > zyzd
+            //NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + dirPath, chlFileDir);//zyzd001s001 == > zyzd
 
+            FileUtil.rename(new File(TimerParm.fjPath5 + File.separator + dirPath),chlFileDir,true);
             //附件文件夹移动到。5挂载文件夹下
-            Path start = Paths.get(TimerParm.fjPath5 + File.separator + chlFileDir);
-            Path target = Paths.get(TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix);
+            //Path start = Paths.get(TimerParm.fjPath5 + File.separator + chlFileDir);
+            //Path target = Paths.get(TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix);
+            String start = TimerParm.fjPath5 + File.separator + chlFileDir;
+            String target = TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix;
             //移动附件之前先判断目标地址中是否存在重名文件夹 如果存在则先删除掉目标文件夹
-            NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
+            //NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
+            FileUtil.del(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
             //在移动
-            fileUtil.operateDir(false, start, target, StandardCopyOption.REPLACE_EXISTING);
-            //临时库附件文件夹复制完毕后文件夹名改回复制前的文件夹名
-            NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + chlFileDir, dirPath);//zyzd  == > zyzd001s001
+            FileUtil.copy(start, target,true);
 
 
             //txt移动到  正式 文件夹下
             //重命名文件
 
-            NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName, chlFileName);
+            //NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName), chlFileName);
+
+            FileUtil.rename(new File(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName),chlFileName,true);
 
             File start1 = new File(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +chlFileName);
             File target2 = new File(TimerParm.txt_chlPath+ File.separator + chlFileNamePrefix+File.separator +dirname);
             //移动之前先判断目标地址中是否存在重名文件 如果存在则先删除掉目标文件
-            NioFileUtil.deleteIfExists(Paths.get(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName));
+            //NioFileUtil.deleteIfExists(Paths.get(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName));
 
+            FileUtil.del(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName);
             //生成文件夹
             File chlTxtDir = new File(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname);
             if (!chlTxtDir.exists()){
                 chlTxtDir.mkdir();
             }
             //移动
+            //FileUtil.move(start1,target2,true);
             FileUtil.copy(start1,target2,true);
-            //修改回复制前的文件名
 
-            NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +chlFileName, oldFileName);
+            //删除 hting 的txt
+
+            //NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtCopyPath5 + File.separator + oldFileName));
+            FileUtil.del(TimerParm.txtCopyPath5 + File.separator + oldFileName);
 
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean intoCHL(MainWithBLOBs tmpmain,HttpServletRequest request,String cloumn){
+    public boolean intoCHL(MainWithBLOBs tmpmain,HttpServletRequest request,Map<String, Integer> maxRjs8){
         //--------------------------------------------------------------------------参数
-
 
         DecimalFormat df = new DecimalFormat("000");
 
@@ -909,15 +953,16 @@ public class ManCheck_controller {
         String chlFileNamePrefix = tmpmain.getAppuser().equals("zyzd")?"chl":"lar";
 
 
-        Map<String, Integer> maxRjs8 = getMaxRjs8ForMain(chlFileNamePrefix);//统一导出到aaa 账户
+        //Map<String, Integer> maxRjs8 = getMaxRjs8ForMain(chlFileNamePrefix);//统一导出到aaa 账户
+
         int beginNum = maxRjs8.get("beginNum");
         int endNum = maxRjs8.get("endNum");
-        if(endNum<999) {
+/*        if(endNum<999) {
             endNum++;
         }else {
             beginNum++;
             endNum=1;
-        }
+        }*/
 
         String dirname = df.format(beginNum);
 
@@ -952,51 +997,57 @@ public class ManCheck_controller {
 
         mainCHLandLAR_service.insert(main);
 
-        errorLogIntoChl(main,cloumn);
-
+        //errorLogIntoChl(main,cloumn); 推送到正式库的数据需要把错误日志记录到error_log表（杨老师设计）
 
 
         try {
 
             //先重命名文件夹
-            NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + dirPath, chlFileDir);//zyzd001s001 == > zyzd
+            //NioFileUtil.reNameFile(TimerParm.fjPath5 + File.separator + dirPath, chlFileDir);//zyzd001s001 == > zyzd
 
+            FileUtil.rename(new File(TimerParm.fjPath5 + File.separator + dirPath),chlFileDir,true);
             //附件文件夹移动到。5挂载文件夹下
-            Path start = Paths.get(TimerParm.fjPath5 + File.separator + chlFileDir);
-            Path target = Paths.get(TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix);
+            //Path start = Paths.get(TimerParm.fjPath5 + File.separator + chlFileDir);
+            //Path target = Paths.get(TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix);
+            String start = TimerParm.fjPath5 + File.separator + chlFileDir;
+            String target = TimerParm.fjPath5_chl+ File.separator +chlFileNamePrefix;
             //移动附件之前先判断目标地址中是否存在重名文件夹 如果存在则先删除掉目标文件夹
-            NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
+            //NioFileUtil.deleteIfExists(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
+            FileUtil.del(Paths.get(TimerParm.fjPath5_chl + File.separator + chlFileNamePrefix + File.separator +chlFileDir));
             //在移动
-            fileUtil.operateDir(true, start, target, StandardCopyOption.REPLACE_EXISTING);
+            FileUtil.copy(start, target,true);
 
 
             //txt移动到  正式 文件夹下
             //重命名文件
 
-            NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName, chlFileName);
+            //NioFileUtil.reNameFile(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName), chlFileName);
+
+            FileUtil.rename(new File(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +oldFileName),chlFileName,true);
 
             File start1 = new File(TimerParm.txtPath5 + File.separator + tmpmain.getAppuser() + File.separator +chlFileName);
             File target2 = new File(TimerParm.txt_chlPath+ File.separator + chlFileNamePrefix+File.separator +dirname);
             //移动之前先判断目标地址中是否存在重名文件 如果存在则先删除掉目标文件
-            NioFileUtil.deleteIfExists(Paths.get(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName));
+            //NioFileUtil.deleteIfExists(Paths.get(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName));
 
+            FileUtil.del(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname+File.separator +chlFileName);
             //生成文件夹
             File chlTxtDir = new File(TimerParm.txt_chlPath + File.separator + chlFileNamePrefix + File.separator +dirname);
             if (!chlTxtDir.exists()){
                 chlTxtDir.mkdir();
             }
             //移动
-            FileUtil.move(start1,target2,true);
-
+            //FileUtil.move(start1,target2,true);
+            FileUtil.copy(start1,target2,true);
 
             //删除 hting 的txt
 
-            NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtCopyPath5 + File.separator + oldFileName));
-
+            //NioFileUtil.deleteIfExists(Paths.get(TimerParm.txtCopyPath5 + File.separator + oldFileName));
+            FileUtil.del(TimerParm.txtCopyPath5 + File.separator + oldFileName);
 
 
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -1006,7 +1057,9 @@ public class ManCheck_controller {
     public Map<String,Integer> getMaxRjs8ForMain(String username) {
         Map<String,Integer> resu = new HashMap<String,Integer>();
 
+        long startTime = System.currentTimeMillis();
         String rjs8 = main_service.getMaxRjs8(username);
+        System.out.println("获取最大值用时："+(System.currentTimeMillis()-startTime));
         //String rjs8 = informationPipeline_service.getMaxRjs8(username);
         int beginNum = 1;
         int endNum = 0;

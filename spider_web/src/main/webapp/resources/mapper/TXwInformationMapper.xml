@@ -752,7 +752,7 @@
   </select>
   <!-- 获取十篇pipeline 为0的新闻 -->
   <select id="getTenTXwInformationPipelineIsZero" resultType="com.spider.bean.TXwInformationWithBLOBs">
-    SELECT source,xwColumn,id,newsContentNotUpdate,websiteid FROM t_xw_information WHERE id in(43172,43173)<!--37473 -->
+    SELECT source,xwColumn,id,newsContentNotUpdate,websiteid FROM t_xw_information WHERE id in(52200)<!--37473 -->
   </select>
   <!-- 获取十篇pipeline 为0的新闻 refmain = 2 -->
   <select id="getTenTXwInformationPipelineWithRefMan" resultType="com.spider.bean.TXwInformationWithBLOBs">

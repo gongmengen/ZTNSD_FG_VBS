@@ -61,6 +61,12 @@ public class Main_service {
         return flag;
 
     }
+    public boolean deleteNumber(String number) {
+
+        return mainMapper.deleteNumber(number)==1;
+
+    }
+
 
     public MainWithBLOBs getMainByNumber(long number) {
         return mainMapper.selectByPrimaryKey(number);
